@@ -50,4 +50,8 @@ interface BuilderInterface
      * Grupo E.1. Campos que componen la Factura Electrónica FE
      */
     public function setGroupE1($data);
+    /**
+     * Grupo E.1.1. Campos de informaciones de Compras Públicas
+     */
+    public function setGroupE11($data);
 }

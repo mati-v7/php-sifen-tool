@@ -7,6 +7,7 @@ use Nyxcode\PhpSifenTool\Builder\DE\BuilderInterface;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\DETag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GActEcoTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GCamFETag;
+use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GCompPubTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GDatGralOpeTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GDatRecTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GDTipDETag;
@@ -25,6 +26,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CDisRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CMoneOpeTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CPaisRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CTipRegTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DAnoContTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCarRespDETag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCelRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCodClienteTag;
@@ -57,12 +59,15 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDVIdTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDVRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DEmailETag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DEmailRecTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DEntContTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DEstTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DFecFirmaTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DFeCodContTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DFeEmiDETag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DFeIniTTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DInfoEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DInfoFiscTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DModContTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNomEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNomFanEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNomFanRecTag;
@@ -77,6 +82,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNumTimTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DPunExpTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DRucEmTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DRucRecTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DSecContTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DSerieNumTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DSisFactTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTelEmiTag;
@@ -110,6 +116,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
     protected GDatGralOpeTag $gDatGralOpe;
     protected GEmisTag $gEmis;
     protected GDTipDETag $gDTipDE;
+    protected GCamFETag $gCamFE;
 
     public function reset()
     {
@@ -532,20 +539,53 @@ class FacturaElectronicaBuilder implements BuilderInterface
 
     public function setGroupE1($data)
     {
-        $gCamFE = new GCamFETag();
+        $this->gCamFE = new GCamFETag();
 
         $iIndPres = new IIndPresTag($data["iIndPres"]);
-        $gCamFE->add($iIndPres);
+        $this->gCamFE->add($iIndPres);
 
         $dDesIndPres = new DDesIndPresTag($data["dDesIndPres"]);
-        $gCamFE->add($dDesIndPres);
+        $this->gCamFE->add($dDesIndPres);
 
         if ($data["dFecEmNR"]) {
             $dFecEmNR = new DFeEmiDETag($data["dFecEmNR"]);
-            $gCamFE->add($dFecEmNR);
+            $this->gCamFE->add($dFecEmNR);
         }
 
-        $this->gDTipDE->add($gCamFE);
+        if (
+            $data["dModCont"] &&
+            $data["dEntCont"] &&
+            $data["dAnoCont"] &&
+            $data["dSecCont"] &&
+            $data["dFeCodCont"] &&
+            $data["iTiOpe"] == TipoOperacion::B2G->value
+        ) {
+            $this->setGroupE11($data);
+        }
+
+        $this->gDTipDE->add($this->gCamFE);
+    }
+
+    public function setGroupE11($data)
+    {
+        $gCompPub = new GCompPubTag();
+
+        $dModCont = new DModContTag($data["dModCont"]);
+        $gCompPub->add($dModCont);
+
+        $dEntCont = new DEntContTag($data["dEntCont"]);
+        $gCompPub->add($dEntCont);
+
+        $dAnoCont = new DAnoContTag($data["dAnoCont"]);
+        $gCompPub->add($dAnoCont);
+
+        $dSecCont = new DSecContTag($data["dSecCont"]);
+        $gCompPub->add($dSecCont);
+
+        $dFeCodCont = new DFeCodContTag($data["dFeCodCont"]);
+        $gCompPub->add($dFeCodCont);
+
+        $this->gCamFE->add($gCompPub);
     }
 
     public function getResult()

@@ -84,7 +84,7 @@ class FEBuilderTest extends TestCase
                     ],
                 ],
                 "iNatRec" => NaturalezaReceptor::CONTRIBUYENTE->value,
-                "iTiOpe" => TipoOperacion::B2C->value,
+                "iTiOpe" => TipoOperacion::B2G->value,
                 "cPaisRec" => "PRY",
                 "dDesPaisRe" => "Paraguay",
                 "iTiContRec" => TipoContribuyente::PERSONA_FISICA->value,
@@ -110,6 +110,11 @@ class FEBuilderTest extends TestCase
                 "iIndPres" => IndicadorPresencia::OPERACION_PRESENCIAL->value,
                 "dDesIndPres" => IndicadorPresencia::OPERACION_PRESENCIAL->getDescripcion(),
                 "dFecEmNR" => (new DateTime())->format(DateTime::ATOM),
+                "dModCont" => "A2",
+                "dEntCont" => "12345",
+                "dAnoCont" => "25",
+                "dSecCont" => "1234567",
+                "dFeCodCont" => (new DateTime())->format(DateTime::ATOM),
             ]]
         ];
     }
