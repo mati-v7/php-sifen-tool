@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Added tag classes for group E
 -   Added tag classes for group E.1
 -   Added tag classes for group E.1.1
+-   Added tag classes for group E.7
 -   Base classes of the Builder pattern are added for the generation of Factura Electronica
 -   Factura Electronica generation test added
 
