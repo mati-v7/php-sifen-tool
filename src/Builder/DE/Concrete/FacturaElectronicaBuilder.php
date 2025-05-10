@@ -6,6 +6,7 @@ use DOMDocument;
 use Nyxcode\PhpSifenTool\Builder\DE\BuilderInterface;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\DETag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GActEcoTag;
+use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GCamCondTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GCamFETag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GCompPubTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GDatGralOpeTag;
@@ -34,6 +35,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCodSegTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCompDir1Tag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCompDir2Tag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCondTiCamTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDCondOpeTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDenSucTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesActEcoTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesCiuEmiTag;
@@ -89,6 +91,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTelEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTelRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTiCamTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ICondAntTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ICondOpeTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\IIndPresTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\INatRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ITiContRecTag;
@@ -564,6 +567,8 @@ class FacturaElectronicaBuilder implements BuilderInterface
         }
 
         $this->gDTipDE->add($this->gCamFE);
+
+        $this->setGroupE7($data);
     }
 
     public function setGroupE11($data)
@@ -586,6 +591,19 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $gCompPub->add($dFeCodCont);
 
         $this->gCamFE->add($gCompPub);
+    }
+
+    public function setGroupE7($data)
+    {
+        $gCamCond = new GCamCondTag();
+
+        $iCondOpe = new ICondOpeTag($data["iCondOpe"]);
+        $gCamCond->add($iCondOpe);
+
+        $dDCondOpe = new DDCondOpeTag($data["dDCondOpe"]);
+        $gCamCond->add($dDCondOpe);
+
+        $this->gDTipDE->add($gCamCond);
     }
 
     public function getResult()

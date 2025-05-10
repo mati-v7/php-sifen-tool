@@ -12,6 +12,7 @@ use Nyxcode\PhpSifenTool\Enums\NaturalezaReceptor;
 use Nyxcode\PhpSifenTool\Enums\SistemaFacturacion;
 use Nyxcode\PhpSifenTool\Enums\TipoCambioOperacion;
 use Nyxcode\PhpSifenTool\Enums\TipoCondicionAnticipo;
+use Nyxcode\PhpSifenTool\Enums\TipoCondicionOperacion;
 use Nyxcode\PhpSifenTool\Enums\TipoContribuyente;
 use Nyxcode\PhpSifenTool\Enums\TipoDocumentoReceptor;
 use Nyxcode\PhpSifenTool\Enums\TipoEmision;
@@ -115,6 +116,8 @@ class FEBuilderTest extends TestCase
                 "dAnoCont" => "25",
                 "dSecCont" => "1234567",
                 "dFeCodCont" => (new DateTime())->format(DateTime::ATOM),
+                "iCondOpe" => TipoCondicionOperacion::CONTADO->value,
+                "dDCondOpe" => TipoCondicionOperacion::CONTADO->getDescripcion(),
             ]]
         ];
     }

@@ -54,4 +54,8 @@ interface BuilderInterface
      * Grupo E.1.1. Campos de informaciones de Compras Públicas
      */
     public function setGroupE11($data);
+    /**
+     * Grupo E.7. Campos que describen la condición de la operación 
+     */
+    public function setGroupE7($data);
 }
