@@ -1,0 +1,24 @@
+{
+    "name": "nyxcode/php-sifen-tool",
+    "description": "A php package to simplify integration with Paraguay's SIFEN API for electronic invoicing.",
+    "type": "library",
+    "require": {
+        "illuminate/support": "12.13.x"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "12.1.x"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Nyxcode\\PhpSifenTool\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Matias Vega",
+            "email": "matias.vega.m17@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
