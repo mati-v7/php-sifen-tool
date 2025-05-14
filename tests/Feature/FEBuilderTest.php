@@ -147,6 +147,16 @@ class FEBuilderTest extends TestCase
                         "dNomTit" => "Nombre del titular de la tarjeta",
                         "dNumTarj" => "1234",
                     ],
+                    [
+                        "iTiPago" => TipoPago::CHEQUE->value,
+                        "dDesTiPag" => TipoPago::CHEQUE->getDescripcion(),
+                        "dMonTiPag" => 1000,
+                        "cMoneTiPag" => MonedaOperacion::PYG->value,
+                        "dDMoneTiPag" => MonedaOperacion::PYG->getDescripcion(),
+                        "dTiCamTiPag" => 8100,
+                        "dNumCheq" => "12345678",
+                        "dBcoEmi" => "Nombre del banco emisor",
+                    ],
                 ]
             ]]
         ];

@@ -16,6 +16,7 @@ use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GEmisTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GOpeComTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GOpeDETag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GPaConEIniTag;
+use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GPagCheqTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GPagTarCDTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GRespDETag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GTimbTag;
@@ -31,6 +32,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CMoneTiPagTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CPaisRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CTipRegTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DAnoContTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DBcoEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCarRespDETag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCelRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCodAuOpeTag;
@@ -87,6 +89,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNomRespDETag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNomTitTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNumCasRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNumCasTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNumCheqTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNumDocTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNumIDRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNumIDRespDETag;
@@ -667,6 +670,14 @@ class FacturaElectronicaBuilder implements BuilderInterface
             $this->setGroupE711($data);
         }
 
+        if (
+            $data["iTiPago"] == TipoPago::CHEQUE->value &&
+            !empty($data["dNumCheq"]) &&
+            !empty($data["dBcoEmi"])
+        ) {
+            $this->setGroupE712($data);
+        }
+
         $this->gCamCond->add($this->gPaConEIni);
     }
 
@@ -715,6 +726,19 @@ class FacturaElectronicaBuilder implements BuilderInterface
         }
 
         $this->gPaConEIni->add($gPagTarCD);
+    }
+
+    public function setGroupE712($data)
+    {
+        $gPagCheq = new GPagCheqTag();
+
+        $dNumCheq = new DNumCheqTag($data["dNumCheq"]);
+        $gPagCheq->add($dNumCheq);
+
+        $dBcoEmi = new DBcoEmiTag($data["dBcoEmi"]);
+        $gPagCheq->add($dBcoEmi);
+
+        $this->gPaConEIni->add($gPagCheq);
     }
 
     public function getResult()

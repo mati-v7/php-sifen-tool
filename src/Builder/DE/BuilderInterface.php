@@ -66,4 +66,8 @@ interface BuilderInterface
      * Grupo E7.1.1. Campos que describen el pago o entrega inicial de la operación con tarjeta de crédito/débito
      */
     public function setGroupE711($data);
+    /**
+     * Grupo E7.1.2. Campos que describen el pago o entrega inicial de la operación con cheque
+     */
+    public function setGroupE712($data);
 }
