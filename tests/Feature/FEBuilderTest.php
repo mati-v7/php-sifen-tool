@@ -18,6 +18,7 @@ use Nyxcode\PhpSifenTool\Enums\TipoDocumentoReceptor;
 use Nyxcode\PhpSifenTool\Enums\TipoEmision;
 use Nyxcode\PhpSifenTool\Enums\TipoImpuesto;
 use Nyxcode\PhpSifenTool\Enums\TipoOperacion;
+use Nyxcode\PhpSifenTool\Enums\TipoPago;
 use Nyxcode\PhpSifenTool\Enums\TipoRegimen;
 use Nyxcode\PhpSifenTool\Enums\TipoTransaccion;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -118,6 +119,16 @@ class FEBuilderTest extends TestCase
                 "dFeCodCont" => (new DateTime())->format(DateTime::ATOM),
                 "iCondOpe" => TipoCondicionOperacion::CONTADO->value,
                 "dDCondOpe" => TipoCondicionOperacion::CONTADO->getDescripcion(),
+                "gPaConEIni" => [
+                    [
+                        "iTiPago" => TipoPago::EFECTIVO->value,
+                        "dDesTiPag" => TipoPago::EFECTIVO->getDescripcion(),
+                        "dMonTiPag" => 1000,
+                        "cMoneTiPag" => MonedaOperacion::PYG->value,
+                        "dDMoneTiPag" => MonedaOperacion::PYG->getDescripcion(),
+                        "dTiCamTiPag" => 8100,
+                    ],
+                ]
             ]]
         ];
     }

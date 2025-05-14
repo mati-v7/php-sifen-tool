@@ -15,6 +15,7 @@ use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GDTipDETag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GEmisTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GOpeComTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GOpeDETag;
+use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GPaConEIniTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GRespDETag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GTimbTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CActEcoTag;
@@ -25,6 +26,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CDepRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CDisEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CDisRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CMoneOpeTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CMoneTiPagTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CPaisRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CTipRegTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DAnoContTag;
@@ -50,10 +52,12 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesMoneOpeTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesPaisReTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesTiDETag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesTImpTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesTiPagTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesTipEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesTipTraTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDirEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDirRecTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDMoneTiPagTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDTipIDRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDTipIDRespDETag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDVEmiTag;
@@ -70,6 +74,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DFeIniTTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DInfoEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DInfoFiscTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DModContTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DMonTiPagTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNomEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNomFanEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNomFanRecTag;
@@ -90,6 +95,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DSisFactTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTelEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTelRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTiCamTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTiCamTiPagTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ICondAntTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ICondOpeTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\IIndPresTag;
@@ -98,6 +104,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ITiContRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ITiDETag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ITImpTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ITiOpeTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ITiPagoTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ITipContTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ITipEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ITipIDRecTag;
@@ -106,6 +113,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ITipTraTag;
 use Nyxcode\PhpSifenTool\Enums\MonedaOperacion;
 use Nyxcode\PhpSifenTool\Enums\NaturalezaReceptor;
 use Nyxcode\PhpSifenTool\Enums\TipoCambioOperacion;
+use Nyxcode\PhpSifenTool\Enums\TipoCondicionOperacion;
 use Nyxcode\PhpSifenTool\Enums\TipoDocumentoElectronico;
 use Nyxcode\PhpSifenTool\Enums\TipoOperacion;
 
@@ -120,6 +128,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
     protected GEmisTag $gEmis;
     protected GDTipDETag $gDTipDE;
     protected GCamFETag $gCamFE;
+    protected GCamCondTag $gCamCond;
 
     public function reset()
     {
@@ -595,15 +604,50 @@ class FacturaElectronicaBuilder implements BuilderInterface
 
     public function setGroupE7($data)
     {
-        $gCamCond = new GCamCondTag();
+        $this->gCamCond = new GCamCondTag();
 
         $iCondOpe = new ICondOpeTag($data["iCondOpe"]);
-        $gCamCond->add($iCondOpe);
+        $this->gCamCond->add($iCondOpe);
 
         $dDCondOpe = new DDCondOpeTag($data["dDCondOpe"]);
-        $gCamCond->add($dDCondOpe);
+        $this->gCamCond->add($dDCondOpe);
 
-        $this->gDTipDE->add($gCamCond);
+        if ($data["iCondOpe"] == TipoCondicionOperacion::CONTADO->value) {
+            foreach ($data["gPaConEIni"] as $gPaConEIni) {
+                $this->setGroupE71($gPaConEIni);
+            }
+        }
+
+        $this->gDTipDE->add($this->gCamCond);
+    }
+
+    public function setGroupE71($data)
+    {
+        $gPaConEIni = new GPaConEIniTag();
+
+        $iTiPago = new ITiPagoTag($data["iTiPago"]);
+        $gPaConEIni->add($iTiPago);
+
+        $dDesTiPag = new DDesTiPagTag($data["dDesTiPag"]);
+        $gPaConEIni->add($dDesTiPag);
+
+        $dMonTiPag = new DMonTiPagTag($data["dMonTiPag"]);
+        $gPaConEIni->add($dMonTiPag);
+
+        $cMoneTiPag = new CMoneTiPagTag($data["cMoneTiPag"]);
+        $gPaConEIni->add($cMoneTiPag);
+
+        $dDMoneTiPag = new DDMoneTiPagTag($data["dDMoneTiPag"]);
+        $gPaConEIni->add($dDMoneTiPag);
+
+        if (
+            $data["dTiCamTiPag"] &&
+            $data["cMoneTiPag"] != MonedaOperacion::PYG->value
+        ) {
+            $dTiCamTiPag = new DTiCamTiPagTag($data["dTiCamTiPag"]);
+            $gPaConEIni->add($dTiCamTiPag);
+        }
+        $this->gCamCond->add($gPaConEIni);
     }
 
     public function getResult()

@@ -58,4 +58,8 @@ interface BuilderInterface
      * Grupo E.7. Campos que describen la condición de la operación 
      */
     public function setGroupE7($data);
+    /**
+     * Grupo E7.1. Campos que describen la forma de pago de la operación al contado o del monto de la entrega inicial.
+     */
+    public function setGroupE71($data);
 }
