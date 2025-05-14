@@ -62,4 +62,8 @@ interface BuilderInterface
      * Grupo E7.1. Campos que describen la forma de pago de la operación al contado o del monto de la entrega inicial.
      */
     public function setGroupE71($data);
+    /**
+     * Grupo E7.1.1. Campos que describen el pago o entrega inicial de la operación con tarjeta de crédito/débito
+     */
+    public function setGroupE711($data);
 }

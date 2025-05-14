@@ -6,6 +6,8 @@ use DateTime;
 use Nyxcode\PhpSifenTool\Builder\DE\Concrete\DocumentoElectronicoBuilder;
 use Nyxcode\PhpSifenTool\Builder\DE\Concrete\FacturaElectronicaBuilder;
 use Nyxcode\PhpSifenTool\Builder\DE\Director;
+use Nyxcode\PhpSifenTool\Enums\DenominacionTarjeta;
+use Nyxcode\PhpSifenTool\Enums\FormaProcesamientoTarjeta;
 use Nyxcode\PhpSifenTool\Enums\IndicadorPresencia;
 use Nyxcode\PhpSifenTool\Enums\MonedaOperacion;
 use Nyxcode\PhpSifenTool\Enums\NaturalezaReceptor;
@@ -127,6 +129,23 @@ class FEBuilderTest extends TestCase
                         "cMoneTiPag" => MonedaOperacion::PYG->value,
                         "dDMoneTiPag" => MonedaOperacion::PYG->getDescripcion(),
                         "dTiCamTiPag" => 8100,
+                    ],
+                    [
+                        "iTiPago" => TipoPago::TARJETA_DEBITO->value,
+                        "dDesTiPag" => TipoPago::TARJETA_DEBITO->getDescripcion(),
+                        "dMonTiPag" => 1000,
+                        "cMoneTiPag" => MonedaOperacion::PYG->value,
+                        "dDMoneTiPag" => MonedaOperacion::PYG->getDescripcion(),
+                        "dTiCamTiPag" => 8100,
+                        "iDenTarj" => DenominacionTarjeta::VISA->value,
+                        "dDesDenTarj" => DenominacionTarjeta::VISA->getDescripcion(),
+                        "dRSProTar" => "Nombre del proveedor de la tarjeta",
+                        "dRUCProTar" => "12345678",
+                        "dDVProTar" => "0",
+                        "iForProPa" => FormaProcesamientoTarjeta::POS->value,
+                        "dCodAuOpe" => "1234567890",
+                        "dNomTit" => "Nombre del titular de la tarjeta",
+                        "dNumTarj" => "1234",
                     ],
                 ]
             ]]
