@@ -70,4 +70,8 @@ interface BuilderInterface
      * Grupo E7.1.2. Campos que describen el pago o entrega inicial de la operación con cheque
      */
     public function setGroupE712($data);
+    /**
+     * Grupo E7.2. Campos que describen la operación a crédito 
+     */
+    public function setGroupE72($data);
 }

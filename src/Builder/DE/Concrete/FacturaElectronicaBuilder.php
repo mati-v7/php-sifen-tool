@@ -17,6 +17,7 @@ use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GOpeComTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GOpeDETag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GPaConEIniTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GPagCheqTag;
+use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GPagCredTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GPagTarCDTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GRespDETag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GTimbTag;
@@ -41,6 +42,8 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCodSegTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCompDir1Tag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCompDir2Tag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCondTiCamTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCuotasTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDCondCredTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDCondOpeTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDenSucTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesActEcoTag;
@@ -80,6 +83,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DFeIniTTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DInfoEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DInfoFiscTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DModContTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DMonEntTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DMonTiPagTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNomEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNomFanEmiTag;
@@ -95,6 +99,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNumIDRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNumIDRespDETag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNumTarjTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNumTimTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DPlazoCreTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DPunExpTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DRSProTarTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DRucEmTag;
@@ -108,6 +113,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTelRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTiCamTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTiCamTiPagTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ICondAntTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ICondCredTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ICondOpeTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\IDenTarjTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\IForProPaTag;
@@ -123,6 +129,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ITipEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ITipIDRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ITipIDRespDETag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ITipTraTag;
+use Nyxcode\PhpSifenTool\Enums\CondicionCredito;
 use Nyxcode\PhpSifenTool\Enums\MonedaOperacion;
 use Nyxcode\PhpSifenTool\Enums\NaturalezaReceptor;
 use Nyxcode\PhpSifenTool\Enums\TipoCambioOperacion;
@@ -144,6 +151,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
     protected GCamFETag $gCamFE;
     protected GCamCondTag $gCamCond;
     protected GPaConEIniTag $gPaConEIni;
+    protected GPagCredTag $gPagCred;
 
     public function reset()
     {
@@ -633,6 +641,10 @@ class FacturaElectronicaBuilder implements BuilderInterface
             }
         }
 
+        if ($data["iCondOpe"] == TipoCondicionOperacion::CREDITO->value) {
+            $this->setGroupE72($data);
+        }
+
         $this->gDTipDE->add($this->gCamCond);
     }
 
@@ -739,6 +751,34 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $gPagCheq->add($dBcoEmi);
 
         $this->gPaConEIni->add($gPagCheq);
+    }
+
+    public function setGroupE72($data)
+    {
+        $this->gPagCred = new GPagCredTag();
+
+        $iCondCred = new ICondCredTag($data["iCondCred"]);
+        $this->gPagCred->add($iCondCred);
+
+        $dDCondCred = new DDCondCredTag($data["dDCondCred"]);
+        $this->gPagCred->add($dDCondCred);
+
+        if ($iCondCred->getValue() == CondicionCredito::PLAZO->value) {
+            $dPlazoCre = new DPlazoCreTag($data["dPlazoCre"]);
+            $this->gPagCred->add($dPlazoCre);
+        }
+
+        if ($iCondCred->getValue() == CondicionCredito::CUOTA->value) {
+            $dCuotas = new DCuotasTag($data["dCuotas"]);
+            $this->gPagCred->add($dCuotas);
+        }
+
+        if ($data["dMonEnt"]) {
+            $dMonEnt = new DMonEntTag($data["dMonEnt"]);
+            $this->gPagCred->add($dMonEnt);
+        }
+
+        $this->gCamCond->add($this->gPagCred);
     }
 
     public function getResult()

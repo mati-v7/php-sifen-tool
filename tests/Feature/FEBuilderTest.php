@@ -6,6 +6,7 @@ use DateTime;
 use Nyxcode\PhpSifenTool\Builder\DE\Concrete\DocumentoElectronicoBuilder;
 use Nyxcode\PhpSifenTool\Builder\DE\Concrete\FacturaElectronicaBuilder;
 use Nyxcode\PhpSifenTool\Builder\DE\Director;
+use Nyxcode\PhpSifenTool\Enums\CondicionCredito;
 use Nyxcode\PhpSifenTool\Enums\DenominacionTarjeta;
 use Nyxcode\PhpSifenTool\Enums\FormaProcesamientoTarjeta;
 use Nyxcode\PhpSifenTool\Enums\IndicadorPresencia;
@@ -119,8 +120,8 @@ class FEBuilderTest extends TestCase
                 "dAnoCont" => "25",
                 "dSecCont" => "1234567",
                 "dFeCodCont" => (new DateTime())->format(DateTime::ATOM),
-                "iCondOpe" => TipoCondicionOperacion::CONTADO->value,
-                "dDCondOpe" => TipoCondicionOperacion::CONTADO->getDescripcion(),
+                "iCondOpe" => TipoCondicionOperacion::CREDITO->value,
+                "dDCondOpe" => TipoCondicionOperacion::CREDITO->getDescripcion(),
                 "gPaConEIni" => [
                     [
                         "iTiPago" => TipoPago::EFECTIVO->value,
@@ -157,7 +158,12 @@ class FEBuilderTest extends TestCase
                         "dNumCheq" => "12345678",
                         "dBcoEmi" => "Nombre del banco emisor",
                     ],
-                ]
+                ],
+                "iCondCred" => CondicionCredito::PLAZO->value,
+                "dDCondCred" => CondicionCredito::PLAZO->getDescripcion(),
+                "dPlazoCre" => "30 días",
+                "dCuotas" => "6",
+                "dMonEnt" => 1000,
             ]]
         ];
     }
