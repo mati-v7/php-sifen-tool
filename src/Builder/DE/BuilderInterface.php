@@ -74,4 +74,8 @@ interface BuilderInterface
      * Grupo E7.2. Campos que describen la operación a crédito 
      */
     public function setGroupE72($data);
+    /**
+     * Grupo E7.2.1 Campos que describen las cuotas 
+     */
+    public function setGroupE721($data);
 }

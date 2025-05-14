@@ -159,11 +159,24 @@ class FEBuilderTest extends TestCase
                         "dBcoEmi" => "Nombre del banco emisor",
                     ],
                 ],
-                "iCondCred" => CondicionCredito::PLAZO->value,
-                "dDCondCred" => CondicionCredito::PLAZO->getDescripcion(),
+                "iCondCred" => CondicionCredito::CUOTA->value,
+                "dDCondCred" => CondicionCredito::CUOTA->getDescripcion(),
                 "dPlazoCre" => "30 días",
                 "dCuotas" => "6",
                 "dMonEnt" => 1000,
+                "gCuotas" => [
+                    [
+                        "cMoneCuo" => MonedaOperacion::PYG->value,
+                        "dDMoneCuo" => MonedaOperacion::PYG->getDescripcion(),
+                        "dMonCuota" => 1000,
+                        "dVencCuo" => (new DateTime())->format(DateTime::ATOM),
+                    ],
+                    [
+                        "cMoneCuo" => MonedaOperacion::PYG->value,
+                        "dDMoneCuo" => MonedaOperacion::PYG->getDescripcion(),
+                        "dMonCuota" => 1000,
+                    ],
+                ],
             ]]
         ];
     }

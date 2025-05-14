@@ -9,6 +9,7 @@ use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GActEcoTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GCamCondTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GCamFETag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GCompPubTag;
+use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GCuotasTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GDatGralOpeTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GDatRecTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GDTipDETag;
@@ -28,6 +29,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CDepEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CDepRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CDisEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CDisRecTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CMoneCuoTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CMoneOpeTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CMoneTiPagTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CPaisRecTag;
@@ -65,6 +67,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesTipEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesTipTraTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDirEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDirRecTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDMoneCuoTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDMoneTiPagTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDTipIDRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDTipIDRespDETag;
@@ -83,6 +86,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DFeIniTTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DInfoEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DInfoFiscTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DModContTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DMonCuotaTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DMonEntTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DMonTiPagTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNomEmiTag;
@@ -112,6 +116,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTelEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTelRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTiCamTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTiCamTiPagTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DVencCuoTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ICondAntTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ICondCredTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ICondOpeTag;
@@ -778,7 +783,34 @@ class FacturaElectronicaBuilder implements BuilderInterface
             $this->gPagCred->add($dMonEnt);
         }
 
+        if ($iCondCred->getValue() == CondicionCredito::CUOTA->value) {
+            foreach ($data["gCuotas"] as $gCuota) {
+                $this->setGroupE721($gCuota);
+            }
+        }
+
         $this->gCamCond->add($this->gPagCred);
+    }
+
+    public function setGroupE721($data)
+    {
+        $gCuotas = new GCuotasTag();
+
+        $cMoneCuo = new CMoneCuoTag($data["cMoneCuo"]);
+        $gCuotas->add($cMoneCuo);
+
+        $dDMoneCuo = new DDMoneCuoTag($data["dDMoneCuo"]);
+        $gCuotas->add($dDMoneCuo);
+
+        $dMonCuota = new DMonCuotaTag($data["dMonCuota"]);
+        $gCuotas->add($dMonCuota);
+
+        if ($data["dVencCuo"]) {
+            $dVencCuo = new DVencCuoTag($data["dVencCuo"]);
+            $gCuotas->add($dVencCuo);
+        }
+
+        $this->gPagCred->add($gCuotas);
     }
 
     public function getResult()
