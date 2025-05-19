@@ -89,7 +89,7 @@ class FEBuilderTest extends TestCase
                     ],
                 ],
                 "iNatRec" => NaturalezaReceptor::CONTRIBUYENTE->value,
-                "iTiOpe" => TipoOperacion::B2G->value,
+                "iTiOpe" => TipoOperacion::B2C->value,
                 "cPaisRec" => "PRY",
                 "dDesPaisRe" => "Paraguay",
                 "iTiContRec" => TipoContribuyente::PERSONA_FISICA->value,
@@ -177,6 +177,25 @@ class FEBuilderTest extends TestCase
                         "dMonCuota" => 1000,
                     ],
                 ],
+                "gCamItem" => [
+                    [
+                        "dCodInt" => "123456",
+                        "dParAranc" => "1234",
+                        "dNCM" => "12345678",
+                        "dDncpG" => "ABC123456",
+                        "dDncpE" => "DEF1",
+                        "dGtin" => "1234567890123",
+                        "dGtinPq" => "1234567890123",
+                        "dDesProSer" => "Descripción del producto o servicio",
+                        "cUniMed" => "1",
+                        "dDesUniMed" => "Unidad de medida",
+                        "dCantProSer" => 10,
+                        "cPaisOrig" => "PRY",
+                        "dDesPaisOrig" => "Paraguay",
+                        "dInfItem" => "Información adicional del ítem",
+                        "dCDCAnticipo" => "1234567890123456789012345678901234567890",
+                    ],
+                ]
             ]]
         ];
     }

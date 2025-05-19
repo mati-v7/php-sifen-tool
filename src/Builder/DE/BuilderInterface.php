@@ -78,4 +78,8 @@ interface BuilderInterface
      * Grupo E7.2.1 Campos que describen las cuotas 
      */
     public function setGroupE721($data);
+    /**
+     * Grupo E8. Campos que describen los ítems de la operación
+     */
+    public function setGroupE8($data);
 }

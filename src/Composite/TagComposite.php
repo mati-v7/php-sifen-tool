@@ -30,6 +30,21 @@ abstract class TagComposite extends Tag
     }
 
     /**
+     * @param string $name
+     * @return Tag|null
+     */
+    public function getTag(string $name): ?Tag
+    {
+        foreach ($this->tags as $tag) {
+            if ($tag->getName() === $name) {
+                return $tag;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * @param Tag $tag
      * @return void
      */

@@ -8,6 +8,7 @@ use Nyxcode\PhpSifenTool\Composite\Concrete\DE\DETag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GActEcoTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GCamCondTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GCamFETag;
+use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GCamItemTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GCompPubTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GCuotasTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GDatGralOpeTag;
@@ -32,14 +33,19 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CDisRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CMoneCuoTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CMoneOpeTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CMoneTiPagTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CPaisOrigTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CPaisRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CTipRegTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CUniMedTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DAnoContTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DBcoEmiTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCantProSerTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCarRespDETag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCDCAnticipoTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCelRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCodAuOpeTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCodClienteTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCodIntTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCodSegTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCompDir1Tag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCompDir2Tag;
@@ -59,16 +65,21 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesDisEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesDisRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesIndPresTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesMoneOpeTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesPaisOrigTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesPaisReTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesProSerTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesTiDETag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesTImpTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesTiPagTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesTipEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesTipTraTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesUniMedTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDirEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDirRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDMoneCuoTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDMoneTiPagTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDncpETag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDncpGTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDTipIDRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDTipIDRespDETag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDVEmiTag;
@@ -83,12 +94,16 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DFecFirmaTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DFeCodContTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DFeEmiDETag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DFeIniTTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DGtinPqTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DGtinTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DInfItemTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DInfoEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DInfoFiscTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DModContTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DMonCuotaTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DMonEntTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DMonTiPagTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNCMTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNomEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNomFanEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNomFanRecTag;
@@ -103,6 +118,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNumIDRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNumIDRespDETag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNumTarjTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNumTimTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DParArancTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DPlazoCreTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DPunExpTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DRSProTarTag;
@@ -142,6 +158,7 @@ use Nyxcode\PhpSifenTool\Enums\TipoCondicionOperacion;
 use Nyxcode\PhpSifenTool\Enums\TipoDocumentoElectronico;
 use Nyxcode\PhpSifenTool\Enums\TipoOperacion;
 use Nyxcode\PhpSifenTool\Enums\TipoPago;
+use Nyxcode\PhpSifenTool\Enums\TipoTransaccion;
 
 class FacturaElectronicaBuilder implements BuilderInterface
 {
@@ -151,12 +168,15 @@ class FacturaElectronicaBuilder implements BuilderInterface
 
     protected DETag $de;
     protected GDatGralOpeTag $gDatGralOpe;
+    protected GOpeComTag $gOpeCom;
     protected GEmisTag $gEmis;
+    protected GDatRecTag $gDatRec;
     protected GDTipDETag $gDTipDE;
     protected GCamFETag $gCamFE;
     protected GCamCondTag $gCamCond;
     protected GPaConEIniTag $gPaConEIni;
     protected GPagCredTag $gPagCred;
+    protected GCamItemTag $gCamItem;
 
     public function reset()
     {
@@ -261,32 +281,32 @@ class FacturaElectronicaBuilder implements BuilderInterface
      */
     public function setGroupD1($data)
     {
-        $gOpeCom = new GOpeComTag();
+        $this->gOpeCom = new GOpeComTag();
         $iTipTra = new ITipTraTag($data["iTipTra"]);
-        $gOpeCom->add($iTipTra);
+        $this->gOpeCom->add($iTipTra);
 
         $dDesTipTra = new DDesTipTraTag($data["dDesTipTra"]);
-        $gOpeCom->add($dDesTipTra);
+        $this->gOpeCom->add($dDesTipTra);
 
         $iTImp = new ITImpTag($data["iTImp"]);
-        $gOpeCom->add($iTImp);
+        $this->gOpeCom->add($iTImp);
 
         $dDesTImp = new DDesTImpTag($data["dDesTImp"]);
-        $gOpeCom->add($dDesTImp);
+        $this->gOpeCom->add($dDesTImp);
 
         $cMoneOpe = new CMoneOpeTag($data["cMoneOpe"]);
-        $gOpeCom->add($cMoneOpe);
+        $this->gOpeCom->add($cMoneOpe);
 
         $dDesMoneOpe = new DDesMoneOpeTag($data["dDesMoneOpe"]);
-        $gOpeCom->add($dDesMoneOpe);
+        $this->gOpeCom->add($dDesMoneOpe);
 
         if ($cMoneOpe->getValue() != MonedaOperacion::PYG->value) {
             $dCondTiCam = new DCondTiCamTag($data["dCondTiCam"]);
-            $gOpeCom->add($dCondTiCam);
+            $this->gOpeCom->add($dCondTiCam);
 
             if ($dCondTiCam->getValue() == TipoCambioOperacion::GLOBAL->value) {
                 $dTiCam = new DTiCamTag($data["dTiCam"]);
-                $gOpeCom->add($dTiCam);
+                $this->gOpeCom->add($dTiCam);
             }
         }
 
@@ -295,12 +315,12 @@ class FacturaElectronicaBuilder implements BuilderInterface
             $data["dDesCondAnt"]
         ) {
             $iCondAnt = new ICondAntTag($data["iCondAnt"]);
-            $gOpeCom->add($iCondAnt);
+            $this->gOpeCom->add($iCondAnt);
 
             $dDesCondAnt = new DDesCondAntTag($data["dDesCondAnt"]);
-            $gOpeCom->add($dDesCondAnt);
+            $this->gOpeCom->add($dDesCondAnt);
         }
-        $this->gDatGralOpe->add($gOpeCom);
+        $this->gDatGralOpe->add($this->gOpeCom);
     }
 
     /**
@@ -446,29 +466,29 @@ class FacturaElectronicaBuilder implements BuilderInterface
      */
     public function setGroupD3($data)
     {
-        $gDatRec = new GDatRecTag();
+        $this->gDatRec = new GDatRecTag();
 
         $iNatRec = new INatRecTag($data["iNatRec"]);
-        $gDatRec->add($iNatRec);
+        $this->gDatRec->add($iNatRec);
 
         $iTiOpe = new ITiOpeTag($data["iTiOpe"]);
-        $gDatRec->add($iTiOpe);
+        $this->gDatRec->add($iTiOpe);
 
         $cPaisRec = new CPaisRecTag($data["cPaisRec"]);
-        $gDatRec->add($cPaisRec);
+        $this->gDatRec->add($cPaisRec);
 
         $dDesPaisRe = new DDesPaisReTag($data["dDesPaisRe"]);
-        $gDatRec->add($dDesPaisRe);
+        $this->gDatRec->add($dDesPaisRe);
 
         if ($iNatRec->getValue() == NaturalezaReceptor::CONTRIBUYENTE->value) {
             $iTiContRec = new ITiContRecTag($data["iTiContRec"]);
-            $gDatRec->add($iTiContRec);
+            $this->gDatRec->add($iTiContRec);
 
             $dRucRec = new DRucRecTag($data["dRucRec"]);
-            $gDatRec->add($dRucRec);
+            $this->gDatRec->add($dRucRec);
 
             $dDVRec = new DDVRecTag($data["dDVRec"]);
-            $gDatRec->add($dDVRec);
+            $this->gDatRec->add($dDVRec);
         }
 
         if (
@@ -476,21 +496,21 @@ class FacturaElectronicaBuilder implements BuilderInterface
             $iTiOpe->getValue() != TipoOperacion::B2F->value
         ) {
             $iTipIDRec = new ITipIDRecTag($data["iTipIDRec"]);
-            $gDatRec->add($iTipIDRec);
+            $this->gDatRec->add($iTipIDRec);
 
             $dDTipIDRec = new DDTipIDRecTag($data["dDTipIDRec"]);
-            $gDatRec->add($dDTipIDRec);
+            $this->gDatRec->add($dDTipIDRec);
 
             $dNumIDRec = new DNumIDRecTag($data["dNumIDRec"]);
-            $gDatRec->add($dNumIDRec);
+            $this->gDatRec->add($dNumIDRec);
         }
 
         $dNomRec = new DNomRecTag($data["dNomRec"]);
-        $gDatRec->add($dNomRec);
+        $this->gDatRec->add($dNomRec);
 
         if ($data["dNomFacRec"]) {
             $dNomFacRec = new DNomFanRecTag($data["dNomFacRec"]);
-            $gDatRec->add($dNomFacRec);
+            $this->gDatRec->add($dNomFacRec);
         }
 
         if (
@@ -498,10 +518,10 @@ class FacturaElectronicaBuilder implements BuilderInterface
             $data["dNumCasRec"]
         ) {
             $dDirRec = new DDirRecTag($data["dDirRec"]);
-            $gDatRec->add($dDirRec);
+            $this->gDatRec->add($dDirRec);
 
             $dNumCasRec = new DNumCasRecTag($data["dNumCasRec"]);
-            $gDatRec->add($dNumCasRec);
+            $this->gDatRec->add($dNumCasRec);
 
 
 
@@ -511,10 +531,10 @@ class FacturaElectronicaBuilder implements BuilderInterface
                 $iTiOpe->getValue() != TipoOperacion::B2F->value
             ) {
                 $cDepRec = new CDepRecTag($data["cDepRec"]);
-                $gDatRec->add($cDepRec);
+                $this->gDatRec->add($cDepRec);
 
                 $dDesDepRec = new DDesDepRecTag($data["dDesDepRec"]);
-                $gDatRec->add($dDesDepRec);
+                $this->gDatRec->add($dDesDepRec);
             }
 
             if (
@@ -523,10 +543,10 @@ class FacturaElectronicaBuilder implements BuilderInterface
                 $iTiOpe->getValue() != TipoOperacion::B2F->value
             ) {
                 $cDisRec = new CDisRecTag($data["cDisRec"]);
-                $gDatRec->add($cDisRec);
+                $this->gDatRec->add($cDisRec);
 
                 $dDesDisRec = new DDesDisRecTag($data["dDesDisRec"]);
-                $gDatRec->add($dDesDisRec);
+                $this->gDatRec->add($dDesDisRec);
             }
 
             if (
@@ -535,34 +555,34 @@ class FacturaElectronicaBuilder implements BuilderInterface
                 $iTiOpe->getValue() != TipoOperacion::B2F->value
             ) {
                 $cCiuRec = new CCiuRecTag($data["cCiuRec"]);
-                $gDatRec->add($cCiuRec);
+                $this->gDatRec->add($cCiuRec);
 
                 $dDesCiuRec = new DDesCiuRecTag($data["dDesCiuRec"]);
-                $gDatRec->add($dDesCiuRec);
+                $this->gDatRec->add($dDesCiuRec);
             }
         }
 
         if ($data["dTelRec"]) {
             $dTelRec = new DTelRecTag($data["dTelRec"]);
-            $gDatRec->add($dTelRec);
+            $this->gDatRec->add($dTelRec);
         }
 
         if ($data["dCelRec"]) {
             $dCelRec = new DCelRecTag($data["dCelRec"]);
-            $gDatRec->add($dCelRec);
+            $this->gDatRec->add($dCelRec);
         }
 
         if ($data["dEmailRec"]) {
             $dEmailRec = new DEmailRecTag($data["dEmailRec"]);
-            $gDatRec->add($dEmailRec);
+            $this->gDatRec->add($dEmailRec);
         }
 
         if ($data["dCodCliente"]) {
             $dCodCliente = new DCodClienteTag($data["dCodCliente"]);
-            $gDatRec->add($dCodCliente);
+            $this->gDatRec->add($dCodCliente);
         }
 
-        $this->gDatGralOpe->add($gDatRec);
+        $this->gDatGralOpe->add($this->gDatRec);
     }
 
     public function setGroupE($data)
@@ -606,6 +626,10 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $this->gDTipDE->add($this->gCamFE);
 
         $this->setGroupE7($data);
+
+        foreach ($data["gCamItem"] as $gCamItem) {
+            $this->setGroupE8($gCamItem);
+        }
     }
 
     public function setGroupE11($data)
@@ -811,6 +835,86 @@ class FacturaElectronicaBuilder implements BuilderInterface
         }
 
         $this->gPagCred->add($gCuotas);
+    }
+
+    public function setGroupE8($data)
+    {
+        $this->gCamItem = new GCamItemTag();
+
+        $dCodInt = new DCodIntTag($data["dCodInt"]);
+        $this->gCamItem->add($dCodInt);
+
+        if ($data["dParAranc"]) {
+            $dParAranc = new DParArancTag($data["dParAranc"]);
+            $this->gCamItem->add($dParAranc);
+        }
+
+        if ($data["dNCM"]) {
+            $dNCM = new DNCMTag($data["dNCM"]);
+            $this->gCamItem->add($dNCM);
+        }
+
+        $iTiOpe = $this->gDatRec->getTag(ITiOpeTag::TAG);
+        if (
+            $iTiOpe->getValue() == TipoOperacion::B2G->value &&
+            !empty($data["dDncpG"]) &&
+            !empty($data["dDncpE"])
+        ) {
+            $dDncpG = new DDncpGTag($data["dDncpG"]);
+            $this->gCamItem->add($dDncpG);
+
+            $dDncpE = new DDncpETag($data["dDncpE"]);
+            $this->gCamItem->add($dDncpE);
+        }
+
+        if ($data["dGtin"]) {
+            $dGtin = new DGtinTag($data["dGtin"]);
+            $this->gCamItem->add($dGtin);
+        }
+
+        if ($data["dGtinPq"]) {
+            $dGtinPq = new DGtinPqTag($data["dGtinPq"]);
+            $this->gCamItem->add($dGtinPq);
+        }
+
+        $dDesProSer = new DDesProSerTag($data["dDesProSer"]);
+        $this->gCamItem->add($dDesProSer);
+
+        $cUniMed = new CUniMedTag($data["cUniMed"]);
+        $this->gCamItem->add($cUniMed);
+
+        $dDesUniMed = new DDesUniMedTag($data["dDesUniMed"]);
+        $this->gCamItem->add($dDesUniMed);
+
+        $dCantProSer = new DCantProSerTag($data["dCantProSer"]);
+        $this->gCamItem->add($dCantProSer);
+
+        if (
+            $data["cPaisOrig"] &&
+            $data["dDesPaisOrig"]
+        ) {
+            $cPaisOrig = new CPaisOrigTag($data["cPaisOrig"]);
+            $this->gCamItem->add($cPaisOrig);
+
+            $dDesPaisOrig = new DDesPaisOrigTag($data["dDesPaisOrig"]);
+            $this->gCamItem->add($dDesPaisOrig);
+        }
+
+        if ($data["dInfItem"]) {
+            $dInfItem = new DInfItemTag($data["dInfItem"]);
+            $this->gCamItem->add($dInfItem);
+        }
+
+        $iTipTra = $this->gOpeCom->getTag(ITipTraTag::TAG);
+        if (
+            $iTipTra->getValue() == TipoTransaccion::ANTICIPO->value &&
+            $data["dCDCAnticipo"]
+        ) {
+            $dCDCAnticipo = new DCDCAnticipoTag($data["dCDCAnticipo"]);
+            $this->gCamItem->add($dCDCAnticipo);
+        }
+
+        $this->gDTipDE->add($this->gCamItem);
     }
 
     public function getResult()
