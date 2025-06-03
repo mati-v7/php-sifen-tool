@@ -23,6 +23,7 @@ use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GPagCredTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GPagTarCDTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GRespDETag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GTimbTag;
+use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GValorItemTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CActEcoTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CCiuEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CCiuRecTag;
@@ -121,6 +122,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNumTimTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DParArancTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DPlazoCreTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DPunExpTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DPUniProSerTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DRSProTarTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DRucEmTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DRUCProTarTag;
@@ -130,8 +132,10 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DSerieNumTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DSisFactTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTelEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTelRecTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTiCamItTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTiCamTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTiCamTiPagTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTotBruOpeItemTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DVencCuoTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ICondAntTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ICondCredTag;
@@ -177,6 +181,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
     protected GPaConEIniTag $gPaConEIni;
     protected GPagCredTag $gPagCred;
     protected GCamItemTag $gCamItem;
+    protected GValorItemTag $gValorItem;
 
     public function reset()
     {
@@ -914,7 +919,32 @@ class FacturaElectronicaBuilder implements BuilderInterface
             $this->gCamItem->add($dCDCAnticipo);
         }
 
+        $this->setGroupE81($data);
+
         $this->gDTipDE->add($this->gCamItem);
+    }
+
+    public function setGroupE81($data)
+    {
+        $this->gValorItem = new GValorItemTag();
+
+        $dPUniProSer = new DPUniProSerTag($data["dPUniProSer"]);
+        $this->gValorItem->add($dPUniProSer);
+
+        $dCondTiCam = $this->gOpeCom->getTag(DCondTiCamTag::TAG);
+        if (
+            $dCondTiCam != null &&
+            $dCondTiCam->getValue() == TipoCambioOperacion::ITEM->value &&
+            $data["dTiCamIt"]
+        ) {
+            $dTiCamIt = new DTiCamItTag($data["dTiCamIt"]);
+            $this->gValorItem->add($dTiCamIt);
+        }
+
+        $dTotBruOpeItem = new DTotBruOpeItemTag($data["dTotBruOpeItem"]);
+        $this->gValorItem->add($dTotBruOpeItem);
+
+        $this->gCamItem->add($this->gValorItem);
     }
 
     public function getResult()

@@ -82,4 +82,8 @@ interface BuilderInterface
      * Grupo E8. Campos que describen los ítems de la operación
      */
     public function setGroupE8($data);
+    /**
+     * Grupo E8.1 Campos que describen el precio, tipo de cambio y valor total de la operación por ítem.
+     */
+    public function setGroupE81($data);
 }

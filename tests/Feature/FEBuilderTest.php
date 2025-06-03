@@ -194,6 +194,9 @@ class FEBuilderTest extends TestCase
                         "dDesPaisOrig" => "Paraguay",
                         "dInfItem" => "Información adicional del ítem",
                         "dCDCAnticipo" => "1234567890123456789012345678901234567890",
+                        "dPUniProSer" => 10000,
+                        "dTiCamIt" => 8000,
+                        "dTotBruOpeItem" => 100000,
                     ],
                 ]
             ]]
