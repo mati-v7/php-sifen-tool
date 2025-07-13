@@ -24,6 +24,7 @@ use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GPagTarCDTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GRespDETag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GTimbTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GValorItemTag;
+use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GValorRestaItemTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CActEcoTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CCiuEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CCiuRecTag;
@@ -39,6 +40,8 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CPaisRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CTipRegTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CUniMedTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DAnoContTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DAntGloPreUniItTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DAntPreUniItTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DBcoEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCantProSerTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCarRespDETag;
@@ -56,6 +59,8 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDCondCredTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDCondOpeTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDenSucTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesActEcoTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDescGloItemTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDescItemTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesCiuEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesCiuRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesCondAntTag;
@@ -121,6 +126,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNumTarjTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNumTimTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DParArancTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DPlazoCreTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DPorcDesItTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DPunExpTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DPUniProSerTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DRSProTarTag;
@@ -136,6 +142,8 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTiCamItTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTiCamTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTiCamTiPagTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTotBruOpeItemTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTotOpeGsTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTotOpeItemTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DVencCuoTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ICondAntTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ICondCredTag;
@@ -944,7 +952,47 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $dTotBruOpeItem = new DTotBruOpeItemTag($data["dTotBruOpeItem"]);
         $this->gValorItem->add($dTotBruOpeItem);
 
+        /**
+         * Grupo E.8.1.1
+         */
+        $this->setGroupE811($data);
+
         $this->gCamItem->add($this->gValorItem);
+    }
+
+    public function setGroupE811($data)
+    {
+        $gValorRestaItem = new GValorRestaItemTag();
+
+        $dDescItem = new DDescItemTag($data['dDescItem'] ?? 0);
+        $gValorRestaItem->add($dDescItem);
+
+        if ($dDescItem->getValue() > 0) {
+            $dPorcDesIt = new DPorcDesItTag($data['dPorcDesIt']);
+            $gValorRestaItem->add($dPorcDesIt);
+        }
+
+        if ($data['dDescGloItem']) {
+            $dDescGloItem = new DDescGloItemTag($data['dDescGloItem']);
+            $gValorRestaItem->add($dDescGloItem);
+        }
+
+        $dAntPreUniIt = new DAntPreUniItTag($data['dAntPreUniIt'] ?? 0);
+        $gValorRestaItem->add($dAntPreUniIt);
+
+        $dAntGloPreUniIt = new DAntGloPreUniItTag($data['dAntGloPreUniIt'] ?? 0);
+        $gValorRestaItem->add($dAntGloPreUniIt);
+
+        $dTotOpeItem = new DTotOpeItemTag($data['dTotOpeItem']);
+        $gValorRestaItem->add($dTotOpeItem);
+
+        $dTiCamIt = $this->gValorItem->getTag(DTiCamItTag::TAG);
+        if (!empty($dTiCamIt)) {
+            $dTotOpeGs = new DTotOpeGsTag($data['dTotOpeGs']);
+            $gValorRestaItem->add($dTotOpeGs);
+        }
+
+        $this->gValorItem->add($gValorRestaItem);
     }
 
     public function getResult()

@@ -197,6 +197,13 @@ class FEBuilderTest extends TestCase
                         "dPUniProSer" => 10000,
                         "dTiCamIt" => 8000,
                         "dTotBruOpeItem" => 100000,
+                        "dDescItem" => 10000,
+                        "dPorcDesIt" => 10,
+                        "dDescGloItem" => 0,
+                        "dAntPreUniIt" => 0,
+                        "dAntGloPreUniIt" => 0,
+                        "dTotOpeItem" => 90000,
+                        "dTotOpeGs" => 90000,
                     ],
                 ]
             ]]
