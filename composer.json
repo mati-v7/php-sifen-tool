@@ -14,11 +14,17 @@
             "Nyxcode\\PhpSifenTool\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+          "Nyxcodedev\\LaravelSifenTool\\Tests\\": "tests/"
+        }
+      },
     "authors": [
         {
             "name": "Matias Vega",
             "email": "matias.vega.m17@gmail.com"
         }
     ],
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
