@@ -86,4 +86,8 @@ interface BuilderInterface
      * Grupo E8.1 Campos que describen el precio, tipo de cambio y valor total de la operación por ítem.
      */
     public function setGroupE81($data);
+    /**
+     * Grupo E8.1.1 Campos que describen los descuentos, anticipos y valor total por ítem.
+     */
+    public function setGroupE811($data);
 }
