@@ -9,6 +9,7 @@ use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GActEcoTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GCamCondTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GCamFETag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GCamItemTag;
+use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GCamIVATag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GCompPubTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GCuotasTag;
 use Nyxcode\PhpSifenTool\Composite\Concrete\DE\GDatGralOpeTag;
@@ -42,6 +43,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\CUniMedTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DAnoContTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DAntGloPreUniItTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DAntPreUniItTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DBasGravIVATag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DBcoEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCantProSerTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DCarRespDETag;
@@ -59,6 +61,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDCondCredTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDCondOpeTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDenSucTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesActEcoTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesAfecIVATag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDescGloItemTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDescItemTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DDesCiuEmiTag;
@@ -105,6 +108,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DGtinTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DInfItemTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DInfoEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DInfoFiscTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DLiqIVAItemTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DModContTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DMonCuotaTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DMonEntTag;
@@ -127,6 +131,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DNumTimTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DParArancTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DPlazoCreTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DPorcDesItTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DPropIVATag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DPunExpTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DPUniProSerTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DRSProTarTag;
@@ -136,6 +141,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DRucRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DSecContTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DSerieNumTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DSisFactTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTasaIVATag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTelEmiTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTelRecTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTiCamItTag;
@@ -145,6 +151,7 @@ use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTotBruOpeItemTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTotOpeGsTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DTotOpeItemTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\DVencCuoTag;
+use Nyxcode\PhpSifenTool\Composite\Leaf\DE\IAfecIVATag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ICondAntTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ICondCredTag;
 use Nyxcode\PhpSifenTool\Composite\Leaf\DE\ICondOpeTag;
@@ -928,6 +935,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
         }
 
         $this->setGroupE81($data);
+        $this->setGroupE82($data);
 
         $this->gDTipDE->add($this->gCamItem);
     }
@@ -993,6 +1001,31 @@ class FacturaElectronicaBuilder implements BuilderInterface
         }
 
         $this->gValorItem->add($gValorRestaItem);
+    }
+
+    public function setGroupE82($data)
+    {
+        $gCamIVA = new GCamIVATag();
+
+        $iAfecIVA = new IAfecIVATag($data['iAfecIVA']);
+        $gCamIVA->add($iAfecIVA);
+
+        $dDesAfecIVA = new DDesAfecIVATag($data['dDesAfecIVA']);
+        $gCamIVA->add($dDesAfecIVA);
+
+        $dPropIVA = new DPropIVATag($data['dPropIVA']);
+        $gCamIVA->add($dPropIVA);
+
+        $dTasaIVA = new DTasaIVATag($data['dTasaIVA']);
+        $gCamIVA->add($dTasaIVA);
+
+        $dBasGravIVA = new DBasGravIVATag($data['dBasGravIVA']);
+        $gCamIVA->add($dBasGravIVA);
+
+        $dLiqIVAItem = new DLiqIVAItemTag($data['dLiqIVAItem']);
+        $gCamIVA->add($dLiqIVAItem);
+
+        $this->gCamItem->add($gCamIVA);
     }
 
     public function getResult()
