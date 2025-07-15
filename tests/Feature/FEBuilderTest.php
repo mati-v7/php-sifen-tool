@@ -8,6 +8,7 @@ use Nyxcode\PhpSifenTool\Builder\DE\Concrete\FacturaElectronicaBuilder;
 use Nyxcode\PhpSifenTool\Builder\DE\Director;
 use Nyxcode\PhpSifenTool\Enums\CondicionCredito;
 use Nyxcode\PhpSifenTool\Enums\DenominacionTarjeta;
+use Nyxcode\PhpSifenTool\Enums\FormaAfectacionIVA;
 use Nyxcode\PhpSifenTool\Enums\FormaProcesamientoTarjeta;
 use Nyxcode\PhpSifenTool\Enums\IndicadorPresencia;
 use Nyxcode\PhpSifenTool\Enums\MonedaOperacion;
@@ -204,6 +205,12 @@ class FEBuilderTest extends TestCase
                         "dAntGloPreUniIt" => 0,
                         "dTotOpeItem" => 90000,
                         "dTotOpeGs" => 90000,
+                        "iAfecIVA" => FormaAfectacionIVA::GRAVADO->value,
+                        "dDesAfecIVA" => FormaAfectacionIVA::GRAVADO->getDescripcion(),
+                        "dPropIVA" => 100,
+                        "dTasaIVA" => 10,
+                        "dBasGravIVA" => 9090,
+                        "dLiqIVAItem" => 9090,
                     ],
                 ]
             ]]
