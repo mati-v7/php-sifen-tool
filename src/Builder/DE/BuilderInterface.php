@@ -2,6 +2,11 @@
 
 namespace Nyxcode\PhpSifenTool\Builder\DE;
 
+/**
+ * Interface BuilderInterface
+ *
+ * Defines the contract for building different groups of data fields for an Electronic Document (Documento Electrónico).
+ */
 interface BuilderInterface
 {
     public function reset();

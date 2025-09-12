@@ -3,7 +3,6 @@
 namespace Nyxcode\PhpSifenTool\Tests\Feature;
 
 use DateTime;
-use Nyxcode\PhpSifenTool\Builder\DE\Concrete\DocumentoElectronicoBuilder;
 use Nyxcode\PhpSifenTool\Builder\DE\Concrete\FacturaElectronicaBuilder;
 use Nyxcode\PhpSifenTool\Builder\DE\Director;
 use Nyxcode\PhpSifenTool\Enums\CondicionCredito;
