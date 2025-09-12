@@ -77,8 +77,8 @@ class TagComposite extends Tag
      */
     public function remove(Tag $tag): void
     {
-        $this->tags = array_filter($this->tags, function ($childTag) use ($tag) {
-            return $childTag != $tag;
+        $this->tags = array_filter($this->tags, function (Tag $childTag) use ($tag) {
+            return !$childTag->equals($tag);
         });
     }
 

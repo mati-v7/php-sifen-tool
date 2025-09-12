@@ -19,6 +19,7 @@ use DOMElement;
  * @method string getName()      Retrieves the name of the tag.
  * @method void setValue(mixed $value) Sets the value of the tag.
  * @method mixed getValue()      Retrieves the value of the tag.
+ * @method bool equals(Tag $other) Compares this tag with another tag for equality based on name and attributes.
  * @method DOMElement render(DOMDocument $doc) Abstract method to render the tag as a DOMElement.
  *
  */
@@ -46,6 +47,21 @@ abstract class Tag
     {
         return $this->value;
     }
+
+    /**
+     * Determines whether the current Tag instance is equal to another Tag instance.
+     *
+     * Compares the name and attributes of both Tag objects for equality.
+     *
+     * @param Tag $other The Tag instance to compare with the current instance.
+     * @return bool True if both Tag instances have the same name and attributes; otherwise, false.
+     */
+    public function equals(Tag $other): bool
+    {
+        return $this->name === $other->name
+            && $this->attributes === $other->attributes;
+    }
+
     /**
      * Renders the current tag as a DOMElement within the provided DOMDocument.
      *
