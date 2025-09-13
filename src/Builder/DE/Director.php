@@ -41,5 +41,6 @@ class Director
         $this->builder->setGroupD2($data);
         $this->builder->setGroupD3($data);
         $this->builder->setGroupE($data);
+        $this->builder->setGroupF($data);
     }
 }

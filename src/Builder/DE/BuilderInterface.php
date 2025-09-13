@@ -99,4 +99,8 @@ interface BuilderInterface
      * Grupo E8.2 Campos que describen el IVA de la operación por ítem.
      */
     public function setGroupE82($data);
+    /**
+     * Grupo F Campos que describen los subtotales y totales de la transacción documentada.
+     */
+    public function setGroupF($data);
 }

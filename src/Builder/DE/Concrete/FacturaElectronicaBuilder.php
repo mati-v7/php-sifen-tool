@@ -37,6 +37,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
     protected TagComposite $gPagCred;
     protected TagComposite $gCamItem;
     protected TagComposite $gValorItem;
+    protected TagComposite $gTotSub;
     protected TagLeaf $iTiDE;
     protected TagLeaf $dDesTiDE;
 
@@ -868,6 +869,88 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $gCamIVA->add($dLiqIVAItem);
 
         $this->gCamItem->add($gCamIVA);
+    }
+
+    public function setGroupF($data)
+    {
+        $this->gTotSub = new TagComposite(DE::G_TOT_SUB);
+
+        $dSubExe = new TagLeaf(DE::D_SUB_EXE, $data['dSubExe'] ?? 0);
+        $this->gTotSub->add($dSubExe);
+
+        $dSubExo = new TagLeaf(DE::D_SUB_EXO, $data['dSubExo'] ?? 0);
+        $this->gTotSub->add($dSubExo);
+
+        $dSub5 = new TagLeaf(DE::D_SUB5, $data['dSub5'] ?? 0);
+        $this->gTotSub->add($dSub5);
+
+        $dSub10 = new TagLeaf(DE::D_SUB10, $data['dSub10'] ?? 0);
+        $this->gTotSub->add($dSub10);
+
+        $dTotOpe = new TagLeaf(DE::D_TOT_OPE, $data['dTotOpe'] ?? 0);
+        $this->gTotSub->add($dTotOpe);
+
+        $dTotDesc = new TagLeaf(DE::D_TOT_DESC, $data['dTotDesc'] ?? 0);
+        $this->gTotSub->add($dTotDesc);
+
+        $dTotDescGlotem = new TagLeaf(DE::D_TOT_DESC_GLO_TEM, $data['dTotDescGlotem'] ?? 0);
+        $this->gTotSub->add($dTotDescGlotem);
+
+        $dTotAntItem = new TagLeaf(DE::D_TOT_ANT_ITEM, $data['dTotAntItem'] ?? 0);
+        $this->gTotSub->add($dTotAntItem);
+
+        $dTotAnt = new TagLeaf(DE::D_TOT_ANT, $data['dTotAnt'] ?? 0);
+        $this->gTotSub->add($dTotAnt);
+
+        $dPorcDescTotal = new TagLeaf(DE::D_PORC_DESC_TOTAL, $data['dPorcDescTotal'] ?? 0);
+        $this->gTotSub->add($dPorcDescTotal);
+
+        $dDescTotal = new TagLeaf(DE::D_DESC_TOTAL, $data['dDescTotal'] ?? 0);
+        $this->gTotSub->add($dDescTotal);
+
+        $dAnticipo = new TagLeaf(DE::D_ANTICIPO, $data['dAnticipo'] ?? 0);
+        $this->gTotSub->add($dAnticipo);
+
+        $dRedon = new TagLeaf(DE::D_REDON, $data['dRedon'] ?? 0);
+        $this->gTotSub->add($dRedon);
+
+        $dComi = new TagLeaf(DE::D_COMI, $data['dComi'] ?? 0);
+        $this->gTotSub->add($dComi);
+
+        $dTotGralOpe = new TagLeaf(DE::D_TOT_GRAL_OPE, $data['dTotGralOpe'] ?? 0);
+        $this->gTotSub->add($dTotGralOpe);
+
+        $dIVA5 = new TagLeaf(DE::D_IVA5, $data['dIVA5'] ?? 0);
+        $this->gTotSub->add($dIVA5);
+
+        $dIVA10 = new TagLeaf(DE::D_IVA10, $data['dIVA10'] ?? 0);
+        $this->gTotSub->add($dIVA10);
+
+        $dLiqTotIVA5 = new TagLeaf(DE::D_LIQ_TOT_IVA5, $data['dLiqTotIVA5'] ?? 0);
+        $this->gTotSub->add($dLiqTotIVA5);
+
+        $dLiqTotIVA10 = new TagLeaf(DE::D_LIQ_TOT_IVA10, $data['dLiqTotIVA10'] ?? 0);
+        $this->gTotSub->add($dLiqTotIVA10);
+
+        $dIVAComi = new TagLeaf(DE::D_IVA_COMI, $data['dIVAComi'] ?? 0);
+        $this->gTotSub->add($dIVAComi);
+
+        $dTotIVA = new TagLeaf(DE::D_TOT_IVA, $data['dTotIVA'] ?? 0);
+        $this->gTotSub->add($dTotIVA);
+
+        $dBaseGrav5 = new TagLeaf(DE::D_BASE_GRAV5, $data['dBaseGrav5'] ?? 0);
+        $this->gTotSub->add($dBaseGrav5);
+
+        $dBaseGrav10 = new TagLeaf(DE::D_BASE_GRAV10, $data['dBaseGrav10'] ?? 0);
+        $this->gTotSub->add($dBaseGrav10);
+
+        $dTBasGraIVA = new TagLeaf(DE::D_T_BAS_GRAL_IVA, $data['dTBasGraIVA'] ?? 0);
+        $this->gTotSub->add($dTBasGraIVA);
+
+        $dTotalGs = new TagLeaf(DE::D_TOTAL_GS, $data['dTotalGs'] ?? 0);
+        $this->gTotSub->add($dTotalGs);
+
+        $this->de->add($this->gTotSub);
     }
 
     public function getResult()
