@@ -17,6 +17,8 @@ use Nyxcode\PhpSifenTool\Enums\TipoOperacion;
 use Nyxcode\PhpSifenTool\Enums\TipoPago;
 use Nyxcode\PhpSifenTool\Enums\TipoTransaccion;
 use Nyxcode\PhpSifenTool\Enums\Tag\DE;
+use Nyxcode\PhpSifenTool\Enums\TipoConstancia;
+use Nyxcode\PhpSifenTool\Enums\TipoDocumentoAsociado;
 use PHPUnit\Event\Runtime\PHP;
 
 class FacturaElectronicaBuilder implements BuilderInterface
@@ -38,6 +40,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
     protected TagComposite $gCamItem;
     protected TagComposite $gValorItem;
     protected TagComposite $gTotSub;
+    protected TagComposite $gCamDEAsoc;
     protected TagLeaf $iTiDE;
     protected TagLeaf $dDesTiDE;
 
@@ -951,6 +954,74 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $this->gTotSub->add($dTotalGs);
 
         $this->de->add($this->gTotSub);
+    }
+
+    public function setGroupH($data)
+    {
+        if (in_array($this->iTiDE->getValue(), [
+            TipoDocumentoElectronico::FEE->value,
+            TipoDocumentoElectronico::FEI->value,
+            TipoDocumentoElectronico::CRE->value,
+        ])) {
+            return;
+        }
+
+        if (empty($data['iTipDocAso'])) {
+            return;
+        }
+
+        $this->gCamDEAsoc = new TagComposite(DE::G_CAM_DE_ASOC);
+
+        $iTipDocAso = new TagLeaf(DE::I_TIP_DOC_ASO, $data['iTipDocAso']);
+        $this->gCamDEAsoc->add($iTipDocAso);
+
+        $dDesTipDocAso = new TagLeaf(DE::D_DES_TIP_DOC_ASO, $data['dDesTipDocAso']);
+        $this->gCamDEAsoc->add($dDesTipDocAso);
+
+        if ($iTipDocAso->getValue() === TipoDocumentoAsociado::ELECTRONICO->value) {
+            $dCdCDERef = new TagLeaf(DE::D_CDC_DE_REF, $data['dCdCDERef']);
+            $this->gCamDEAsoc->add($dCdCDERef);
+        }
+
+        if ($iTipDocAso->getValue() === TipoDocumentoAsociado::IMPRESO->value) {
+            $dNTimDI = new TagLeaf(DE::D_N_TIM_DI, $data['dNTimDI']);
+            $this->gCamDEAsoc->add($dNTimDI);
+
+            $dEstDocAso = new TagLeaf(DE::D_EST_DOC_ASO, $data['dEstDocAso']);
+            $this->gCamDEAsoc->add($dEstDocAso);
+
+            $dPExpDocAso = new TagLeaf(DE::D_P_EXP_DOC_ASO, $data['dPExpDocAso']);
+            $this->gCamDEAsoc->add($dPExpDocAso);
+
+            $dNumDocAso = new TagLeaf(DE::D_NUM_DOC_ASO, $data['dNumDocAso']);
+            $this->gCamDEAsoc->add($dNumDocAso);
+
+            $iTipoDocAso = new TagLeaf(DE::I_TIP_DOC_ASO, $data['iTipoDocAso']);
+            $this->gCamDEAsoc->add($iTipoDocAso);
+
+            $dDTipoDocAso = new TagLeaf(DE::D_D_TIPO_DOC_ASO, $data['dDTipoDocAso']);
+            $this->gCamDEAsoc->add($dDTipoDocAso);
+
+            $dFecEmiDI = new TagLeaf(DE::D_FEC_EMI_DI, $data['dFecEmiDI']);
+            $this->gCamDEAsoc->add($dFecEmiDI);
+        }
+
+        if ($iTipDocAso->getValue() === TipoDocumentoAsociado::CONSTANCIA_ELECTRONICA->value) {
+            $iTipCons = new TagLeaf(DE::I_TIP_CONS, $data['iTipCons']);
+            $this->gCamDEAsoc->add($iTipCons);
+
+            $dDesTipCons = new TagLeaf(DE::D_DES_TIP_CONS, $data['dDesTipCons']);
+            $this->gCamDEAsoc->add($dDesTipCons);
+
+            if ($iTipCons->getValue() === TipoConstancia::CONSTANCIA_MICROPRODUCTORES->value) {
+                $dNumCons = new TagLeaf(DE::D_NUM_CONS, $data['dNumCons']);
+                $this->gCamDEAsoc->add($dNumCons);
+
+                $dNumControl = new TagLeaf(DE::D_NUM_CONTROL, $data['dNumControl']);
+                $this->gCamDEAsoc->add($dNumControl);
+            }
+        }
+        $this->de->add($this->gCamDEAsoc);
     }
 
     public function getResult()

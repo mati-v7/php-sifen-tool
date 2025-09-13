@@ -103,4 +103,8 @@ interface BuilderInterface
      * Grupo F Campos que describen los subtotales y totales de la transacción documentada.
      */
     public function setGroupF($data);
+    /**
+     * Grupo H. Campos que identifican al documento asociado.
+     */
+    public function setGroupH($data);
 }

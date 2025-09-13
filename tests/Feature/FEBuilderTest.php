@@ -17,6 +17,7 @@ use Nyxcode\PhpSifenTool\Enums\TipoCambioOperacion;
 use Nyxcode\PhpSifenTool\Enums\TipoCondicionAnticipo;
 use Nyxcode\PhpSifenTool\Enums\TipoCondicionOperacion;
 use Nyxcode\PhpSifenTool\Enums\TipoContribuyente;
+use Nyxcode\PhpSifenTool\Enums\TipoDocumentoAsociado;
 use Nyxcode\PhpSifenTool\Enums\TipoDocumentoReceptor;
 use Nyxcode\PhpSifenTool\Enums\TipoEmision;
 use Nyxcode\PhpSifenTool\Enums\TipoImpuesto;
@@ -211,7 +212,10 @@ class FEBuilderTest extends TestCase
                         "dBasGravIVA" => 9090,
                         "dLiqIVAItem" => 9090,
                     ],
-                ]
+                ],
+                "iTipDocAso" => TipoDocumentoAsociado::ELECTRONICO->value,
+                "dDesTipDocAso" => TipoDocumentoAsociado::ELECTRONICO->getDescripcion(),
+                "dCdCDERef" => '01800782585001001000067622025011314272500570',
             ]]
         ];
     }
