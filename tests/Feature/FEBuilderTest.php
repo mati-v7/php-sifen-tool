@@ -3,11 +3,11 @@
 namespace Nyxcode\PhpSifenTool\Tests\Feature;
 
 use DateTime;
-use Nyxcode\PhpSifenTool\Builder\DE\Concrete\DocumentoElectronicoBuilder;
 use Nyxcode\PhpSifenTool\Builder\DE\Concrete\FacturaElectronicaBuilder;
 use Nyxcode\PhpSifenTool\Builder\DE\Director;
 use Nyxcode\PhpSifenTool\Enums\CondicionCredito;
 use Nyxcode\PhpSifenTool\Enums\DenominacionTarjeta;
+use Nyxcode\PhpSifenTool\Enums\FormaAfectacionIVA;
 use Nyxcode\PhpSifenTool\Enums\FormaProcesamientoTarjeta;
 use Nyxcode\PhpSifenTool\Enums\IndicadorPresencia;
 use Nyxcode\PhpSifenTool\Enums\MonedaOperacion;
@@ -17,6 +17,7 @@ use Nyxcode\PhpSifenTool\Enums\TipoCambioOperacion;
 use Nyxcode\PhpSifenTool\Enums\TipoCondicionAnticipo;
 use Nyxcode\PhpSifenTool\Enums\TipoCondicionOperacion;
 use Nyxcode\PhpSifenTool\Enums\TipoContribuyente;
+use Nyxcode\PhpSifenTool\Enums\TipoDocumentoAsociado;
 use Nyxcode\PhpSifenTool\Enums\TipoDocumentoReceptor;
 use Nyxcode\PhpSifenTool\Enums\TipoEmision;
 use Nyxcode\PhpSifenTool\Enums\TipoImpuesto;
@@ -197,8 +198,24 @@ class FEBuilderTest extends TestCase
                         "dPUniProSer" => 10000,
                         "dTiCamIt" => 8000,
                         "dTotBruOpeItem" => 100000,
+                        "dDescItem" => 10000,
+                        "dPorcDesIt" => 10,
+                        "dDescGloItem" => 0,
+                        "dAntPreUniIt" => 0,
+                        "dAntGloPreUniIt" => 0,
+                        "dTotOpeItem" => 90000,
+                        "dTotOpeGs" => 90000,
+                        "iAfecIVA" => FormaAfectacionIVA::GRAVADO->value,
+                        "dDesAfecIVA" => FormaAfectacionIVA::GRAVADO->getDescripcion(),
+                        "dPropIVA" => 100,
+                        "dTasaIVA" => 10,
+                        "dBasGravIVA" => 9090,
+                        "dLiqIVAItem" => 9090,
                     ],
-                ]
+                ],
+                "iTipDocAso" => TipoDocumentoAsociado::ELECTRONICO->value,
+                "dDesTipDocAso" => TipoDocumentoAsociado::ELECTRONICO->getDescripcion(),
+                "dCdCDERef" => '01800782585001001000067622025011314272500570',
             ]]
         ];
     }

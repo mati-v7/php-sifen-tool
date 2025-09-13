@@ -1,0 +1,69 @@
+Error al generar el XML: Invalid Character Error
+Código: 5
+Archivo: /home/dev3-user/github/php-sifen-tool/src/Composite/TagLeaf.php (línea 19)
+#0 /home/dev3-user/github/php-sifen-tool/src/Composite/TagLeaf.php(19): DOMDocument->createElement()
+#1 /home/dev3-user/github/php-sifen-tool/src/Composite/TagComposite.php(93): Nyxcode\PhpSifenTool\Composite\TagLeaf->render()
+#2 /home/dev3-user/github/php-sifen-tool/src/Composite/TagComposite.php(93): Nyxcode\PhpSifenTool\Composite\TagComposite->render()
+#3 /home/dev3-user/github/php-sifen-tool/src/Builder/DE/Concrete/FacturaElectronicaBuilder.php(883): Nyxcode\PhpSifenTool\Composite\TagComposite->render()
+#4 /home/dev3-user/github/php-sifen-tool/tests/Feature/FEBuilderTest.php(228): Nyxcode\PhpSifenTool\Builder\DE\Concrete\FacturaElectronicaBuilder->getResult()
+#5 /home/dev3-user/github/php-sifen-tool/vendor/phpunit/phpunit/src/Framework/TestCase.php(1260): Nyxcode\PhpSifenTool\Tests\Feature\FEBuilderTest->test_build_fe_de()
+#6 /home/dev3-user/github/php-sifen-tool/vendor/phpunit/phpunit/src/Framework/TestCase.php(498): PHPUnit\Framework\TestCase->runTest()
+#7 /home/dev3-user/github/php-sifen-tool/vendor/phpunit/phpunit/src/Framework/TestRunner/TestRunner.php(86): PHPUnit\Framework\TestCase->runBare()
+#8 /home/dev3-user/github/php-sifen-tool/vendor/phpunit/phpunit/src/Framework/TestCase.php(342): PHPUnit\Framework\TestRunner->run()
+#9 /home/dev3-user/github/php-sifen-tool/vendor/phpunit/phpunit/src/Framework/TestSuite.php(362): PHPUnit\Framework\TestCase->run()
+#10 /home/dev3-user/github/php-sifen-tool/vendor/phpunit/phpunit/src/Framework/TestSuite.php(362): PHPUnit\Framework\TestSuite->run()
+#11 /home/dev3-user/github/php-sifen-tool/vendor/phpunit/phpunit/src/TextUI/TestRunner.php(64): PHPUnit\Framework\TestSuite->run()
+#12 /home/dev3-user/github/php-sifen-tool/vendor/phpunit/phpunit/src/TextUI/Application.php(210): PHPUnit\TextUI\TestRunner->run()
+#13 /home/dev3-user/github/php-sifen-tool/vendor/phpunit/phpunit/phpunit(104): PHPUnit\TextUI\Application->run()
+#14 /home/dev3-user/github/php-sifen-tool/vendor/bin/phpunit(122): include('...')
+#15 {main}
+Errores de libxml: Array
+(
+)
+
+Error al generar el XML: Invalid Character Error
+Código: 5
+Archivo: /home/dev3-user/github/php-sifen-tool/src/Composite/TagLeaf.php (línea 19)
+#0 /home/dev3-user/github/php-sifen-tool/src/Composite/TagLeaf.php(19): DOMDocument->createElement()
+#1 /home/dev3-user/github/php-sifen-tool/src/Composite/TagComposite.php(93): Nyxcode\PhpSifenTool\Composite\TagLeaf->render()
+#2 /home/dev3-user/github/php-sifen-tool/src/Composite/TagComposite.php(93): Nyxcode\PhpSifenTool\Composite\TagComposite->render()
+#3 /home/dev3-user/github/php-sifen-tool/src/Builder/DE/Concrete/FacturaElectronicaBuilder.php(883): Nyxcode\PhpSifenTool\Composite\TagComposite->render()
+#4 /home/dev3-user/github/php-sifen-tool/tests/Feature/FEBuilderTest.php(228): Nyxcode\PhpSifenTool\Builder\DE\Concrete\FacturaElectronicaBuilder->getResult()
+#5 /home/dev3-user/github/php-sifen-tool/vendor/phpunit/phpunit/src/Framework/TestCase.php(1260): Nyxcode\PhpSifenTool\Tests\Feature\FEBuilderTest->test_build_fe_de()
+#6 /home/dev3-user/github/php-sifen-tool/vendor/phpunit/phpunit/src/Framework/TestCase.php(498): PHPUnit\Framework\TestCase->runTest()
+#7 /home/dev3-user/github/php-sifen-tool/vendor/phpunit/phpunit/src/Framework/TestRunner/TestRunner.php(86): PHPUnit\Framework\TestCase->runBare()
+#8 /home/dev3-user/github/php-sifen-tool/vendor/phpunit/phpunit/src/Framework/TestCase.php(342): PHPUnit\Framework\TestRunner->run()
+#9 /home/dev3-user/github/php-sifen-tool/vendor/phpunit/phpunit/src/Framework/TestSuite.php(362): PHPUnit\Framework\TestCase->run()
+#10 /home/dev3-user/github/php-sifen-tool/vendor/phpunit/phpunit/src/Framework/TestSuite.php(362): PHPUnit\Framework\TestSuite->run()
+#11 /home/dev3-user/github/php-sifen-tool/vendor/phpunit/phpunit/src/TextUI/TestRunner.php(64): PHPUnit\Framework\TestSuite->run()
+#12 /home/dev3-user/github/php-sifen-tool/vendor/phpunit/phpunit/src/TextUI/Application.php(210): PHPUnit\TextUI\TestRunner->run()
+#13 /home/dev3-user/github/php-sifen-tool/vendor/phpunit/phpunit/phpunit(104): PHPUnit\TextUI\Application->run()
+#14 /home/dev3-user/github/php-sifen-tool/vendor/bin/phpunit(122): include('...')
+#15 {main}
+Errores de libxml: Array
+(
+)
+
+Error al generar el XML: Invalid Character Error
+Código: 5
+Archivo: /home/dev3-user/github/php-sifen-tool/src/Composite/TagLeaf.php (línea 19)
+#0 /home/dev3-user/github/php-sifen-tool/src/Composite/TagLeaf.php(19): DOMDocument->createElement()
+#1 /home/dev3-user/github/php-sifen-tool/src/Composite/TagComposite.php(93): Nyxcode\PhpSifenTool\Composite\TagLeaf->render()
+#2 /home/dev3-user/github/php-sifen-tool/src/Composite/TagComposite.php(93): Nyxcode\PhpSifenTool\Composite\TagComposite->render()
+#3 /home/dev3-user/github/php-sifen-tool/src/Builder/DE/Concrete/FacturaElectronicaBuilder.php(883): Nyxcode\PhpSifenTool\Composite\TagComposite->render()
+#4 /home/dev3-user/github/php-sifen-tool/tests/Feature/FEBuilderTest.php(228): Nyxcode\PhpSifenTool\Builder\DE\Concrete\FacturaElectronicaBuilder->getResult()
+#5 /home/dev3-user/github/php-sifen-tool/vendor/phpunit/phpunit/src/Framework/TestCase.php(1260): Nyxcode\PhpSifenTool\Tests\Feature\FEBuilderTest->test_build_fe_de()
+#6 /home/dev3-user/github/php-sifen-tool/vendor/phpunit/phpunit/src/Framework/TestCase.php(498): PHPUnit\Framework\TestCase->runTest()
+#7 /home/dev3-user/github/php-sifen-tool/vendor/phpunit/phpunit/src/Framework/TestRunner/TestRunner.php(86): PHPUnit\Framework\TestCase->runBare()
+#8 /home/dev3-user/github/php-sifen-tool/vendor/phpunit/phpunit/src/Framework/TestCase.php(342): PHPUnit\Framework\TestRunner->run()
+#9 /home/dev3-user/github/php-sifen-tool/vendor/phpunit/phpunit/src/Framework/TestSuite.php(362): PHPUnit\Framework\TestCase->run()
+#10 /home/dev3-user/github/php-sifen-tool/vendor/phpunit/phpunit/src/Framework/TestSuite.php(362): PHPUnit\Framework\TestSuite->run()
+#11 /home/dev3-user/github/php-sifen-tool/vendor/phpunit/phpunit/src/TextUI/TestRunner.php(64): PHPUnit\Framework\TestSuite->run()
+#12 /home/dev3-user/github/php-sifen-tool/vendor/phpunit/phpunit/src/TextUI/Application.php(210): PHPUnit\TextUI\TestRunner->run()
+#13 /home/dev3-user/github/php-sifen-tool/vendor/phpunit/phpunit/phpunit(104): PHPUnit\TextUI\Application->run()
+#14 /home/dev3-user/github/php-sifen-tool/vendor/bin/phpunit(122): include('...')
+#15 {main}
+Errores de libxml: Array
+(
+)
+

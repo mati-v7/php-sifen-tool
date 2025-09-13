@@ -2,6 +2,11 @@
 
 namespace Nyxcode\PhpSifenTool\Builder\DE;
 
+/**
+ * Interface BuilderInterface
+ *
+ * Defines the contract for building different groups of data fields for an Electronic Document (Documento Electrónico).
+ */
 interface BuilderInterface
 {
     public function reset();
@@ -86,4 +91,20 @@ interface BuilderInterface
      * Grupo E8.1 Campos que describen el precio, tipo de cambio y valor total de la operación por ítem.
      */
     public function setGroupE81($data);
+    /**
+     * Grupo E8.1.1 Campos que describen los descuentos, anticipos y valor total por ítem.
+     */
+    public function setGroupE811($data);
+    /**
+     * Grupo E8.2 Campos que describen el IVA de la operación por ítem.
+     */
+    public function setGroupE82($data);
+    /**
+     * Grupo F Campos que describen los subtotales y totales de la transacción documentada.
+     */
+    public function setGroupF($data);
+    /**
+     * Grupo H. Campos que identifican al documento asociado.
+     */
+    public function setGroupH($data);
 }
