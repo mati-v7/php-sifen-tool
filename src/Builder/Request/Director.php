@@ -22,14 +22,15 @@ class Director
     }
 
     /**
-     * Builds a request for consulting RUC (Registro Único de Contribuyentes) using the provided data.
+     * Builds the payload for the request using the provided data.
      *
-     * This method resets the builder state and sets the request body with the given data.
+     * This method resets the current state of the builder and sets the request body
+     * with the given data.
      *
-     * @param mixed $data The data to be used as the body of the request.
+     * @param mixed $data The data to be used as the request payload.
      * @return void
      */
-    public function buildConsRUC($data)
+    public function buildPayload($data)
     {
         $this->builder->reset();
         $this->builder->body($data);

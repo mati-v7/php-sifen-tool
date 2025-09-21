@@ -3,7 +3,11 @@
     "description": "A php package to simplify integration with Paraguay's SIFEN API for electronic invoicing.",
     "type": "library",
     "require": {
-        "illuminate/support": "12.13.x"
+        "illuminate/support": "12.13.x",
+        "symfony/http-client": "^7.3",
+        "nyholm/psr7": "^1.8",
+        "psr/log-implementation": "*",
+        "illuminate/log": "^12.30"
     },
     "require-dev": {
         "phpunit/phpunit": "12.1.x"
@@ -16,7 +20,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-          "Nyxcodedev\\LaravelSifenTool\\Tests\\": "tests/"
+          "Nyxcode\\PhpSifenTool\\Tests\\": "tests/"
         }
       },
     "authors": [
@@ -26,5 +30,10 @@
         }
     ],
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
 }

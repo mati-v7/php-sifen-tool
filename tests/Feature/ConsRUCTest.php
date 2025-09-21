@@ -2,8 +2,8 @@
 
 namespace Nyxcode\PhpSifenTool\Tests\Feature;
 
-use Nyxcode\PhpSifenTool\Builder\Request\Concrete\ConsultaRUCBuilder;
-use Nyxcode\PhpSifenTool\Builder\Request\Director;
+use Nyxcode\PhpSifenTool\Soap\Factory\SoapClientFactory;
+use Nyxcode\PhpSifenTool\Soap\Services\SiConsRUCService;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -15,7 +15,7 @@ class ConsRUCTest extends TestCase
         return [
             ["data" => [
                 'dId' => rand(100000, 999999),
-                'dRUCCons' => '800197268'
+                'dRUCCons' => '80038258'
             ]]
         ];
     }
@@ -23,18 +23,21 @@ class ConsRUCTest extends TestCase
     #[DataProvider('dataProvider')]
     public function test_build_cons_ruc_message($data)
     {
-        $builder = new ConsultaRUCBuilder();
-        $director = new Director();
+        $client = SoapClientFactory::create(
+            'https://sifen-test.set.gov.py/de/ws/consultas/consulta.wsdl?wsdl',
+            [
+                'local_cert' => __DIR__ . '/../../.vscode/certificado.pem',
+            ]
+        );
+        try {
 
-        $director->setBuilder($builder);
-        $director->buildConsRUC($data);
-
-        $product = $builder->getResult();
-        $this->assertStringContainsString('<rEnviConsRUC>', $product);
-        $this->assertStringContainsString('<dId>' . $data['dId'] . '</dId>', $product);
-        $this->assertStringContainsString('<dRUCCons>' . $data['dRUCCons'] . '</dRUCCons>', $product);
-        $this->assertStringContainsString('</rEnviConsRUC>', $product);
-
-        // print $product;
+            $service = new SiConsRUCService($client);
+            $response = $service->rEnviConsRUC($data['dId'], $data['dRUCCons']);
+            $this->assertIsObject($response);
+        } catch (\Throwable $th) {
+            echo $client->__getLastRequest();
+            echo $client->__getLastResponse();
+            $this->fail($th->getMessage());
+        }
     }
 }

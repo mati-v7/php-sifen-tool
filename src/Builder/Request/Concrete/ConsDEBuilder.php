@@ -6,14 +6,13 @@ use DOMDocument;
 use Nyxcode\PhpSifenTool\Builder\Request\BuilderInterface;
 use Nyxcode\PhpSifenTool\Composite\TagComposite;
 use Nyxcode\PhpSifenTool\Composite\TagLeaf;
-use Nyxcode\PhpSifenTool\Enums\Tag\SiConsRUC;
+use Nyxcode\PhpSifenTool\Enums\Tag\SiConsDE;
 use SifenTool\Utils\Utilities;
 
-class ConsultaRUCBuilder implements BuilderInterface
+class ConsDEBuilder implements BuilderInterface
 {
     protected DOMDocument $doc;
-
-    protected TagComposite $rEnviConsRUC;
+    protected TagComposite $rEnviConsDE;
 
     public function reset()
     {
@@ -22,20 +21,21 @@ class ConsultaRUCBuilder implements BuilderInterface
 
     public function body($data)
     {
-        $this->rEnviConsRUC = new TagComposite(SiConsRUC::R_ENVI_CONS_RUC, attributes: [
+
+        $this->rEnviConsDE = new TagComposite(SiConsDE::R_ENVI_CONS_DE_REQUEST, attributes: [
             'xmlns' => 'http://ekuatia.set.gov.py/sifen/xsd'
         ]);
 
-        $dId = new TagLeaf(SiConsRUC::D_ID, $data['dId']);
-        $this->rEnviConsRUC->add($dId);
+        $dId = new TagLeaf(SiConsDE::D_ID, $data['dId']);
+        $this->rEnviConsDE->add($dId);
 
-        $dRUCCons = new TagLeaf(SiConsRUC::D_RUC_CONS, $data['dRUCCons']);
-        $this->rEnviConsRUC->add($dRUCCons);
+        $dCDC = new TagLeaf(SiConsDE::D_CDC, $data['dCDC']);
+        $this->rEnviConsDE->add($dCDC);
     }
 
     public function getResult()
     {
-        $element = $this->rEnviConsRUC->render($this->doc);
+        $element = $this->rEnviConsDE->render($this->doc);
         $this->doc->appendChild($element);
 
         $savedXML = Utilities::removeXmlProlog($this->doc->saveXML());
