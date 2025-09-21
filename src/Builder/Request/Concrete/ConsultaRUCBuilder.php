@@ -7,7 +7,7 @@ use Nyxcode\PhpSifenTool\Builder\Request\BuilderInterface;
 use Nyxcode\PhpSifenTool\Composite\TagComposite;
 use Nyxcode\PhpSifenTool\Composite\TagLeaf;
 use Nyxcode\PhpSifenTool\Enums\Tag\SiConsRUC;
-use SifenTool\Utils\Utilities;
+use Nyxcode\PhpSifenTool\Utils\Utilities;
 
 class ConsultaRUCBuilder implements BuilderInterface
 {

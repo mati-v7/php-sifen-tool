@@ -1,6 +1,6 @@
 <?php
 
-namespace SifenTool\Utils;
+namespace Nyxcode\PhpSifenTool\Utils;
 
 class Utilities
 {

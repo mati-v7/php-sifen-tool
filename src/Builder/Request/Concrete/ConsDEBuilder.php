@@ -7,7 +7,7 @@ use Nyxcode\PhpSifenTool\Builder\Request\BuilderInterface;
 use Nyxcode\PhpSifenTool\Composite\TagComposite;
 use Nyxcode\PhpSifenTool\Composite\TagLeaf;
 use Nyxcode\PhpSifenTool\Enums\Tag\SiConsDE;
-use SifenTool\Utils\Utilities;
+use Nyxcode\PhpSifenTool\Utils\Utilities;
 
 class ConsDEBuilder implements BuilderInterface
 {
