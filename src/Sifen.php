@@ -2,6 +2,7 @@
 
 namespace Nyxcode\PhpSifenTool;
 
+use Nyxcode\PhpSifenTool\Enums\Soap\WDSL;
 use Nyxcode\PhpSifenTool\Soap\Factory\SoapClientFactory;
 use Nyxcode\PhpSifenTool\Soap\Services\SiConsDEService;
 use Nyxcode\PhpSifenTool\Soap\Services\SiConsRUCService;
@@ -15,31 +16,31 @@ use Nyxcode\PhpSifenTool\Soap\Services\SiConsRUCService;
  */
 class Sifen
 {
-    protected string $wsdl;
+    protected string $host;
     protected string $certificatePath;
 
-    public function __construct(string $wsdl, string $certificatePath)
+    public function __construct(string $host, string $certificatePath)
     {
-        $this->wsdl = $wsdl;
+        $this->host = $host;
         $this->certificatePath = $certificatePath;
     }
 
-    private function createSoapClient()
+    private function createSoapClient(string $wsdl): \SoapClient
     {
-        return SoapClientFactory::create($this->wsdl, [
+        return SoapClientFactory::create($this->host . $wsdl, [
             'local_cert' => $this->certificatePath,
         ]);
     }
 
     public function consultarDE(int $dId,  string $dCDC)
     {
-        $service = new SiConsDEService($this->createSoapClient());
+        $service = new SiConsDEService($this->createSoapClient(WDSL::WS_CONSULTAS_CONSULTA_DE_PATH));
         return $service->rEnviConsDe($dId, $dCDC);
     }
 
     public function consultarRUC(int $dId, string $dRUC)
     {
-        $service = new SiConsRUCService($this->createSoapClient());
+        $service = new SiConsRUCService($this->createSoapClient(WDSL::WS_CONSULTAS_CONSULTA_RUC_PATH));
         return $service->rEnviConsRuc($dId, $dRUC);
     }
 }

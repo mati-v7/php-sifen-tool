@@ -2,9 +2,8 @@
 
 namespace Nyxcode\PhpSifenTool\Tests\Feature;
 
+use Nyxcode\PhpSifenTool\Enums\Soap\Host;
 use Nyxcode\PhpSifenTool\Sifen;
-use Nyxcode\PhpSifenTool\Soap\Factory\SoapClientFactory;
-use Nyxcode\PhpSifenTool\Soap\Services\SiConsDEService;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -25,7 +24,7 @@ class SiConsDETest extends TestCase
     {
         try {
             $sifen = new Sifen(
-                'https://sifen.set.gov.py/de/ws/consultas/consulta.wsdl?wsdl',
+                Host::PRODUCTION,
                 __DIR__ . '/../../.vscode/certificado.pem'
             );
 

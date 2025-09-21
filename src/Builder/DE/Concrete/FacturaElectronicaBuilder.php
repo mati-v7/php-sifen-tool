@@ -3,23 +3,21 @@
 namespace Nyxcode\PhpSifenTool\Builder\DE\Concrete;
 
 use DOMDocument;
-use DOMException;
 use Nyxcode\PhpSifenTool\Builder\DE\BuilderInterface;
 use Nyxcode\PhpSifenTool\Composite\TagComposite;
 use Nyxcode\PhpSifenTool\Composite\TagLeaf;
-use Nyxcode\PhpSifenTool\Enums\CondicionCredito;
-use Nyxcode\PhpSifenTool\Enums\MonedaOperacion;
-use Nyxcode\PhpSifenTool\Enums\NaturalezaReceptor;
-use Nyxcode\PhpSifenTool\Enums\TipoCambioOperacion;
-use Nyxcode\PhpSifenTool\Enums\TipoCondicionOperacion;
-use Nyxcode\PhpSifenTool\Enums\TipoDocumentoElectronico;
-use Nyxcode\PhpSifenTool\Enums\TipoOperacion;
-use Nyxcode\PhpSifenTool\Enums\TipoPago;
-use Nyxcode\PhpSifenTool\Enums\TipoTransaccion;
+use Nyxcode\PhpSifenTool\Enums\DE\CondicionCredito;
+use Nyxcode\PhpSifenTool\Enums\DE\MonedaOperacion;
+use Nyxcode\PhpSifenTool\Enums\DE\NaturalezaReceptor;
+use Nyxcode\PhpSifenTool\Enums\DE\TipoCambioOperacion;
+use Nyxcode\PhpSifenTool\Enums\DE\TipoCondicionOperacion;
+use Nyxcode\PhpSifenTool\Enums\DE\TipoConstancia;
+use Nyxcode\PhpSifenTool\Enums\DE\TipoDocumentoAsociado;
+use Nyxcode\PhpSifenTool\Enums\DE\TipoDocumentoElectronico;
+use Nyxcode\PhpSifenTool\Enums\DE\TipoOperacion;
+use Nyxcode\PhpSifenTool\Enums\DE\TipoPago;
+use Nyxcode\PhpSifenTool\Enums\DE\TipoTransaccion;
 use Nyxcode\PhpSifenTool\Enums\Tag\DE;
-use Nyxcode\PhpSifenTool\Enums\TipoConstancia;
-use Nyxcode\PhpSifenTool\Enums\TipoDocumentoAsociado;
-use PHPUnit\Event\Runtime\PHP;
 
 class FacturaElectronicaBuilder implements BuilderInterface
 {

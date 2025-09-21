@@ -1,6 +1,6 @@
 <?php
 
-namespace Nyxcode\PhpSifenTool\Enums;
+namespace Nyxcode\PhpSifenTool\Enums\DE;
 
 enum TipoPago: int
 {
