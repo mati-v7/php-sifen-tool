@@ -10,6 +10,7 @@ class Certificate
     private string $privateKey;
     private string $publicCert;
     private ?string $serialNumber = null;
+    private ?string $tempPemPath = null;
 
 
     public function __construct(
@@ -127,5 +128,55 @@ class Certificate
     public function getSerialNumber(): ?string
     {
         return $this->serialNumber;
+    }
+
+    public function getPassphrase(): ?string
+    {
+        return $this->password;
+    }
+
+    public function hasPassphrase(): bool
+    {
+        return !empty($this->password);
+    }
+
+    public function getCertFilePath(): string
+    {
+        if ($this->tempPemPath && file_exists($this->tempPemPath)) {
+            return $this->tempPemPath;
+        }
+
+        $extension = strtolower(pathinfo($this->path, PATHINFO_EXTENSION));
+
+        if ($extension === 'pem' && str_contains(file_get_contents($this->path), 'PRIVATE KEY')) {
+            return $this->path;
+        }
+
+        $tempFile = tempnam(sys_get_temp_dir(), 'cert_');
+        $tempPem = $tempFile . '.pem';
+        rename($tempFile, $tempPem);
+
+        $combined = $this->publicCert . "\n" . $this->privateKey;
+        file_put_contents($tempPem, $combined);
+
+        $this->tempPemPath = $tempPem;
+
+        return $this->tempPemPath;
+    }
+
+    public function getSoapOptions(): array
+    {
+        $options = ['local_cert' => $this->getCertFilePath()];
+        if ($this->hasPassphrase()) {
+            $options['passphrase'] = $this->getPassphrase();
+        }
+        return $options;
+    }
+
+    public function __destruct()
+    {
+        if ($this->tempPemPath && file_exists($this->tempPemPath)) {
+            @unlink($this->tempPemPath);
+        }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Nyxcode\PhpSifenTool;
 
+use Nyxcode\PhpSifenTool\Crypto\Certificate;
 use Nyxcode\PhpSifenTool\Enums\Soap\WDSL;
 use Nyxcode\PhpSifenTool\Soap\Factory\SoapClientFactory;
 use Nyxcode\PhpSifenTool\Soap\Services\SiConsDEService;
@@ -17,19 +18,20 @@ use Nyxcode\PhpSifenTool\Soap\Services\SiConsRUCService;
 class Sifen
 {
     protected string $host;
-    protected string $certificatePath;
+    protected Certificate $certificate;
 
-    public function __construct(string $host, string $certificatePath)
+    public function __construct(string $host, Certificate $certificate)
     {
         $this->host = $host;
-        $this->certificatePath = $certificatePath;
+        $this->certificate = $certificate;
     }
 
     private function createSoapClient(string $wsdl): \SoapClient
     {
-        return SoapClientFactory::create($this->host . $wsdl, [
-            'local_cert' => $this->certificatePath,
-        ]);
+        return SoapClientFactory::create(
+            $this->host . $wsdl,
+            $this->certificate->getSoapOptions()
+        );
     }
 
     public function consultarDE(int $dId,  string $dCDC)
