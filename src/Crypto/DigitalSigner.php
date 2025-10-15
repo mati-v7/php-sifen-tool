@@ -2,7 +2,7 @@
 
 namespace Nyxcode\PhpSifenTool\Crypto;
 
-use DOMDocument;
+use DOMNode;
 use RobRichards\XMLSecLibs\XMLSecurityDSig;
 use RobRichards\XMLSecLibs\XMLSecurityKey;
 
@@ -16,19 +16,12 @@ class DigitalSigner implements SignerInterface
         $this->certificate = $certificate;
     }
 
-    private function loadXML($xml): DOMDocument
+    public function sign(DOMNode $xml): void
     {
-        $doc = new DOMDocument('1.0', 'UTF-8');
-        $doc->preserveWhiteSpace = false;
-        $doc->formatOutput = false;
-        $doc->loadXML($xml);
-
-        return $doc;
-    }
-
-    public function sign(string $xml)
-    {
-        $doc = $this->loadXML($xml);
+        $id = $xml->attributes->getNamedItem('Id')->nodeValue ?? null;
+        if (!$id) {
+            throw new \RuntimeException("El elemento XML no tiene un atributo 'Id'.");
+        }
 
         // Create a new Security object
         $dSig = new XMLSecurityDSig('');
@@ -38,9 +31,15 @@ class DigitalSigner implements SignerInterface
 
         // Sign using SHA-256
         $dSig->addReference(
-            $doc->documentElement,
+            $xml,
             XMLSecurityDSig::SHA256,
-            ['http://www.w3.org/2000/09/xmldsig#enveloped-signature', XMLSecurityDSig::EXC_C14N]
+            ['http://www.w3.org/2000/09/xmldsig#enveloped-signature', XMLSecurityDSig::EXC_C14N],
+            [
+                'force_uri' => true,
+                'overwrite' => false,
+                'overwrite_id' => $id,
+                'id_name' => 'Id'
+            ]
         );
 
         // Create a new (private) Security key and load the private key
@@ -48,11 +47,9 @@ class DigitalSigner implements SignerInterface
         $secKey->loadKey($this->certificate->getPrivateKey(), false);
 
         // Sign the XML file
-        $dSig->sign($secKey, $doc->documentElement);
+        $dSig->sign($secKey, $xml->parentNode);
 
         // Add the associated public key to the signature
         $dSig->add509Cert($this->certificate->getPublicCert());
-
-        return $doc->saveXML();
     }
 }

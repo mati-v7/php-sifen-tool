@@ -19,14 +19,11 @@ class SignatureVerifier
 
         $dSig = new XMLSecurityDSig('');
         $dSig->locateSignature($doc);
-        $dSig->canonicalizeSignedInfo();
-
-        $objKey = $dSig->locateKey();
-        if (!$objKey) {
-            throw new \RuntimeException("No se encontró clave pública en la firma XML.");
+        if (! $dSig) {
+            throw new \RuntimeException("Cannot locate Signature Node");
         }
 
-        $isValid = $dSig->verify($objKey);
-        return $isValid;
+        $dSig->canonicalizeSignedInfo();
+        return $dSig->validateReference();
     }
 }

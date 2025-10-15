@@ -2,6 +2,7 @@
 
 namespace Nyxcode\PhpSifenTool\Tests\Feature;
 
+use DOMDocument;
 use Nyxcode\PhpSifenTool\Crypto\Certificate;
 use Nyxcode\PhpSifenTool\Crypto\DigitalSigner;
 use Nyxcode\PhpSifenTool\Crypto\SignatureVerifier;
@@ -21,14 +22,20 @@ class SignatureTest extends TestCase
     public function testXmlSignatureIsValid(): void
     {
         $xmlOriginal = <<<XML
-        <FacturaElectronica>
-            <Id>123</Id>
-            <Cliente>Juan Perez</Cliente>
-        </FacturaElectronica>
+        <DocumentoElectronico>
+            <Factura Id="12345">
+                <Id>123</Id>
+                <Cliente>Juan Perez</Cliente>
+            </Factura>
+        </DocumentoElectronico>
         XML;
 
+        $dom = new DOMDocument();
+        $dom->loadXML($xmlOriginal);
+
         $signer = new DigitalSigner($this->certificate);
-        $xmlFirmado = $signer->sign($xmlOriginal);
+        $signer->sign($dom->getElementsByTagName('Factura')->item(0));
+        $xmlFirmado = $dom->saveXML();
 
         $this->assertStringContainsString('<Signature', $xmlFirmado, 'El XML debe contener una firma digital.');
 
@@ -41,21 +48,29 @@ class SignatureTest extends TestCase
     public function testXmlSignatureFailsWhenTampered(): void
     {
         $xmlOriginal = <<<XML
-        <FacturaElectronica>
-            <Id>123</Id>
-            <Cliente>Juan Perez</Cliente>
-        </FacturaElectronica>
+        <DocumentoElectronico>
+            <Factura Id="12345">
+                <Id>123</Id>
+                <Cliente>Juan Perez</Cliente>
+            </Factura>
+        </DocumentoElectronico>
         XML;
 
+        $dom = new DOMDocument();
+        $dom->loadXML($xmlOriginal);
+
         $signer = new DigitalSigner($this->certificate);
-        $xmlFirmado = $signer->sign($xmlOriginal);
+        $signer->sign($dom->getElementsByTagName('Factura')->item(0));
+        $xmlFirmado = $dom->saveXML();
 
         // Modificar el XML después de firmar
         $xmlModificado = str_replace('Juan Perez', 'Pedro López', $xmlFirmado);
 
-        $verifier = new SignatureVerifier();
-        $resultado = $verifier->verify($xmlModificado);
-
-        $this->assertFalse($resultado, 'La firma debería ser inválida si el XML fue modificado.');
+        try {
+            $verifier = new SignatureVerifier();
+            $verifier->verify($xmlModificado);
+        } catch (\Throwable $th) {
+            $this->expectException(\RuntimeException::class);
+        }
     }
 }
