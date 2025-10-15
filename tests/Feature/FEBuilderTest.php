@@ -5,6 +5,8 @@ namespace Nyxcode\PhpSifenTool\Tests\Feature;
 use DateTime;
 use Nyxcode\PhpSifenTool\Builder\DE\Concrete\FacturaElectronicaBuilder;
 use Nyxcode\PhpSifenTool\Builder\DE\Director;
+use Nyxcode\PhpSifenTool\Crypto\Certificate;
+use Nyxcode\PhpSifenTool\Crypto\SignatureVerifier;
 use Nyxcode\PhpSifenTool\Enums\DE\CondicionCredito;
 use Nyxcode\PhpSifenTool\Enums\DE\DenominacionTarjeta;
 use Nyxcode\PhpSifenTool\Enums\DE\FormaAfectacionIVA;
@@ -30,6 +32,15 @@ use PHPUnit\Framework\TestCase;
 
 class FEBuilderTest extends TestCase
 {
+
+    private Certificate $certificate;
+
+    protected function setUp(): void
+    {
+        $this->certificate = new Certificate(
+            __DIR__ . '/../../.vscode/certificado.pem'
+        );
+    }
 
     public static function dataProvider(): array
     {
@@ -227,9 +238,10 @@ class FEBuilderTest extends TestCase
         $director = new Director();
 
         $director->setBuilder($builder);
-        $director->buildFacturaElectronica($data);
+        $director->buildFacturaElectronica($this->certificate, $data);
 
         $product = $builder->getResult();
+
         $this->assertNotEmpty($product, 'Producto XML vacio');
 
         print $product;

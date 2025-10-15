@@ -2,6 +2,7 @@
 
 namespace Nyxcode\PhpSifenTool\Builder\DE;
 
+use Nyxcode\PhpSifenTool\Crypto\Certificate;
 
 /**
  * Class Director
@@ -30,9 +31,10 @@ class Director
      *
      * @param array $data The data required to construct the electronic invoice.
      */
-    public function buildFacturaElectronica($data)
+    public function buildFacturaElectronica(Certificate $certificate, $data)
     {
-        $this->builder->reset();
+        $this->builder->reset($certificate);
+        $this->builder->setGroupAA();
         $this->builder->setGroupA($data);
         $this->builder->setGroupB($data);
         $this->builder->setGroupC($data);

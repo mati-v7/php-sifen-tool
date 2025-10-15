@@ -2,6 +2,7 @@
 
 namespace Nyxcode\PhpSifenTool\Tests\Feature;
 
+use Nyxcode\PhpSifenTool\Crypto\Certificate;
 use Nyxcode\PhpSifenTool\Enums\Soap\Host;
 use Nyxcode\PhpSifenTool\Sifen;
 use Nyxcode\PhpSifenTool\Soap\Services\SiConsRUCService;
@@ -10,6 +11,16 @@ use PHPUnit\Framework\TestCase;
 
 class SiConsRUCTest extends TestCase
 {
+
+    private Certificate $certificate;
+
+    protected function setUp(): void
+    {
+        $this->certificate = new Certificate(
+            __DIR__ . '/../../.vscode/certificado.pem'
+        );
+    }
+
     public static function dataProvider(): array
     {
         return [
@@ -26,7 +37,7 @@ class SiConsRUCTest extends TestCase
         try {
             $sifen = new Sifen(
                 Host::PRODUCTION,
-                __DIR__ . '/../../.vscode/certificado.pem'
+                $this->certificate
             );
 
             $response = $sifen->consultarRUC($data['dId'], $data['dRUCCons']);

@@ -2,6 +2,7 @@
 
 namespace Nyxcode\PhpSifenTool\Tests\Feature;
 
+use Nyxcode\PhpSifenTool\Crypto\Certificate;
 use Nyxcode\PhpSifenTool\Enums\Soap\Host;
 use Nyxcode\PhpSifenTool\Sifen;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -9,6 +10,15 @@ use PHPUnit\Framework\TestCase;
 
 class SiConsDETest extends TestCase
 {
+    private Certificate $certificate;
+
+    protected function setUp(): void
+    {
+        $this->certificate = new Certificate(
+            __DIR__ . '/../../.vscode/certificado.pem'
+        );
+    }
+
     public static function dataProvider(): array
     {
         return [
@@ -25,7 +35,7 @@ class SiConsDETest extends TestCase
         try {
             $sifen = new Sifen(
                 Host::PRODUCTION,
-                __DIR__ . '/../../.vscode/certificado.pem'
+                $this->certificate
             );
 
             $response = $sifen->consultarDE($data['dId'], $data['dCDC']);

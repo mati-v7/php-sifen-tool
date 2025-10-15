@@ -2,6 +2,8 @@
 
 namespace Nyxcode\PhpSifenTool\Builder\DE;
 
+use Nyxcode\PhpSifenTool\Crypto\Certificate;
+
 /**
  * Interface BuilderInterface
  *
@@ -9,8 +11,14 @@ namespace Nyxcode\PhpSifenTool\Builder\DE;
  */
 interface BuilderInterface
 {
-    public function reset();
+    public function reset(Certificate $certificate);
+
     public function getResult();
+
+    /**
+     * Grupo AA. Campos que identifican el formato electrónico XML
+     */
+    public function setGroupAA();
     /**
      * Grupo A. Campos firmados del Documento Electrónico
      */
@@ -107,4 +115,8 @@ interface BuilderInterface
      * Grupo H. Campos que identifican al documento asociado.
      */
     public function setGroupH($data);
+    /**
+     * Grupo I. Información de la Firma Digital del DTE.
+     */
+    public function setGroupI(Certificate $certificate);
 }
