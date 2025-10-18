@@ -40,8 +40,13 @@ class SiConsRUCTest extends TestCase
                 $this->certificate
             );
 
+            /**
+             * @var \Nyxcode\PhpSifenTool\Soap\Classmap\ResConsRUC $response
+             */
             $response = $sifen->consultarRUC($data['dId'], $data['dRUCCons']);
+
             $this->assertIsObject($response);
+            $this->assertEquals($response->foundRUC(), true, 'RUC should be found');
 
             echo "\n✅ Respuesta:\n";
             print_r($response);

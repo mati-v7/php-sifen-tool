@@ -16,6 +16,7 @@ class SoapClientFactory
                 'trace'        => 1,       // enable __getLastRequest() and __getLastResponse() for debugging
                 'exceptions'   => true,
                 'cache_wsdl' => WSDL_CACHE_NONE,
+                'classmap'     => ClassMapFactory::get(),
             ], $options)
         );
     }
