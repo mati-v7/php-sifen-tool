@@ -4,10 +4,6 @@ namespace Nyxcode\PhpSifenTool\Enums\Soap\Response;
 
 enum ResConsRUC: string
 {
-    const NOT_FOUND_RUC = '0500';
-    const WITHOUT_PERMISSION = '0501';
-    const FOUND_RUC = '0502';
-
     case ACTIVO = 'ACT';
     case SUSPENDIDO = 'SUS';
     case SUSPENCION_ADMINISTRATIVA = 'SAD';

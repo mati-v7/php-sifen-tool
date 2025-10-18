@@ -6,6 +6,10 @@ use Nyxcode\PhpSifenTool\Enums\Soap\Response\ResConsRUC as ResponseResConsRUC;
 
 class ResConsRUC
 {
+    public const NOT_FOUND_RUC = '0500';
+    public const WITHOUT_PERMISSION = '0501';
+    public const FOUND_RUC = '0502';
+
     /**
      * Código del resultado de la consulta RUC 
      * @var string 
@@ -23,6 +27,16 @@ class ResConsRUC
      * */
     public XContRUC $xContRUC;
 
+    public function getDCodRes(): string
+    {
+        return $this->dCodRes;
+    }
+
+    public function getDMsgRes(): string
+    {
+        return $this->dMsgRes;
+    }
+
     public function getXContRUC(): XContRUC
     {
         return $this->xContRUC;
@@ -30,16 +44,16 @@ class ResConsRUC
 
     public function notFoundRUC(): bool
     {
-        return $this->dCodRes === ResponseResConsRUC::NOT_FOUND_RUC;
+        return $this->dCodRes === self::NOT_FOUND_RUC;
     }
 
     public function withoutPermission(): bool
     {
-        return $this->dCodRes === ResponseResConsRUC::WITHOUT_PERMISSION;
+        return $this->dCodRes === self::WITHOUT_PERMISSION;
     }
 
     public function foundRUC(): bool
     {
-        return $this->dCodRes === ResponseResConsRUC::FOUND_RUC;
+        return $this->dCodRes === self::FOUND_RUC;
     }
 }

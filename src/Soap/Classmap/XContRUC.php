@@ -6,7 +6,6 @@ use Nyxcode\PhpSifenTool\Enums\Soap\Response\ResConsRUC;
 
 class XContRUC
 {
-
     /** @var string RUC Consultado */
     public string $dRUCCons;
 
@@ -21,6 +20,31 @@ class XContRUC
 
     /** @var string RUC consultado es facturador electrónico */
     public string $dRUCFactElec;
+
+    public function getDRUCCons(): string
+    {
+        return $this->dRUCCons;
+    }
+
+    public function getDRazCons(): string
+    {
+        return $this->dRazCons;
+    }
+
+    public function getDCodEstCons(): string
+    {
+        return $this->dCodEstCons;
+    }
+
+    public function getDDesEstCons(): string
+    {
+        return $this->dDesEstCons;
+    }
+
+    public function getDRUCFactElec(): string
+    {
+        return $this->dRUCFactElec;
+    }
 
     public function isElectronicInvoicer(): bool
     {

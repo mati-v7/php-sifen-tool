@@ -2,6 +2,7 @@
 
 namespace Nyxcode\PhpSifenTool\Soap\Factory;
 
+use Nyxcode\PhpSifenTool\Soap\Classmap\ResConsDE;
 use Nyxcode\PhpSifenTool\Soap\Classmap\ResConsRUC;
 use Nyxcode\PhpSifenTool\Soap\Classmap\XContRUC;
 
@@ -12,6 +13,7 @@ class ClassMapFactory
         return [
             'rResEnviConsRUC' => ResConsRUC::class,
             'tContenedorRuc' => XContRUC::class,
+            'rEnviConsDeResponse' => ResConsDE::class,
         ];
     }
 }

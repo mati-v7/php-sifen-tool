@@ -41,6 +41,7 @@ class SiConsDETest extends TestCase
             $response = $sifen->consultarDE($data['dId'], $data['dCDC']);
 
             $this->assertIsObject($response);
+            $this->assertEquals($response->cdcFound(), true, 'CDC should be found');
 
             echo "\n✅ Respuesta:\n";
             print_r($response);
