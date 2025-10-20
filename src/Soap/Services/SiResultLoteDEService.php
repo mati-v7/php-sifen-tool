@@ -4,6 +4,7 @@ namespace Nyxcode\PhpSifenTool\Soap\Services;
 
 use Nyxcode\PhpSifenTool\Builder\Request\Concrete\ResultLoteDEBuilder;
 use Nyxcode\PhpSifenTool\Builder\Request\Director;
+use Nyxcode\PhpSifenTool\Soap\Classmap\ResResultLoteDE;
 use Nyxcode\PhpSifenTool\Soap\Contracts\SiResultLoteDE;
 
 class SiResultLoteDEService implements SiResultLoteDE
@@ -15,7 +16,7 @@ class SiResultLoteDEService implements SiResultLoteDE
         $this->client = $client;
     }
 
-    public function rEnviConsLoteDe(int $dId, string $dProtConsLote)
+    public function rEnviConsLoteDe(int $dId, string $dProtConsLote): ResResultLoteDE
     {
         $builder = new ResultLoteDEBuilder();
 

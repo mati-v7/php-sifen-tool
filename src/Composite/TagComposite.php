@@ -16,7 +16,7 @@ use DOMElement;
 class TagComposite extends Tag
 {
     /**
-     * @var array $tags
+     * @var array<string|int, \Nyxcode\PhpSifenTool\Composite\Tag> $tags
      * Stores the collection of tags associated with the composite.
      */
     protected $tags = [];
@@ -37,7 +37,7 @@ class TagComposite extends Tag
     /**
      * Retrieves the list of tags associated with this composite.
      *
-     * @return array The array of tags.
+     * @return array<string|int, \Nyxcode\PhpSifenTool\Composite\Tag> $tags The array of tags.
      */
     public function getTags(): array
     {

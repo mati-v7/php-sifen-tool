@@ -4,6 +4,7 @@ namespace Nyxcode\PhpSifenTool\Soap\Services;
 
 use Nyxcode\PhpSifenTool\Builder\Request\Director;
 use Nyxcode\PhpSifenTool\Builder\Request\Concrete\ConsultaRUCBuilder;
+use Nyxcode\PhpSifenTool\Soap\Classmap\ResConsRUC;
 use Nyxcode\PhpSifenTool\Soap\Contracts\SiConsRUC;
 
 class SiConsRUCService implements SiConsRUC
@@ -15,7 +16,7 @@ class SiConsRUCService implements SiConsRUC
         $this->client = $client;
     }
 
-    public function rEnviConsRUC(int $dId, string $dRUCCons)
+    public function rEnviConsRUC(int $dId, string $dRUCCons): ResConsRUC
     {
         $builder = new ConsultaRUCBuilder();
         $director = new Director();

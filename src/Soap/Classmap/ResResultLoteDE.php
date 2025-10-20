@@ -28,7 +28,7 @@ class ResResultLoteDE
 
     /**
      * Grupo Resultado de Procesamiento del Lote
-     * @var array<Nyxcode\PhpSifenTool\Soap\Classmap\GResProcLote> $gResProcLote
+     * @var array<int, \Nyxcode\PhpSifenTool\Soap\Classmap\GResProcLote> $gResProcLote
      */
     public array $gResProcLote;
 
@@ -62,6 +62,9 @@ class ResResultLoteDE
         return $this->dMsgResLot;
     }
 
+    /**
+     * @return array<int, \Nyxcode\PhpSifenTool\Soap\Classmap\GResProcLote> $gResProcLote
+     */
     public function getGResProcLote(): array
     {
         return $this->gResProcLote;

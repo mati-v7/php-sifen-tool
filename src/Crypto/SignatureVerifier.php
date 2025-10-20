@@ -7,7 +7,7 @@ use RobRichards\XMLSecLibs\XMLSecurityDSig;
 
 class SignatureVerifier
 {
-    public function verify(string $xml)
+    public function verify(string $xml): bool
     {
         $doc = new DOMDocument();
         $doc->loadXML($xml);
@@ -19,7 +19,7 @@ class SignatureVerifier
 
         $dSig = new XMLSecurityDSig('');
         $dSig->locateSignature($doc);
-        if (! $dSig) {
+        if ($dSig == null) {
             throw new \RuntimeException("Cannot locate Signature Node");
         }
 

@@ -11,6 +11,9 @@ use Nyxcode\PhpSifenTool\Soap\Classmap\XContRUC;
 
 class ClassMapFactory
 {
+    /**
+     * @return array<string, mixed>
+     */
     public static function get(): array
     {
         return [

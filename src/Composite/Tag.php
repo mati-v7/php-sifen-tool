@@ -14,7 +14,7 @@ use DOMElement;
  *
  * @property string $name        The name of the tag, derived from a BackedEnum value.
  * @property mixed  $value       The value/content of the tag.
- * @property array  $attributes  An associative array of attributes for the tag.
+ * @property array<mixed>  $attributes  An associative array of attributes for the tag.
  *
  * @method string getName()      Retrieves the name of the tag.
  * @method void setValue(mixed $value) Sets the value of the tag.
@@ -27,8 +27,16 @@ abstract class Tag
 {
     protected string $name;
     protected mixed $value;
+    /**
+     * @var array<mixed>
+     */
     protected array $attributes;
 
+    /**
+     * @param BackedEnum $name
+     * @param mixed|null $value
+     * @param array<mixed> $attributes
+     */
     public function __construct(BackedEnum $name, mixed $value = null, array $attributes = [])
     {
         $this->name = $name->value;

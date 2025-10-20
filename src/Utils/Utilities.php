@@ -30,7 +30,7 @@ class Utilities
     /**
      * Convert array to object recursively.
      *
-     * @param array $array
+     * @param array<string|int, mixed> $array
      * @return object
      */
     public static function arrayToObject(array $array): object

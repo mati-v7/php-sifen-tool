@@ -48,7 +48,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
     protected TagLeaf $iTiDE;
     protected TagLeaf $dDesTiDE;
 
-    public function reset(Certificate $certificate)
+    public function reset(Certificate $certificate): void
     {
         $this->doc = new DOMDocument(encoding: "UTF-8");
         $this->doc->preserveWhiteSpace = false;
@@ -63,7 +63,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
     /**
      * Grupo AA
      */
-    public function setGroupAA()
+    public function setGroupAA(): void
     {
         $this->rDE = new TagComposite(DE::R_DE);
 
@@ -74,7 +74,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
     /**
      * Grupo A
      */
-    public function setGroupA($data)
+    public function setGroupA(array $data): void
     {
         $id = $data["Id"];
         $this->de = new TagComposite(DE::DE, attributes: ['Id' => $id]);
@@ -92,7 +92,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
     /**
      * Grupo B
      */
-    public function setGroupB($data)
+    public function setGroupB(array $data): void
     {
         $this->gOpeDE = new TagComposite(DE::G_OPE_DE);
 
@@ -120,7 +120,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
     /**
      * Grupo C
      */
-    public function setGroupC($data)
+    public function setGroupC(array $data): void
     {
         $this->gTimb = new TagComposite(DE::G_TIMB);
 
@@ -153,7 +153,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
     /**
      * Grupo D
      */
-    public function setGroupD($data)
+    public function setGroupD(array $data): void
     {
         $this->gDatGralOpe = new TagComposite(DE::G_DAT_GRAL_OPE);
         $dFeEmiDE = new TagLeaf(DE::D_FE_EMI_DE, $data["dFeEmiDE"]);
@@ -164,7 +164,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
     /**
      * Grupo D.1
      */
-    public function setGroupD1($data)
+    public function setGroupD1(array $data): void
     {
         $this->gOpeCom = new TagComposite(DE::G_OPE_COM);
         $iTipTra = new TagLeaf(DE::I_TIP_TRA, $data["iTipTra"]);
@@ -211,7 +211,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
     /**
      * Grupo D.2
      */
-    public function setGroupD2($data)
+    public function setGroupD2(array $data): void
     {
         $gEmis = new TagComposite(DE::G_EMIS);
 
@@ -309,7 +309,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
     /**
      * Grupo D.2.1
      */
-    public function setGroupD21($data)
+    public function setGroupD21(array $data): void
     {
         $gActEco = new TagComposite(DE::C_ACT_ECO);
 
@@ -324,7 +324,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
     /**
      * Grupo D.2.2
      */
-    public function setGroupD22($data)
+    public function setGroupD22(array $data): void
     {
         $gRespDE = new TagComposite(DE::G_RESP_DE);
 
@@ -349,7 +349,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
     /**
      * Grupo D.3
      */
-    public function setGroupD3($data)
+    public function setGroupD3(array $data): void
     {
         $this->gDatRec = new TagComposite(DE::G_DAT_REC);
 
@@ -470,7 +470,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $this->gDatGralOpe->add($this->gDatRec);
     }
 
-    public function setGroupE($data)
+    public function setGroupE(array $data): void
     {
         $this->gDTipDE = new TagComposite(DE::G_D_TIP_DE);
 
@@ -482,7 +482,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $this->de->add($this->gDTipDE);
     }
 
-    public function setGroupE1($data)
+    public function setGroupE1(array $data): void
     {
         $this->gCamFE = new TagComposite(DE::G_CAM_FE);
 
@@ -517,7 +517,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
         }
     }
 
-    public function setGroupE11($data)
+    public function setGroupE11(array $data): void
     {
         $gCompPub = new TagComposite(DE::G_COMP_PUB);
 
@@ -539,7 +539,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $this->gCamFE->add($gCompPub);
     }
 
-    public function setGroupE7($data)
+    public function setGroupE7(array $data): void
     {
         $this->gCamCond = new TagComposite(DE::G_CAM_COND);
 
@@ -562,7 +562,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $this->gDTipDE->add($this->gCamCond);
     }
 
-    public function setGroupE71($data)
+    public function setGroupE71(array $data): void
     {
         $this->gPaConEIni = new TagComposite(DE::G_PA_CON_E_INI);
 
@@ -607,7 +607,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $this->gCamCond->add($this->gPaConEIni);
     }
 
-    public function setGroupE711($data)
+    public function setGroupE711(array $data): void
     {
         $gPagTarCD = new TagComposite(DE::G_PAG_TAR_CD);
 
@@ -654,7 +654,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $this->gPaConEIni->add($gPagTarCD);
     }
 
-    public function setGroupE712($data)
+    public function setGroupE712(array $data): void
     {
         $gPagCheq = new TagComposite(DE::G_PAG_CHEQ);
 
@@ -667,7 +667,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $this->gPaConEIni->add($gPagCheq);
     }
 
-    public function setGroupE72($data)
+    public function setGroupE72(array $data): void
     {
         $this->gPagCred = new TagComposite(DE::G_PAG_CRED);
 
@@ -701,7 +701,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $this->gCamCond->add($this->gPagCred);
     }
 
-    public function setGroupE721($data)
+    public function setGroupE721(array $data): void
     {
         $gCuotas = new TagComposite(DE::G_CUOTAS);
 
@@ -722,7 +722,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $this->gPagCred->add($gCuotas);
     }
 
-    public function setGroupE8($data)
+    public function setGroupE8(array $data): void
     {
         $this->gCamItem = new TagComposite(DE::G_CAM_ITEM);
 
@@ -805,7 +805,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $this->gDTipDE->add($this->gCamItem);
     }
 
-    public function setGroupE81($data)
+    public function setGroupE81(array $data): void
     {
         $this->gValorItem = new TagComposite(DE::G_VALOR_ITEM);
 
@@ -833,7 +833,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $this->gCamItem->add($this->gValorItem);
     }
 
-    public function setGroupE811($data)
+    public function setGroupE811(array $data): void
     {
         $gValorRestaItem = new TagComposite(DE::G_VALOR_RESTA_ITEM);
 
@@ -868,7 +868,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $this->gValorItem->add($gValorRestaItem);
     }
 
-    public function setGroupE82($data)
+    public function setGroupE82(array $data): void
     {
         $gCamIVA = new TagComposite(DE::G_CAM_IVA);
 
@@ -893,7 +893,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $this->gCamItem->add($gCamIVA);
     }
 
-    public function setGroupF($data)
+    public function setGroupF(array $data): void
     {
         $this->gTotSub = new TagComposite(DE::G_TOT_SUB);
 
@@ -975,13 +975,15 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $this->de->add($this->gTotSub);
     }
 
-    public function setGroupH($data)
+    public function setGroupH(array $data): void
     {
-        if (in_array($this->iTiDE->getValue(), [
-            TipoDocumentoElectronico::FEE->value,
-            TipoDocumentoElectronico::FEI->value,
-            TipoDocumentoElectronico::CRE->value,
-        ])) {
+        if (
+            in_array($this->iTiDE->getValue(), [
+                TipoDocumentoElectronico::FEE->value,
+                TipoDocumentoElectronico::FEI->value,
+                TipoDocumentoElectronico::CRE->value,
+            ])
+        ) {
             return;
         }
 
@@ -1043,7 +1045,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $this->de->add($this->gCamDEAsoc);
     }
 
-    public function setGroupI(Certificate $certificate)
+    public function setGroupI(Certificate $certificate): void
     {
         $deNode = $this->doc->getElementsByTagName(DE::DE->value)->item(0);
 
@@ -1051,7 +1053,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $signer->sign($deNode);
     }
 
-    public function getResult()
+    public function getResult(): string|false
     {
         $element = $this->rDE->render($this->doc);
         $this->doc->appendChild($element);

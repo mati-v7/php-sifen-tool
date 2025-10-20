@@ -15,12 +15,12 @@ class ConsultaRUCBuilder implements BuilderInterface
 
     protected TagComposite $rEnviConsRUC;
 
-    public function reset()
+    public function reset(): void
     {
         $this->doc = new DOMDocument(encoding: "UTF-8");
     }
 
-    public function body($data)
+    public function body(array $data): void
     {
         $this->rEnviConsRUC = new TagComposite(SiConsRUC::R_ENVI_CONS_RUC, attributes: [
             'xmlns' => 'http://ekuatia.set.gov.py/sifen/xsd'
@@ -33,7 +33,7 @@ class ConsultaRUCBuilder implements BuilderInterface
         $this->rEnviConsRUC->add($dRUCCons);
     }
 
-    public function getResult()
+    public function getResult(): string
     {
         $element = $this->rEnviConsRUC->render($this->doc);
         $this->doc->appendChild($element);

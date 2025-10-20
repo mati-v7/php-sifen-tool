@@ -2,6 +2,8 @@
 
 namespace Nyxcode\PhpSifenTool\Soap\Contracts;
 
+use Nyxcode\PhpSifenTool\Soap\Classmap\ResConsRUC;
+
 interface SiConsRUC
 {
     /**
@@ -10,7 +12,7 @@ interface SiConsRUC
      * @param int $dId The identifier for the request.
      * @param string $dRUCCons The RUC number to be consulted.
      *
-     * @return mixed The response from the RUC consultation.
+     * @return \Nyxcode\PhpSifenTool\Soap\Classmap\ResConsRUC The response from the RUC consultation.
      */
-    public function rEnviConsRUC(int $dId, string $dRUCCons);
+    public function rEnviConsRUC(int $dId, string $dRUCCons): ResConsRUC;
 }

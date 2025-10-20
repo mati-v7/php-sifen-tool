@@ -7,6 +7,15 @@ namespace Nyxcode\PhpSifenTool\Soap\Factory;
  */
 class SoapClientFactory
 {
+    /**
+     * Create a new SoapClient instance with predefined options.
+     *
+     * @param string $wsdl
+     * @param array<string, mixed> $options
+     * 
+     * @return \SoapClient
+     * 
+     */
     public static function create(string $wsdl, array $options = []): \SoapClient
     {
         return new \SoapClient(

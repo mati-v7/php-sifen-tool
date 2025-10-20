@@ -10,7 +10,7 @@ class ResConsDE
 
     /**
      * Fecha y hora del procesamiento
-     * @var string $dFecProc 
+     * @var string $dFecProc
      */
     public string $dFecProc;
 

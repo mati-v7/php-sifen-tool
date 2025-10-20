@@ -11,8 +11,8 @@ class ResConsRUC
     public const FOUND_RUC = '0502';
 
     /**
-     * Código del resultado de la consulta RUC 
-     * @var string 
+     * Código del resultado de la consulta RUC
+     * @var string
      * */
     public string $dCodRes;
 

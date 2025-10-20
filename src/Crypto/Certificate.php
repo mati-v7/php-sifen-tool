@@ -54,7 +54,9 @@ class Certificate
         $certs = [];
 
         if (!openssl_pkcs12_read($content, $certs, $this->password ?? '')) {
-            throw new \RuntimeException("No se pudo leer el archivo PKCS#12 (.p12/.pfx) o la contraseña es incorrecta.");
+            throw new \RuntimeException(
+                "No se pudo leer el archivo PKCS#12 (.p12/.pfx) o la contraseña es incorrecta."
+            );
         }
 
         $this->privateKey = $certs['pkey'];
@@ -164,6 +166,10 @@ class Certificate
         return $this->tempPemPath;
     }
 
+    /**
+     * Generates SOAP options for the certificate.
+     * @return array<string, mixed>
+     */
     public function getSoapOptions(): array
     {
         $options = ['local_cert' => $this->getCertFilePath()];

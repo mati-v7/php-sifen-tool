@@ -332,7 +332,8 @@ enum DE: string
 /** Descripción de la condición de operación - E602.*/
     case D_D_COND_OPE = 'dDCondOpe';
 
-    // Grupo E7.1. Campos que describen la forma de pago de la operación al contado o del monto de la entrega inicial (E605-E619)
+    // Grupo E7.1. Campos que describen la forma de pago de la operación al contado o
+    // del monto de la entrega inicial (E605-E619)
 
 /** Campos que describen la forma de pago al contado o del monto de la entrega inicial - E605.*/
     case G_PA_CON_E_INI = 'gPaConEIni';

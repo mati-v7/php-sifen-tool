@@ -9,7 +9,10 @@ namespace Nyxcode\PhpSifenTool\Builder\Request;
  */
 interface BuilderInterface
 {
-    public function reset();
-    public function body($data);
-    public function getResult();
+    public function reset(): void;
+    /**
+     * @param array<mixed> $data
+     */
+    public function body(array $data): void;
+    public function getResult(): string;
 }

@@ -17,11 +17,11 @@ class Director
 {
     private BuilderInterface $builder;
 
-    public function setBuilder(BuilderInterface $builder)
+    public function setBuilder(BuilderInterface $builder): void
     {
         $this->builder = $builder;
     }
-    public function getBuilder()
+    public function getBuilder(): BuilderInterface
     {
         return $this->builder;
     }
@@ -29,9 +29,10 @@ class Director
     /**
      * Builds an electronic invoice (Factura Electronica) using the provided data.
      *
-     * @param array $data The data required to construct the electronic invoice.
+     * @param Certificate $certificate
+     * @param array<mixed> $data The data required to construct the electronic invoice.
      */
-    public function buildFacturaElectronica(Certificate $certificate, $data)
+    public function buildFacturaElectronica(Certificate $certificate, array $data): void
     {
         $this->builder->reset($certificate);
         $this->builder->setGroupAA();

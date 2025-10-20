@@ -4,6 +4,7 @@ namespace Nyxcode\PhpSifenTool\Soap\Services;
 
 use Nyxcode\PhpSifenTool\Builder\Request\Concrete\ConsDEBuilder;
 use Nyxcode\PhpSifenTool\Builder\Request\Director;
+use Nyxcode\PhpSifenTool\Soap\Classmap\ResConsDE;
 use Nyxcode\PhpSifenTool\Soap\Contracts\SiConsDE;
 
 class SiConsDEService implements SiConsDE
@@ -15,7 +16,7 @@ class SiConsDEService implements SiConsDE
         $this->client = $client;
     }
 
-    public function rEnviConsDe(int $dId, string $dCDC)
+    public function rEnviConsDe(int $dId, string $dCDC): ResConsDE
     {
         $builder = new ConsDEBuilder();
         $director = new Director();

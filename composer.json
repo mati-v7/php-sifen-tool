@@ -3,15 +3,12 @@
     "description": "A php package to simplify integration with Paraguay's SIFEN API for electronic invoicing.",
     "type": "library",
     "require": {
-        "illuminate/support": "12.13.x",
-        "symfony/http-client": "^7.3",
-        "nyholm/psr7": "^1.8",
-        "psr/log-implementation": "*",
-        "illuminate/log": "^12.30",
         "robrichards/xmlseclibs": "^3.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "12.1.x"
+        "phpunit/phpunit": "12.1.x",
+        "phpstan/phpstan": "^2.1",
+        "squizlabs/php_codesniffer": "^4.0"
     },
     "license": "MIT",
     "autoload": {

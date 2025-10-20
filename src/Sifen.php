@@ -38,7 +38,7 @@ class Sifen
         );
     }
 
-    public function consultarDE(int $dId,  string $dCDC): ResConsDE
+    public function consultarDE(int $dId, string $dCDC): ResConsDE
     {
         $service = new SiConsDEService($this->createSoapClient(WDSL::WS_CONSULTAS_CONSULTA_DE_PATH));
         return $service->rEnviConsDe($dId, $dCDC);

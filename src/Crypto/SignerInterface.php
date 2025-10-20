@@ -6,5 +6,5 @@ use DOMNode;
 
 interface SignerInterface
 {
-    public function sign(DOMNode $xml);
+    public function sign(DOMNode $xml): void;
 }

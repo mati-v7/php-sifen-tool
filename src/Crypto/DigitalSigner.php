@@ -8,7 +8,6 @@ use RobRichards\XMLSecLibs\XMLSecurityKey;
 
 class DigitalSigner implements SignerInterface
 {
-
     private Certificate $certificate;
 
     public function __construct(Certificate $certificate)
