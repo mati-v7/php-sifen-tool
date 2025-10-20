@@ -240,10 +240,7 @@ class FEBuilderTest extends TestCase
         $director->setBuilder($builder);
         $director->buildFacturaElectronica($this->certificate, $data);
 
-        $product = $builder->getResult();
-
-        $this->assertNotEmpty($product, 'Producto XML vacio');
-
-        print $product;
+        $xml = $builder->getResult();
+        $this->assertNotEmpty($xml, 'El XML generado no debe estar vacío.');
     }
 }

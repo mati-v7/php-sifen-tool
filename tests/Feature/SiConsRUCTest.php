@@ -48,8 +48,8 @@ class SiConsRUCTest extends TestCase
             $this->assertIsObject($response);
             $this->assertEquals($response->foundRUC(), true, 'RUC should be found');
 
-            echo "\n✅ Respuesta:\n";
-            print_r($response);
+            // echo "\n✅ Respuesta:\n";
+            // print_r($response);
         } catch (\Throwable $th) {
             $this->fail('Error in response: ' . $th->getMessage());
         }

@@ -43,8 +43,8 @@ class SiConsDETest extends TestCase
             $this->assertIsObject($response);
             $this->assertEquals($response->cdcFound(), true, 'CDC should be found');
 
-            echo "\n✅ Respuesta:\n";
-            print_r($response);
+            // echo "\n✅ Respuesta:\n";
+            // print_r($response);
         } catch (\Exception $e) {
             $this->fail('Error in response: ' . $e->getMessage());
         }

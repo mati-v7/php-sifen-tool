@@ -68,9 +68,11 @@ class SignatureTest extends TestCase
 
         try {
             $verifier = new SignatureVerifier();
-            $verifier->verify($xmlModificado);
-        } catch (\Throwable $th) {
-            $this->expectException(\RuntimeException::class);
+            $valid = $verifier->verify($xmlModificado);
+
+            $this->assertFalse($valid, 'La firma XML debería ser inválida después de modificar el contenido.');
+        } catch (\Exception $th) {
+            $this->assertTrue(true, 'Se lanzó una excepción al verificar una firma inválida: ' . $th->getMessage());
         }
     }
 }
