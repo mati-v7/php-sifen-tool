@@ -2,8 +2,11 @@
 
 namespace Nyxcode\PhpSifenTool\Soap\Factory;
 
+use Nyxcode\PhpSifenTool\Soap\Classmap\GResProc;
+use Nyxcode\PhpSifenTool\Soap\Classmap\GResProcLote;
 use Nyxcode\PhpSifenTool\Soap\Classmap\ResConsDE;
 use Nyxcode\PhpSifenTool\Soap\Classmap\ResConsRUC;
+use Nyxcode\PhpSifenTool\Soap\Classmap\ResResultLoteDE;
 use Nyxcode\PhpSifenTool\Soap\Classmap\XContRUC;
 
 class ClassMapFactory
@@ -14,6 +17,9 @@ class ClassMapFactory
             'rResEnviConsRUC' => ResConsRUC::class,
             'tContenedorRuc' => XContRUC::class,
             'rEnviConsDeResponse' => ResConsDE::class,
+            'rResEnviConsLoteDe' => ResResultLoteDE::class,
+            'tgResProcLote' => GResProcLote::class,
+            'tgResProc' => GResProc::class,
         ];
     }
 }

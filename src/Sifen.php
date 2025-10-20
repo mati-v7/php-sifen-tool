@@ -6,9 +6,11 @@ use Nyxcode\PhpSifenTool\Crypto\Certificate;
 use Nyxcode\PhpSifenTool\Enums\Soap\WDSL;
 use Nyxcode\PhpSifenTool\Soap\Classmap\ResConsDE;
 use Nyxcode\PhpSifenTool\Soap\Classmap\ResConsRUC;
+use Nyxcode\PhpSifenTool\Soap\Classmap\ResResultLoteDE;
 use Nyxcode\PhpSifenTool\Soap\Factory\SoapClientFactory;
 use Nyxcode\PhpSifenTool\Soap\Services\SiConsDEService;
 use Nyxcode\PhpSifenTool\Soap\Services\SiConsRUCService;
+use Nyxcode\PhpSifenTool\Soap\Services\SiResultLoteDEService;
 
 /**
  * Class Sifen
@@ -46,5 +48,11 @@ class Sifen
     {
         $service = new SiConsRUCService($this->createSoapClient(WDSL::WS_CONSULTAS_CONSULTA_RUC_PATH));
         return $service->rEnviConsRuc($dId, $dRUC);
+    }
+
+    public function consultarLote(int $dId, string $dProtConsLote): ResResultLoteDE
+    {
+        $service = new SiResultLoteDEService($this->createSoapClient(WDSL::WS_CONSULTAS_CONSULTA_LOTE_PATH));
+        return $service->rEnviConsLoteDe($dId, $dProtConsLote);
     }
 }

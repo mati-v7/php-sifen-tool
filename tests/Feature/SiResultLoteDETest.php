@@ -2,13 +2,16 @@
 
 namespace Nyxcode\PhpSifenTool\Tests\Feature;
 
-use Nyxcode\PhpSifenTool\Builder\Request\Concrete\ResultLoteDE;
+use Nyxcode\PhpSifenTool\Builder\Request\Concrete\ResultLoteDEBuilder;
 use Nyxcode\PhpSifenTool\Builder\Request\Director;
 use Nyxcode\PhpSifenTool\Crypto\Certificate;
+use Nyxcode\PhpSifenTool\Enums\Soap\Host;
+use Nyxcode\PhpSifenTool\Sifen;
+use Nyxcode\PhpSifenTool\Soap\Classmap\ResResultLoteDE;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class SiResultLoteDE extends TestCase
+class SiResultLoteDETest extends TestCase
 {
     private Certificate $certificate;
 
@@ -24,7 +27,7 @@ class SiResultLoteDE extends TestCase
         return [
             ["data" => [
                 'dId' => rand(100000, 999999),
-                'dProtConsLote' => '123456789012345'
+                'dProtConsLote' => '1097396631784424640'
             ]]
         ];
     }
@@ -32,7 +35,7 @@ class SiResultLoteDE extends TestCase
     #[DataProvider('dataProvider')]
     public function test_build_si_result_lote_de_payload($data)
     {
-        $builder = new ResultLoteDE();
+        $builder = new ResultLoteDEBuilder();
 
         $director = new Director();
         $director->setBuilder($builder);
@@ -43,5 +46,22 @@ class SiResultLoteDE extends TestCase
         $this->assertStringContainsString('<rEnviConsLoteDe xmlns="http://ekuatia.set.gov.py/sifen/xsd">', $result);
         $this->assertStringContainsString('<dId>' . $data['dId'] . '</dId>', $result);
         $this->assertStringContainsString('<dProtConsLote>' . $data['dProtConsLote'] . '</dProtConsLote>', $result);
+    }
+
+    #[DataProvider('dataProvider')]
+    public function test_send_si_result_lote_de($data): ResResultLoteDE
+    {
+        $sifen = new Sifen(
+            Host::PRODUCTION,
+            $this->certificate
+        );
+
+        /**
+         * @var \Nyxcode\PhpSifenTool\Soap\Classmap\ResResultLoteDE $response
+         */
+        $response = $sifen->consultarLote($data['dId'], $data['dProtConsLote']);
+        $this->assertIsObject($response);
+
+        return $response;
     }
 }

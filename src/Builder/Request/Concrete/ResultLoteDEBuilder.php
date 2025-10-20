@@ -9,7 +9,7 @@ use Nyxcode\PhpSifenTool\Composite\TagLeaf;
 use Nyxcode\PhpSifenTool\Enums\Tag\SiResultLoteDE;
 use Nyxcode\PhpSifenTool\Utils\Utilities;
 
-class ResultLoteDE implements BuilderInterface
+class ResultLoteDEBuilder implements BuilderInterface
 {
     protected DOMDocument $doc;
     protected TagComposite $rEnviConsLoteDe;
