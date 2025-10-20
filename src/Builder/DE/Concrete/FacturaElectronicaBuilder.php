@@ -139,7 +139,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $dNumDoc = new TagLeaf(DE::D_NUM_DOC, $data["dNumDoc"]);
         $this->gTimb->add($dNumDoc);
 
-        if ($data["dSerieNum"]) {
+        if (!empty($data["dSerieNum"])) {
             $dSerieNum = new TagLeaf(DE::D_SERIE_NUM, $data["dSerieNum"]);
             $this->gTimb->add($dSerieNum);
         }
@@ -196,8 +196,8 @@ class FacturaElectronicaBuilder implements BuilderInterface
         }
 
         if (
-            $data["iCondAnt"] &&
-            $data["dDesCondAnt"]
+            !empty($data["iCondAnt"]) &&
+            !empty($data["dDesCondAnt"])
         ) {
             $iCondAnt = new TagLeaf(DE::I_COND_ANT, $data["iCondAnt"]);
             $this->gOpeCom->add($iCondAnt);
@@ -294,11 +294,11 @@ class FacturaElectronicaBuilder implements BuilderInterface
         }
 
         if (
-            $data["iTipIDRespDE"] &&
-            $data["dDTipIDRespDE"] &&
-            $data["dNumIDRespDE"] &&
-            $data["dNomRespDE"] &&
-            $data["dCarRespDE"]
+            !empty($data["iTipIDRespDE"]) &&
+            !empty($data["dDTipIDRespDE"]) &&
+            !empty($data["dNumIDRespDE"]) &&
+            !empty($data["dNomRespDE"]) &&
+            !empty($data["dCarRespDE"])
         ) {
             $this->setGroupD22($data);
         }
@@ -393,7 +393,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $dNomRec = new TagLeaf(DE::D_NOM_REC, $data["dNomRec"]);
         $this->gDatRec->add($dNomRec);
 
-        if ($data["dNomFacRec"]) {
+        if (!empty($data["dNomFacRec"])) {
             $dNomFacRec = new TagLeaf(DE::D_NOM_FAN_REC, $data["dNomFacRec"]);
             $this->gDatRec->add($dNomFacRec);
         }
@@ -714,7 +714,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $dMonCuota = new TagLeaf(DE::D_MON_CUOTA, $data["dMonCuota"]);
         $gCuotas->add($dMonCuota);
 
-        if ($data["dVencCuo"]) {
+        if (!empty($data["dVencCuo"])) {
             $dVencCuo = new TagLeaf(DE::D_VENC_CUO, $data["dVencCuo"]);
             $gCuotas->add($dVencCuo);
         }
