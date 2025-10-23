@@ -3,6 +3,8 @@
 namespace Nyxcode\PhpSifenTool\Builder\DE\Concrete;
 
 use DOMDocument;
+use DOMElement;
+use DOMNode;
 use Nyxcode\PhpSifenTool\Builder\DE\BuilderInterface;
 use Nyxcode\PhpSifenTool\Composite\TagComposite;
 use Nyxcode\PhpSifenTool\Composite\TagLeaf;
@@ -22,10 +24,11 @@ use Nyxcode\PhpSifenTool\Enums\DE\TipoPago;
 use Nyxcode\PhpSifenTool\Enums\DE\TipoTransaccion;
 use Nyxcode\PhpSifenTool\Enums\DE\VersionFormato;
 use Nyxcode\PhpSifenTool\Enums\Tag\DE;
+use Nyxcode\PhpSifenTool\Security\SifenCredential;
+use Nyxcode\PhpSifenTool\Utils\Utilities;
 
 class FacturaElectronicaBuilder implements BuilderInterface
 {
-    private Certificate $certificate;
     protected DOMDocument $doc;
 
     protected TagComposite $rDE;
@@ -48,7 +51,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
     protected TagLeaf $iTiDE;
     protected TagLeaf $dDesTiDE;
 
-    public function reset(Certificate $certificate): void
+    public function reset(): void
     {
         $this->doc = new DOMDocument(encoding: "UTF-8");
         $this->doc->preserveWhiteSpace = false;
@@ -56,19 +59,6 @@ class FacturaElectronicaBuilder implements BuilderInterface
 
         $this->iTiDE = new TagLeaf(DE::I_TI_DE, TipoDocumentoElectronico::FE->value);
         $this->dDesTiDE = new TagLeaf(DE::D_DES_TI_DE, TipoDocumentoElectronico::FE->getDescripcion());
-
-        $this->certificate = $certificate;
-    }
-
-    /**
-     * Grupo AA
-     */
-    public function setGroupAA(): void
-    {
-        $this->rDE = new TagComposite(DE::R_DE);
-
-        $dVerFor = new TagLeaf(DE::D_VER_FOR, VersionFormato::V150->value);
-        $this->rDE->add($dVerFor);
     }
 
     /**
@@ -86,7 +76,6 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $this->de->add($dDVId);
         $this->de->add($dFecFirma);
         $this->de->add($dSisFact);
-        $this->rDE->add($this->de);
     }
 
     /**
@@ -1045,29 +1034,10 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $this->de->add($this->gCamDEAsoc);
     }
 
-    public function setGroupI(Certificate $certificate): void
+    public function getResult(): DOMElement
     {
-        $deNode = $this->doc->getElementsByTagName(DE::DE->value)->item(0);
-
-        $signer = new DigitalSigner($certificate);
-        $signer->sign($deNode);
-    }
-
-    public function getResult(): string|false
-    {
-        $element = $this->rDE->render($this->doc);
+        $element = $this->de->render($this->doc);
         $this->doc->appendChild($element);
-
-        $this->setGroupI($this->certificate);
-
-        $xml = $this->doc->saveXML();
-
-        try {
-            $verifier = new SignatureVerifier();
-            $verifier->verify($xml);
-        } catch (\Throwable $th) {
-            throw new \RuntimeException("Digital signature verification with errors: " . $th->getMessage());
-        }
-        return $xml;
+        return $this->doc->documentElement;
     }
 }

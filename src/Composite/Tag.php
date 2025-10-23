@@ -27,6 +27,7 @@ abstract class Tag
 {
     protected string $name;
     protected mixed $value;
+    protected ?string $namespace;
     /**
      * @var array<mixed>
      */
@@ -37,23 +38,46 @@ abstract class Tag
      * @param mixed|null $value
      * @param array<mixed> $attributes
      */
-    public function __construct(BackedEnum $name, mixed $value = null, array $attributes = [])
-    {
+    public function __construct(
+        BackedEnum $name,
+        mixed $value = null,
+        ?string $namespace = null,
+        array $attributes = []
+    ) {
         $this->name = $name->value;
         $this->value = $value;
         $this->attributes = $attributes;
+        $this->namespace = $namespace;
     }
+
     public function getName(): string
     {
         return $this->name;
     }
+
     public function setValue(mixed $value): void
     {
         $this->value = $value;
     }
+
     public function getValue(): mixed
     {
         return $this->value;
+    }
+
+    public function getAttributes(): array
+    {
+        return $this->attributes;
+    }
+
+    public function getNamespace(): ?string
+    {
+        return $this->namespace;
+    }
+
+    public function hasNamespace(): bool
+    {
+        return $this->namespace !== null;
     }
 
     /**

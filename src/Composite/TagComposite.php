@@ -84,7 +84,13 @@ class TagComposite extends Tag
 
     public function render(DOMDocument $doc): DOMElement
     {
-        $element = $doc->createElement($this->getName());
+        // check if namespace is set
+        if ($this->hasNamespace()) {
+            $element = $doc->createElementNS($this->getNamespace(), $this->getName());
+        } else {
+            $element = $doc->createElement($this->getName());
+        }
+
         foreach ($this->attributes as $key => $value) {
             $element->setAttribute($key, $value);
         }

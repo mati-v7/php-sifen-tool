@@ -3,6 +3,8 @@
 namespace Nyxcode\PhpSifenTool\Tests\Feature;
 
 use DateTime;
+use DOMDocument;
+use DOMElement;
 use Nyxcode\PhpSifenTool\Builder\DE\Concrete\FacturaElectronicaBuilder;
 use Nyxcode\PhpSifenTool\Builder\DE\Director;
 use Nyxcode\PhpSifenTool\Crypto\Certificate;
@@ -27,18 +29,23 @@ use Nyxcode\PhpSifenTool\Enums\DE\TipoOperacion;
 use Nyxcode\PhpSifenTool\Enums\DE\TipoPago;
 use Nyxcode\PhpSifenTool\Enums\DE\TipoRegimen;
 use Nyxcode\PhpSifenTool\Enums\DE\TipoTransaccion;
+use Nyxcode\PhpSifenTool\Security\SifenCredential;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class FEBuilderTest extends TestCase
 {
 
-    private Certificate $certificate;
+    private SifenCredential $sifenCredential;
 
     protected function setUp(): void
     {
-        $this->certificate = new Certificate(
-            __DIR__ . '/../../.vscode/certificado.pem'
+        $this->sifenCredential = new SifenCredential(
+            new Certificate(
+                __DIR__ . '/../../.vscode/certificado.pem'
+            ),
+            '0001',
+            'ABCD0000000000000000000000000000'
         );
     }
 
@@ -238,9 +245,9 @@ class FEBuilderTest extends TestCase
         $director = new Director();
 
         $director->setBuilder($builder);
-        $director->buildFacturaElectronica($this->certificate, $data);
+        $director->build($data);
 
         $xml = $builder->getResult();
-        $this->assertNotEmpty($xml, 'El XML generado no debe estar vacío.');
+        $this->assertInstanceOf(DOMElement::class, $xml);
     }
 }

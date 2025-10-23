@@ -4,18 +4,23 @@ namespace Nyxcode\PhpSifenTool\Tests\Feature;
 
 use Nyxcode\PhpSifenTool\Crypto\Certificate;
 use Nyxcode\PhpSifenTool\Enums\Soap\Host;
+use Nyxcode\PhpSifenTool\Security\SifenCredential;
 use Nyxcode\PhpSifenTool\Sifen;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class SiConsDETest extends TestCase
 {
-    private Certificate $certificate;
+    private SifenCredential $sifenCredential;
 
     protected function setUp(): void
     {
-        $this->certificate = new Certificate(
-            __DIR__ . '/../../.vscode/certificado.pem'
+        $this->sifenCredential = new SifenCredential(
+            new Certificate(
+                __DIR__ . '/../../.vscode/certificado.pem'
+            ),
+            '0001',
+            'ABCD0000000000000000000000000000'
         );
     }
 
@@ -35,7 +40,7 @@ class SiConsDETest extends TestCase
         try {
             $sifen = new Sifen(
                 Host::PRODUCTION,
-                $this->certificate
+                $this->sifenCredential
             );
 
             $response = $sifen->consultarDE($data['dId'], $data['dCDC']);

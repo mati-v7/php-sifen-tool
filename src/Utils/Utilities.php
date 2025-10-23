@@ -5,6 +5,19 @@ namespace Nyxcode\PhpSifenTool\Utils;
 class Utilities
 {
     /**
+     * Retrieves the first DOMElement with the specified tag name from the given DOMDocument.
+     *
+     * @param \DOMDocument $doc The DOMDocument to search within.
+     * @param \BackedEnum $tagName The enum representing the tag name to search for.
+     * @return \DOMElement|null The first DOMElement found with the specified tag name, or null if none found.
+     */
+    public static function getFirstElementByTagName(\DOMDocument $doc, \BackedEnum $tagName): ?\DOMElement
+    {
+        $elements = $doc->getElementsByTagName($tagName->value);
+        return $elements->length > 0 ? $elements->item(0) : null;
+    }
+
+    /**
      * Generate a random string.
      *
      * @param int $length
@@ -58,6 +71,19 @@ class Utilities
     public static function removeXmlProlog(string $xml): string
     {
         return preg_replace('/<\?xml.*?\?>\s*/i', '', $xml, 1);
+    }
+
+    /**
+     * Pads the given string with leading zeros until it reaches the specified length.
+     *
+     * @param string $value  The input string to pad with zeros.
+     * @param int    $length The desired total length of the resulting string.
+     *
+     * @return string The input string left-padded with zeros to the specified length.
+     */
+    public static function leftZero(string $value, int $length): string
+    {
+        return str_pad($value, $length, '0', STR_PAD_LEFT);
     }
 
 

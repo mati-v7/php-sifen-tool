@@ -4,6 +4,7 @@ namespace Nyxcode\PhpSifenTool\Soap\Services;
 
 use Nyxcode\PhpSifenTool\Builder\Request\Concrete\ConsDEBuilder;
 use Nyxcode\PhpSifenTool\Builder\Request\Director;
+use Nyxcode\PhpSifenTool\Security\SifenCredential;
 use Nyxcode\PhpSifenTool\Soap\Classmap\ResConsDE;
 use Nyxcode\PhpSifenTool\Soap\Contracts\SiConsDE;
 
@@ -16,16 +17,19 @@ class SiConsDEService implements SiConsDE
         $this->client = $client;
     }
 
-    public function rEnviConsDe(int $dId, string $dCDC): ResConsDE
+    public function rEnviConsDe(int $dId, string $dCDC, SifenCredential $sifenCredential): ResConsDE
     {
         $builder = new ConsDEBuilder();
         $director = new Director();
         $director->setBuilder($builder);
 
-        $director->buildPayload([
-            'dId' => $dId,
-            'dCDC' => $dCDC
-        ]);
+        $director->buildPayload(
+            [
+                'dId' => $dId,
+                'dCDC' => $dCDC
+            ],
+            $sifenCredential
+        );
 
         $params = new \SoapVar($builder->getResult(), XSD_ANYXML);
 

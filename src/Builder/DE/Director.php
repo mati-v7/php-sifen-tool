@@ -2,7 +2,8 @@
 
 namespace Nyxcode\PhpSifenTool\Builder\DE;
 
-use Nyxcode\PhpSifenTool\Crypto\Certificate;
+use DOMDocument;
+use Nyxcode\PhpSifenTool\Security\SifenCredential;
 
 /**
  * Class Director
@@ -27,15 +28,13 @@ class Director
     }
 
     /**
-     * Builds an electronic invoice (Factura Electronica) using the provided data.
+     * Builds an electronic document using the provided data.
      *
-     * @param Certificate $certificate
      * @param array<mixed> $data The data required to construct the electronic invoice.
      */
-    public function buildFacturaElectronica(Certificate $certificate, array $data): void
+    public function build(array $data): void
     {
-        $this->builder->reset($certificate);
-        $this->builder->setGroupAA();
+        $this->builder->reset();
         $this->builder->setGroupA($data);
         $this->builder->setGroupB($data);
         $this->builder->setGroupC($data);

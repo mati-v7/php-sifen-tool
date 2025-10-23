@@ -2,6 +2,7 @@
 
 namespace Nyxcode\PhpSifenTool\Composite;
 
+use BackedEnum;
 use DOMDocument;
 use DOMElement;
 

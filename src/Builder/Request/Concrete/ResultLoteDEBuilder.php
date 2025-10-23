@@ -7,6 +7,7 @@ use Nyxcode\PhpSifenTool\Builder\Request\BuilderInterface;
 use Nyxcode\PhpSifenTool\Composite\TagComposite;
 use Nyxcode\PhpSifenTool\Composite\TagLeaf;
 use Nyxcode\PhpSifenTool\Enums\Tag\SiResultLoteDE;
+use Nyxcode\PhpSifenTool\Security\SifenCredential;
 use Nyxcode\PhpSifenTool\Utils\Utilities;
 
 class ResultLoteDEBuilder implements BuilderInterface
@@ -19,7 +20,7 @@ class ResultLoteDEBuilder implements BuilderInterface
         $this->doc = new DOMDocument(encoding: "UTF-8");
     }
 
-    public function body(array $data): void
+    public function body(array $data, SifenCredential $sifenCredential): void
     {
         $this->rEnviConsLoteDe = new TagComposite(SiResultLoteDE::R_ENVI_CONS_LOTE_DE, attributes: [
             'xmlns' => 'http://ekuatia.set.gov.py/sifen/xsd'

@@ -4,6 +4,7 @@ namespace Nyxcode\PhpSifenTool;
 
 use Nyxcode\PhpSifenTool\Crypto\Certificate;
 use Nyxcode\PhpSifenTool\Enums\Soap\WDSL;
+use Nyxcode\PhpSifenTool\Security\SifenCredential;
 use Nyxcode\PhpSifenTool\Soap\Classmap\ResConsDE;
 use Nyxcode\PhpSifenTool\Soap\Classmap\ResConsRUC;
 use Nyxcode\PhpSifenTool\Soap\Classmap\ResResultLoteDE;
@@ -22,37 +23,37 @@ use Nyxcode\PhpSifenTool\Soap\Services\SiResultLoteDEService;
 class Sifen
 {
     protected string $host;
-    protected Certificate $certificate;
+    protected SifenCredential $sifenCredential;
 
-    public function __construct(string $host, Certificate $certificate)
+    public function __construct(string $host, SifenCredential $sifenCredential)
     {
         $this->host = $host;
-        $this->certificate = $certificate;
+        $this->sifenCredential = $sifenCredential;
     }
 
     private function createSoapClient(string $wsdl): \SoapClient
     {
         return SoapClientFactory::create(
             $this->host . $wsdl,
-            $this->certificate->getSoapOptions()
+            $this->sifenCredential->getSoapOptions()
         );
     }
 
     public function consultarDE(int $dId, string $dCDC): ResConsDE
     {
         $service = new SiConsDEService($this->createSoapClient(WDSL::WS_CONSULTAS_CONSULTA_DE_PATH));
-        return $service->rEnviConsDe($dId, $dCDC);
+        return $service->rEnviConsDe($dId, $dCDC, $this->sifenCredential);
     }
 
     public function consultarRUC(int $dId, string $dRUC): ResConsRUC
     {
         $service = new SiConsRUCService($this->createSoapClient(WDSL::WS_CONSULTAS_CONSULTA_RUC_PATH));
-        return $service->rEnviConsRuc($dId, $dRUC);
+        return $service->rEnviConsRuc($dId, $dRUC, $this->sifenCredential);
     }
 
     public function consultarLote(int $dId, string $dProtConsLote): ResResultLoteDE
     {
         $service = new SiResultLoteDEService($this->createSoapClient(WDSL::WS_CONSULTAS_CONSULTA_LOTE_PATH));
-        return $service->rEnviConsLoteDe($dId, $dProtConsLote);
+        return $service->rEnviConsLoteDe($dId, $dProtConsLote, $this->sifenCredential);
     }
 }

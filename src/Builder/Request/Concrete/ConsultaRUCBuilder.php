@@ -7,6 +7,7 @@ use Nyxcode\PhpSifenTool\Builder\Request\BuilderInterface;
 use Nyxcode\PhpSifenTool\Composite\TagComposite;
 use Nyxcode\PhpSifenTool\Composite\TagLeaf;
 use Nyxcode\PhpSifenTool\Enums\Tag\SiConsRUC;
+use Nyxcode\PhpSifenTool\Security\SifenCredential;
 use Nyxcode\PhpSifenTool\Utils\Utilities;
 
 class ConsultaRUCBuilder implements BuilderInterface
@@ -20,7 +21,7 @@ class ConsultaRUCBuilder implements BuilderInterface
         $this->doc = new DOMDocument(encoding: "UTF-8");
     }
 
-    public function body(array $data): void
+    public function body(array $data, SifenCredential $sifenCredential): void
     {
         $this->rEnviConsRUC = new TagComposite(SiConsRUC::R_ENVI_CONS_RUC, attributes: [
             'xmlns' => 'http://ekuatia.set.gov.py/sifen/xsd'

@@ -2,6 +2,8 @@
 
 namespace Nyxcode\PhpSifenTool\Builder\Request;
 
+use Nyxcode\PhpSifenTool\Security\SifenCredential;
+
 /**
  * The Director class is responsible for managing the construction process of requests
  * using a BuilderInterface implementation.
@@ -28,11 +30,12 @@ class Director
      * with the given data.
      *
      * @param array<mixed> $data The data to be used as the request payload.
+     * @param \Nyxcode\PhpSifenTool\Security\SifenCredential $sifenCredential Credentials for Sifen.
      * @return void
      */
-    public function buildPayload(array $data): void
+    public function buildPayload(array $data, SifenCredential $sifenCredential): void
     {
         $this->builder->reset();
-        $this->builder->body($data);
+        $this->builder->body($data, $sifenCredential);
     }
 }
