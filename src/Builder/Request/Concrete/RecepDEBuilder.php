@@ -4,6 +4,7 @@ namespace Nyxcode\PhpSifenTool\Builder\Request\Concrete;
 
 use DOMDocument;
 use DOMDocumentFragment;
+use DOMElement;
 use Nyxcode\PhpSifenTool\Builder\DE\BuilderInterface as DEBuilderInterface;
 use Nyxcode\PhpSifenTool\Builder\DE\Concrete\DocumentoElectronicoBuilder;
 use Nyxcode\PhpSifenTool\Builder\DE\Director;
@@ -11,6 +12,7 @@ use Nyxcode\PhpSifenTool\Builder\DE\Factory\DEFactory;
 use Nyxcode\PhpSifenTool\Builder\Request\BuilderInterface;
 use Nyxcode\PhpSifenTool\Composite\TagComposite;
 use Nyxcode\PhpSifenTool\Composite\TagLeaf;
+use Nyxcode\PhpSifenTool\Crypto\Certificate;
 use Nyxcode\PhpSifenTool\Crypto\DigitalSigner;
 use Nyxcode\PhpSifenTool\Enums\DE\TipoDocumentoElectronico;
 use Nyxcode\PhpSifenTool\Enums\Soap\XML;
@@ -29,7 +31,7 @@ class RecepDEBuilder implements BuilderInterface
         $this->doc = new DOMDocument(encoding: "UTF-8");
     }
 
-    public function body(array $data, SifenCredential $sifenCredential): void
+    public function body(array $data): void
     {
         $this->rEnviDe = new TagComposite(SiRecepDE::R_ENVI_DE, namespace: XML::XML_NS);
 
@@ -47,24 +49,19 @@ class RecepDEBuilder implements BuilderInterface
 
         $element = $this->rEnviDe->render($this->doc);
         $this->doc->appendChild($element);
-
-        $iTiDE = $data['xDe']['iTiDE'];
-        $builder = DEFactory::create(TipoDocumentoElectronico::from($iTiDE));
-        $director = new Director();
-        $director->setBuilder($builder);
-        $director->build($data['xDe']);
-
-        $de = $this->doc->importNode($builder->getResult(), true);
-        $rDE = Utilities::getFirstElementByTagName($this->doc, DE::R_DE);
-        $rDE->appendChild($de);
-
-        $signer = new DigitalSigner($sifenCredential->getCertificate());
-        $signer->sign($de);
     }
 
-    public function getResult(): string
+    public function attachDE(DOMElement $de): void
     {
-        $savedXML = Utilities::removeXmlProlog($this->doc->saveXML());
-        return $savedXML;
+        $rDE = Utilities::getFirstElementByTagName($this->doc, DE::R_DE);
+        $imported = $this->doc->importNode($de, true);
+        $rDE->appendChild($imported);
+    }
+
+    public function singDE(Certificate $certificate) {}
+
+    public function getResult(): DOMDocument
+    {
+        return $this->doc;
     }
 }

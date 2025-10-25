@@ -2,6 +2,7 @@
 
 namespace Nyxcode\PhpSifenTool\Builder\Request;
 
+use DOMDocument;
 use Nyxcode\PhpSifenTool\Security\SifenCredential;
 
 /**
@@ -14,8 +15,7 @@ interface BuilderInterface
     public function reset(): void;
     /**
      * @param array<mixed> $data
-     * @param \Nyxcode\PhpSifenTool\Security\SifenCredential $sifenCredential
      */
-    public function body(array $data, SifenCredential $sifenCredential): void;
-    public function getResult(): string;
+    public function body(array $data): void;
+    public function getResult(): DOMDocument;
 }

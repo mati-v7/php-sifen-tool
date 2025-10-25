@@ -7,6 +7,7 @@ use Nyxcode\PhpSifenTool\Builder\Request\Director;
 use Nyxcode\PhpSifenTool\Security\SifenCredential;
 use Nyxcode\PhpSifenTool\Soap\Classmap\ResConsDE;
 use Nyxcode\PhpSifenTool\Soap\Contracts\SiConsDE;
+use Nyxcode\PhpSifenTool\Utils\Utilities;
 
 class SiConsDEService implements SiConsDE
 {
@@ -17,7 +18,7 @@ class SiConsDEService implements SiConsDE
         $this->client = $client;
     }
 
-    public function rEnviConsDe(int $dId, string $dCDC, SifenCredential $sifenCredential): ResConsDE
+    public function rEnviConsDe(int $dId, string $dCDC): ResConsDE
     {
         $builder = new ConsDEBuilder();
         $director = new Director();
@@ -27,11 +28,11 @@ class SiConsDEService implements SiConsDE
             [
                 'dId' => $dId,
                 'dCDC' => $dCDC
-            ],
-            $sifenCredential
+            ]
         );
 
-        $params = new \SoapVar($builder->getResult(), XSD_ANYXML);
+        $xml = Utilities::removeXmlProlog($builder->getResult()->saveXML());
+        $params = new \SoapVar($xml, XSD_ANYXML);
 
         return $this->client->__soapCall('rEnviConsDe', [$params]);
     }

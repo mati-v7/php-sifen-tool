@@ -7,6 +7,7 @@ use Nyxcode\PhpSifenTool\Builder\Request\Concrete\ConsultaRUCBuilder;
 use Nyxcode\PhpSifenTool\Security\SifenCredential;
 use Nyxcode\PhpSifenTool\Soap\Classmap\ResConsRUC;
 use Nyxcode\PhpSifenTool\Soap\Contracts\SiConsRUC;
+use Nyxcode\PhpSifenTool\Utils\Utilities;
 
 class SiConsRUCService implements SiConsRUC
 {
@@ -17,7 +18,7 @@ class SiConsRUCService implements SiConsRUC
         $this->client = $client;
     }
 
-    public function rEnviConsRUC(int $dId, string $dRUCCons, SifenCredential $sifenCredential): ResConsRUC
+    public function rEnviConsRUC(int $dId, string $dRUCCons): ResConsRUC
     {
         $builder = new ConsultaRUCBuilder();
         $director = new Director();
@@ -27,11 +28,11 @@ class SiConsRUCService implements SiConsRUC
             [
                 'dId' => $dId,
                 'dRUCCons' => $dRUCCons
-            ],
-            $sifenCredential
+            ]
         );
 
-        $params = new \SoapVar($builder->getResult(), XSD_ANYXML);
+        $xml = Utilities::removeXmlProlog($builder->getResult()->saveXML());
+        $params = new \SoapVar($xml, XSD_ANYXML);
 
         return $this->client->__soapCall('rEnviConsRUC', [$params]);
     }

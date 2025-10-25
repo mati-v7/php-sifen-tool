@@ -2,7 +2,6 @@
 
 namespace Nyxcode\PhpSifenTool\Soap\Contracts;
 
-use Nyxcode\PhpSifenTool\Security\SifenCredential;
 use Nyxcode\PhpSifenTool\Soap\Classmap\ResConsRUC;
 
 interface SiConsRUC
@@ -15,5 +14,5 @@ interface SiConsRUC
      *
      * @return \Nyxcode\PhpSifenTool\Soap\Classmap\ResConsRUC The response from the RUC consultation.
      */
-    public function rEnviConsRUC(int $dId, string $dRUCCons, SifenCredential $sifenCredential): ResConsRUC;
+    public function rEnviConsRUC(int $dId, string $dRUCCons): ResConsRUC;
 }

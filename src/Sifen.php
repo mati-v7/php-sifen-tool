@@ -8,9 +8,11 @@ use Nyxcode\PhpSifenTool\Security\SifenCredential;
 use Nyxcode\PhpSifenTool\Soap\Classmap\ResConsDE;
 use Nyxcode\PhpSifenTool\Soap\Classmap\ResConsRUC;
 use Nyxcode\PhpSifenTool\Soap\Classmap\ResResultLoteDE;
+use Nyxcode\PhpSifenTool\Soap\Classmap\RRetEnviDE;
 use Nyxcode\PhpSifenTool\Soap\Factory\SoapClientFactory;
 use Nyxcode\PhpSifenTool\Soap\Services\SiConsDEService;
 use Nyxcode\PhpSifenTool\Soap\Services\SiConsRUCService;
+use Nyxcode\PhpSifenTool\Soap\Services\SiRecepDEService;
 use Nyxcode\PhpSifenTool\Soap\Services\SiResultLoteDEService;
 
 /**
@@ -55,5 +57,11 @@ class Sifen
     {
         $service = new SiResultLoteDEService($this->createSoapClient(WDSL::WS_CONSULTAS_CONSULTA_LOTE_PATH));
         return $service->rEnviConsLoteDe($dId, $dProtConsLote, $this->sifenCredential);
+    }
+
+    public function enviarDE(int $dId, array $data): RRetEnviDE
+    {
+        $service = new SiRecepDEService($this->createSoapClient(WDSL::WS_SYNC_RECIBE_DE_PATH));
+        return $service->rEnviDe($dId, $data, $this->sifenCredential);
     }
 }

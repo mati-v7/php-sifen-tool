@@ -6,6 +6,7 @@ use DOMDocument;
 use Nyxcode\PhpSifenTool\Builder\Request\BuilderInterface;
 use Nyxcode\PhpSifenTool\Composite\TagComposite;
 use Nyxcode\PhpSifenTool\Composite\TagLeaf;
+use Nyxcode\PhpSifenTool\Enums\Soap\XML;
 use Nyxcode\PhpSifenTool\Enums\Tag\SiResultLoteDE;
 use Nyxcode\PhpSifenTool\Security\SifenCredential;
 use Nyxcode\PhpSifenTool\Utils\Utilities;
@@ -20,25 +21,22 @@ class ResultLoteDEBuilder implements BuilderInterface
         $this->doc = new DOMDocument(encoding: "UTF-8");
     }
 
-    public function body(array $data, SifenCredential $sifenCredential): void
+    public function body(array $data): void
     {
-        $this->rEnviConsLoteDe = new TagComposite(SiResultLoteDE::R_ENVI_CONS_LOTE_DE, attributes: [
-            'xmlns' => 'http://ekuatia.set.gov.py/sifen/xsd'
-        ]);
+        $this->rEnviConsLoteDe = new TagComposite(SiResultLoteDE::R_ENVI_CONS_LOTE_DE, namespace: XML::XML_NS);
 
         $dId = new TagLeaf(SiResultLoteDE::D_ID, $data['dId']);
         $this->rEnviConsLoteDe->add($dId);
 
         $dProtConsLote = new TagLeaf(SiResultLoteDE::D_PROT_CONS_LOTE, $data['dProtConsLote']);
         $this->rEnviConsLoteDe->add($dProtConsLote);
-    }
 
-    public function getResult(): string
-    {
         $element = $this->rEnviConsLoteDe->render($this->doc);
         $this->doc->appendChild($element);
+    }
 
-        $savedXML = Utilities::removeXmlProlog($this->doc->saveXML());
-        return $savedXML;
+    public function getResult(): DOMDocument
+    {
+        return $this->doc;
     }
 }

@@ -30,12 +30,11 @@ class Director
      * with the given data.
      *
      * @param array<mixed> $data The data to be used as the request payload.
-     * @param \Nyxcode\PhpSifenTool\Security\SifenCredential $sifenCredential Credentials for Sifen.
      * @return void
      */
-    public function buildPayload(array $data, SifenCredential $sifenCredential): void
+    public function buildPayload(array $data): void
     {
         $this->builder->reset();
-        $this->builder->body($data, $sifenCredential);
+        $this->builder->body($data);
     }
 }

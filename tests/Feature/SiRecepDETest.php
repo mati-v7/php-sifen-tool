@@ -26,7 +26,9 @@ use Nyxcode\PhpSifenTool\Enums\DE\TipoOperacion;
 use Nyxcode\PhpSifenTool\Enums\DE\TipoPago;
 use Nyxcode\PhpSifenTool\Enums\DE\TipoRegimen;
 use Nyxcode\PhpSifenTool\Enums\DE\TipoTransaccion;
+use Nyxcode\PhpSifenTool\Enums\Soap\Host;
 use Nyxcode\PhpSifenTool\Security\SifenCredential;
+use Nyxcode\PhpSifenTool\Sifen;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -244,11 +246,31 @@ class SiRecepDETest extends TestCase
         $builder = new RecepDEBuilder();
         $director = new Director();
         $director->setBuilder($builder);
-        $director->buildPayload($data, $this->sifenCredential);
+        $director->buildPayload($data);
 
-        $result = $builder->getResult();
+        $result = $builder->getResult()->saveXML();
         $this->assertStringContainsString('<rEnviDe xmlns="http://ekuatia.set.gov.py/sifen/xsd">', $result);
         $this->assertStringContainsString('<dId>' . $data['dId'] . '</dId>', $result);
         $this->assertStringContainsString('<xDe>', $result);
+    }
+
+    #[DataProvider('dataProvider')]
+    public function test_it_sends_recep_de_request($data)
+    {
+        try {
+            $sifen = new Sifen(
+                Host::PRODUCTION,
+                $this->sifenCredential
+            );
+
+            $response = $sifen->enviarDE($data['dId'], $data['xDe']);
+
+            $this->assertIsObject($response);
+
+            // echo "\n✅ Respuesta:\n";
+            // print_r($response);
+        } catch (\Exception $e) {
+            $this->fail('Error in response: ' . $e->getMessage());
+        }
     }
 }

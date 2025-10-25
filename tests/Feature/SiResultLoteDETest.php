@@ -46,7 +46,7 @@ class SiResultLoteDETest extends TestCase
         $director->setBuilder($builder);
         $director->buildPayload($data, $this->sifenCredential);
 
-        $result = $builder->getResult();
+        $result = $builder->getResult()->saveXML();
 
         $this->assertStringContainsString('<rEnviConsLoteDe xmlns="http://ekuatia.set.gov.py/sifen/xsd">', $result);
         $this->assertStringContainsString('<dId>' . $data['dId'] . '</dId>', $result);
