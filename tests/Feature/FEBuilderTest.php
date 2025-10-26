@@ -22,6 +22,7 @@ use Nyxcode\PhpSifenTool\Enums\DE\TipoCondicionAnticipo;
 use Nyxcode\PhpSifenTool\Enums\DE\TipoCondicionOperacion;
 use Nyxcode\PhpSifenTool\Enums\DE\TipoContribuyente;
 use Nyxcode\PhpSifenTool\Enums\DE\TipoDocumentoAsociado;
+use Nyxcode\PhpSifenTool\Enums\DE\TipoDocumentoElectronico;
 use Nyxcode\PhpSifenTool\Enums\DE\TipoDocumentoReceptor;
 use Nyxcode\PhpSifenTool\Enums\DE\TipoEmision;
 use Nyxcode\PhpSifenTool\Enums\DE\TipoImpuesto;
@@ -62,6 +63,7 @@ class FEBuilderTest extends TestCase
                 "dCodSeg" => 123456789,
                 "dInfoEmi" => "Información de interés del emisor respecto al DE",
                 "dInfoFisc" => "Información de interés del Fisco respecto al DE",
+                "iTiDE" => TipoDocumentoElectronico::FE->value,
                 "dNumTim" => 12345678,
                 "dEst" => "001",
                 "dPunExp" => "001",
@@ -247,7 +249,9 @@ class FEBuilderTest extends TestCase
         $director->setBuilder($builder);
         $director->build($data);
 
-        $xml = $builder->getResult();
-        $this->assertInstanceOf(DOMElement::class, $xml);
+        $deElement = $builder->getResult();
+        $this->assertInstanceOf(DOMElement::class, $deElement);
+
+        // print_r($builder->getDoc()->saveXML());
     }
 }

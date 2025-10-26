@@ -18,6 +18,19 @@ class Utilities
     }
 
     /**
+     * Generates a security code as a 9-digit string, left-padded with zeros if necessary.
+     *
+     * This method uses a cryptographically secure random integer between 1 and 999,999,999,
+     * converts it to a string, and pads it with leading zeros to ensure the result is always 9 digits long.
+     *
+     * @return string The generated 9-digit security code.
+     */
+    public static function generateSecurityCode(): string
+    {
+        return self::leftZero((string)random_int(1, 999999999), 9);
+    }
+
+    /**
      * Generate a random string.
      *
      * @param int $length

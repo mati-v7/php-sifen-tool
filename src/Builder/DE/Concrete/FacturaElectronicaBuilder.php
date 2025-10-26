@@ -5,6 +5,7 @@ namespace Nyxcode\PhpSifenTool\Builder\DE\Concrete;
 use DOMDocument;
 use DOMElement;
 use DOMNode;
+use Nyxcode\PhpSifenTool\Builder\DE\AbstractDEBuilder;
 use Nyxcode\PhpSifenTool\Builder\DE\BuilderInterface;
 use Nyxcode\PhpSifenTool\Composite\TagComposite;
 use Nyxcode\PhpSifenTool\Composite\TagLeaf;
@@ -22,17 +23,10 @@ use Nyxcode\PhpSifenTool\Enums\DE\TipoDocumentoElectronico;
 use Nyxcode\PhpSifenTool\Enums\DE\TipoOperacion;
 use Nyxcode\PhpSifenTool\Enums\DE\TipoPago;
 use Nyxcode\PhpSifenTool\Enums\DE\TipoTransaccion;
-use Nyxcode\PhpSifenTool\Enums\DE\VersionFormato;
 use Nyxcode\PhpSifenTool\Enums\Tag\DE;
-use Nyxcode\PhpSifenTool\Security\SifenCredential;
-use Nyxcode\PhpSifenTool\Utils\Utilities;
 
-class FacturaElectronicaBuilder implements BuilderInterface
+class FacturaElectronicaBuilder extends AbstractDEBuilder
 {
-    protected DOMDocument $doc;
-
-    protected TagComposite $rDE;
-    protected TagComposite $de;
     protected TagComposite $gOpeDE;
     protected TagComposite $gTimb;
     protected TagComposite $gDatGralOpe;
@@ -51,25 +45,16 @@ class FacturaElectronicaBuilder implements BuilderInterface
     protected TagLeaf $iTiDE;
     protected TagLeaf $dDesTiDE;
 
-    public function reset(): void
-    {
-        $this->doc = new DOMDocument(encoding: "UTF-8");
-        $this->doc->preserveWhiteSpace = false;
-        $this->doc->formatOutput = false;
-
-        $this->iTiDE = new TagLeaf(DE::I_TI_DE, TipoDocumentoElectronico::FE->value);
-        $this->dDesTiDE = new TagLeaf(DE::D_DES_TI_DE, TipoDocumentoElectronico::FE->getDescripcion());
-    }
-
     /**
      * Grupo A
      */
     public function setGroupA(array $data): void
     {
-        $id = $data["Id"];
-        $this->de = new TagComposite(DE::DE, attributes: ['Id' => $id]);
+        $cdc = $this->generateCDC($data);
 
-        $dDVId = new TagLeaf(DE::D_DV_ID, $data["dDVId"]);
+        $this->de = new TagComposite(DE::DE, attributes: ['Id' => $cdc]);
+
+        $dDVId = new TagLeaf(DE::D_DV_ID, $this->getDDVId());
         $dFecFirma = new TagLeaf(DE::D_FEC_FIRMA, $data["dFecFirma"]);
         $dSisFact = new TagLeaf(DE::D_SIS_FACT, $data["dSisFact"]);
 
@@ -91,7 +76,7 @@ class FacturaElectronicaBuilder implements BuilderInterface
         $dDesTipEmi = new TagLeaf(DE::D_DES_TIP_EMI, $data["dDesTipEmi"]);
         $this->gOpeDE->add($dDesTipEmi);
 
-        $dCodSeg = new TagLeaf(DE::D_COD_SEG, $data["dCodSeg"]);
+        $dCodSeg = new TagLeaf(DE::D_COD_SEG, $this->getDCodSeg());
         $this->gOpeDE->add($dCodSeg);
 
         if ($data["dInfoEmi"]) {
@@ -113,7 +98,12 @@ class FacturaElectronicaBuilder implements BuilderInterface
     {
         $this->gTimb = new TagComposite(DE::G_TIMB);
 
+        $iTiDE = TipoDocumentoElectronico::from($data['iTiDE']);
+
+        $this->iTiDE = new TagLeaf(DE::I_TI_DE, $iTiDE->value);
         $this->gTimb->add($this->iTiDE);
+
+        $this->dDesTiDE = new TagLeaf(DE::D_DES_TI_DE, $iTiDE->getDescripcion());
         $this->gTimb->add($this->dDesTiDE);
 
         $dNumTim = new TagLeaf(DE::D_NUM_TIM, $data["dNumTim"]);
@@ -1032,12 +1022,5 @@ class FacturaElectronicaBuilder implements BuilderInterface
             }
         }
         $this->de->add($this->gCamDEAsoc);
-    }
-
-    public function getResult(): DOMElement
-    {
-        $element = $this->de->render($this->doc);
-        $this->doc->appendChild($element);
-        return $this->doc->documentElement;
     }
 }
