@@ -44,19 +44,19 @@ class Sifen
     public function consultarDE(int $dId, string $dCDC): ResConsDE
     {
         $service = new SiConsDEService($this->createSoapClient(WDSL::WS_CONSULTAS_CONSULTA_DE_PATH));
-        return $service->rEnviConsDe($dId, $dCDC, $this->sifenCredential);
+        return $service->rEnviConsDe($dId, $dCDC);
     }
 
     public function consultarRUC(int $dId, string $dRUC): ResConsRUC
     {
         $service = new SiConsRUCService($this->createSoapClient(WDSL::WS_CONSULTAS_CONSULTA_RUC_PATH));
-        return $service->rEnviConsRuc($dId, $dRUC, $this->sifenCredential);
+        return $service->rEnviConsRuc($dId, $dRUC);
     }
 
     public function consultarLote(int $dId, string $dProtConsLote): ResResultLoteDE
     {
         $service = new SiResultLoteDEService($this->createSoapClient(WDSL::WS_CONSULTAS_CONSULTA_LOTE_PATH));
-        return $service->rEnviConsLoteDe($dId, $dProtConsLote, $this->sifenCredential);
+        return $service->rEnviConsLoteDe($dId, $dProtConsLote);
     }
 
     public function enviarDE(int $dId, array $data): RRetEnviDE

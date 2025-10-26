@@ -5,24 +5,17 @@ namespace Nyxcode\PhpSifenTool\Builder\Request\Concrete;
 use DOMDocument;
 use DOMElement;
 use Nyxcode\PhpSifenTool\Builder\Contracts\RequestBuildable;
-use Nyxcode\PhpSifenTool\Builder\Request\BuilderInterface;
+use Nyxcode\PhpSifenTool\Builder\Request\AbstractRequestBuilder;
 use Nyxcode\PhpSifenTool\Composite\TagComposite;
 use Nyxcode\PhpSifenTool\Composite\TagLeaf;
-use Nyxcode\PhpSifenTool\Crypto\Certificate;
 use Nyxcode\PhpSifenTool\Enums\Soap\XML;
 use Nyxcode\PhpSifenTool\Enums\Tag\DE;
 use Nyxcode\PhpSifenTool\Enums\Tag\SiRecepDE;
 use Nyxcode\PhpSifenTool\Utils\Utilities;
 
-class RecepDEBuilder implements RequestBuildable
+class RecepDEBuilder extends AbstractRequestBuilder implements RequestBuildable
 {
-    protected DOMDocument $doc;
     protected TagComposite $rEnviDe;
-
-    public function reset(): void
-    {
-        $this->doc = new DOMDocument(encoding: "UTF-8");
-    }
 
     public function body(array $data): void
     {
@@ -49,12 +42,5 @@ class RecepDEBuilder implements RequestBuildable
         $rDE = Utilities::getFirstElementByTagName($this->doc, DE::R_DE);
         $imported = $this->doc->importNode($de, true);
         $rDE->appendChild($imported);
-    }
-
-    public function singDE(Certificate $certificate) {}
-
-    public function getResult(): DOMDocument
-    {
-        return $this->doc;
     }
 }

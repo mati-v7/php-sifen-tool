@@ -34,8 +34,8 @@ class SiRecepDEService implements SiRecepDE
         $DEElement = $DEBuilder->getResult();
 
         // Step 2 - Build SiRecepDE request
-        $builder = new RecepDEBuilder;
-        $director = new Director;
+        $builder = new RecepDEBuilder();
+        $director = new Director();
         $director->setBuilder($builder);
         $director->buildPayload(
             [

@@ -21,8 +21,8 @@ abstract class AbstractDEBuilder implements DEBuildable
     /** @var string $dCodSeg */
     protected string $dCodSeg;
 
-    /** @var string $dDVId */
-    protected string $dDVId;
+    /** @var int $dDVId */
+    protected int $dDVId;
 
     public function generateCDC(array $data): string
     {
@@ -58,7 +58,7 @@ abstract class AbstractDEBuilder implements DEBuildable
 
     /**
      * Gets the resulting DOMElement after building the document.
-     * Override in concrete builders if necessary 
+     * Override in concrete builders if necessary
      * @return \DOMElement DE Element
      */
     public function getResult(): DOMElement
@@ -82,7 +82,7 @@ abstract class AbstractDEBuilder implements DEBuildable
         return $this->dCodSeg;
     }
 
-    public function getDDVId(): string
+    public function getDDVId(): int
     {
         return $this->dDVId;
     }

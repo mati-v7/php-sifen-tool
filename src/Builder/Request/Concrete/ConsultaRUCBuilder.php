@@ -4,21 +4,15 @@ namespace Nyxcode\PhpSifenTool\Builder\Request\Concrete;
 
 use DOMDocument;
 use Nyxcode\PhpSifenTool\Builder\Contracts\RequestBuildable;
+use Nyxcode\PhpSifenTool\Builder\Request\AbstractRequestBuilder;
 use Nyxcode\PhpSifenTool\Composite\TagComposite;
 use Nyxcode\PhpSifenTool\Composite\TagLeaf;
 use Nyxcode\PhpSifenTool\Enums\Soap\XML;
 use Nyxcode\PhpSifenTool\Enums\Tag\SiConsRUC;
 
-class ConsultaRUCBuilder implements RequestBuildable
+class ConsultaRUCBuilder extends AbstractRequestBuilder implements RequestBuildable
 {
-    protected DOMDocument $doc;
-
     protected TagComposite $rEnviConsRUC;
-
-    public function reset(): void
-    {
-        $this->doc = new DOMDocument(encoding: "UTF-8");
-    }
 
     public function body(array $data): void
     {
@@ -32,10 +26,5 @@ class ConsultaRUCBuilder implements RequestBuildable
 
         $element = $this->rEnviConsRUC->render($this->doc);
         $this->doc->appendChild($element);
-    }
-
-    public function getResult(): DOMDocument
-    {
-        return $this->doc;
     }
 }
