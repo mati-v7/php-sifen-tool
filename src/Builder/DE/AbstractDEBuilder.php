@@ -4,10 +4,11 @@ namespace Nyxcode\PhpSifenTool\Builder\DE;
 
 use DOMDocument;
 use DOMElement;
+use Nyxcode\PhpSifenTool\Builder\Contracts\DEBuildable;
 use Nyxcode\PhpSifenTool\Composite\TagComposite;
 use Nyxcode\PhpSifenTool\Utils\Utilities;
 
-abstract class AbstractDEBuilder implements BuilderInterface
+abstract class AbstractDEBuilder implements DEBuildable
 {
     protected DOMDocument $doc;
 

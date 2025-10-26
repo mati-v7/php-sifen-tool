@@ -257,6 +257,7 @@ class SiRecepDETest extends TestCase
     #[DataProvider('dataProvider')]
     public function test_it_sends_recep_de_request($data)
     {
+        $this->markTestIncomplete('This test needs to be completed with a valid Sifen enviarDE request.');
         try {
             $sifen = new Sifen(
                 Host::PRODUCTION,

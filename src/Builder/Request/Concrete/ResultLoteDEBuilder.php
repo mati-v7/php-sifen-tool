@@ -3,15 +3,13 @@
 namespace Nyxcode\PhpSifenTool\Builder\Request\Concrete;
 
 use DOMDocument;
-use Nyxcode\PhpSifenTool\Builder\Request\BuilderInterface;
+use Nyxcode\PhpSifenTool\Builder\Contracts\RequestBuildable;
 use Nyxcode\PhpSifenTool\Composite\TagComposite;
 use Nyxcode\PhpSifenTool\Composite\TagLeaf;
 use Nyxcode\PhpSifenTool\Enums\Soap\XML;
 use Nyxcode\PhpSifenTool\Enums\Tag\SiResultLoteDE;
-use Nyxcode\PhpSifenTool\Security\SifenCredential;
-use Nyxcode\PhpSifenTool\Utils\Utilities;
 
-class ResultLoteDEBuilder implements BuilderInterface
+class ResultLoteDEBuilder implements RequestBuildable
 {
     protected DOMDocument $doc;
     protected TagComposite $rEnviConsLoteDe;

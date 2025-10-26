@@ -2,7 +2,7 @@
 
 namespace Nyxcode\PhpSifenTool\Builder\Request;
 
-use Nyxcode\PhpSifenTool\Security\SifenCredential;
+use Nyxcode\PhpSifenTool\Builder\Contracts\RequestBuildable;
 
 /**
  * The Director class is responsible for managing the construction process of requests
@@ -12,13 +12,13 @@ use Nyxcode\PhpSifenTool\Security\SifenCredential;
  */
 class Director
 {
-    private BuilderInterface $builder;
+    private RequestBuildable $builder;
 
-    public function setBuilder(BuilderInterface $builder): void
+    public function setBuilder(RequestBuildable $builder): void
     {
         $this->builder = $builder;
     }
-    public function getBuilder(): BuilderInterface
+    public function getBuilder(): RequestBuildable
     {
         return $this->builder;
     }

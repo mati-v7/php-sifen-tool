@@ -1,15 +1,15 @@
 <?php
 
-namespace Nyxcode\PhpSifenTool\Builder\DE;
+namespace Nyxcode\PhpSifenTool\Builder\Contracts;
 
 use DOMElement;
 
 /**
- * Interface BuilderInterface
+ * Interface DEBuildable
  *
  * Defines the contract for building different groups of data fields for an Electronic Document (Documento Electrónico).
  */
-interface BuilderInterface
+interface DEBuildable
 {
     public function reset(): void;
 

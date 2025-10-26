@@ -1,16 +1,15 @@
 <?php
 
-namespace Nyxcode\PhpSifenTool\Builder\Request;
+namespace Nyxcode\PhpSifenTool\Builder\Contracts;
 
 use DOMDocument;
-use Nyxcode\PhpSifenTool\Security\SifenCredential;
 
 /**
- * Interface BuilderInterface
+ * Interface RequestBuildable
  *
  * Defines the contract for builder classes that construct and retrieve objects.
  */
-interface BuilderInterface
+interface RequestBuildable
 {
     public function reset(): void;
     /**

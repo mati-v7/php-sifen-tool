@@ -3,13 +3,13 @@
 namespace Nyxcode\PhpSifenTool\Builder\Request\Concrete;
 
 use DOMDocument;
-use Nyxcode\PhpSifenTool\Builder\Request\BuilderInterface;
+use Nyxcode\PhpSifenTool\Builder\Contracts\RequestBuildable;
 use Nyxcode\PhpSifenTool\Composite\TagComposite;
 use Nyxcode\PhpSifenTool\Composite\TagLeaf;
 use Nyxcode\PhpSifenTool\Enums\Soap\XML;
 use Nyxcode\PhpSifenTool\Enums\Tag\SiConsRUC;
 
-class ConsultaRUCBuilder implements BuilderInterface
+class ConsultaRUCBuilder implements RequestBuildable
 {
     protected DOMDocument $doc;
 

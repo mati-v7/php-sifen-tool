@@ -3,25 +3,18 @@
 namespace Nyxcode\PhpSifenTool\Builder\Request\Concrete;
 
 use DOMDocument;
-use DOMDocumentFragment;
 use DOMElement;
-use Nyxcode\PhpSifenTool\Builder\DE\BuilderInterface as DEBuilderInterface;
-use Nyxcode\PhpSifenTool\Builder\DE\Concrete\DocumentoElectronicoBuilder;
-use Nyxcode\PhpSifenTool\Builder\DE\Director;
-use Nyxcode\PhpSifenTool\Builder\DE\Factory\DEFactory;
+use Nyxcode\PhpSifenTool\Builder\Contracts\RequestBuildable;
 use Nyxcode\PhpSifenTool\Builder\Request\BuilderInterface;
 use Nyxcode\PhpSifenTool\Composite\TagComposite;
 use Nyxcode\PhpSifenTool\Composite\TagLeaf;
 use Nyxcode\PhpSifenTool\Crypto\Certificate;
-use Nyxcode\PhpSifenTool\Crypto\DigitalSigner;
-use Nyxcode\PhpSifenTool\Enums\DE\TipoDocumentoElectronico;
 use Nyxcode\PhpSifenTool\Enums\Soap\XML;
 use Nyxcode\PhpSifenTool\Enums\Tag\DE;
 use Nyxcode\PhpSifenTool\Enums\Tag\SiRecepDE;
-use Nyxcode\PhpSifenTool\Security\SifenCredential;
 use Nyxcode\PhpSifenTool\Utils\Utilities;
 
-class RecepDEBuilder implements BuilderInterface
+class RecepDEBuilder implements RequestBuildable
 {
     protected DOMDocument $doc;
     protected TagComposite $rEnviDe;

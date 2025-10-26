@@ -2,27 +2,26 @@
 
 namespace Nyxcode\PhpSifenTool\Builder\DE;
 
-use DOMDocument;
-use Nyxcode\PhpSifenTool\Security\SifenCredential;
+use Nyxcode\PhpSifenTool\Builder\Contracts\DEBuildable;
 
 /**
  * Class Director
  *
  * The Director class is responsible for managing the construction process of a complex object
- * using the Builder design pattern. It delegates the construction steps to a BuilderInterface
+ * using the Builder design pattern. It delegates the construction steps to a DEBuildable
  * implementation, allowing for flexible and modular object creation.
  *
- * @property BuilderInterface $builder The builder instance used to construct the object.
+ * @property DEBuildable $builder The builder instance used to construct the object.
  */
 class Director
 {
-    private BuilderInterface $builder;
+    private DEBuildable $builder;
 
-    public function setBuilder(BuilderInterface $builder): void
+    public function setBuilder(DEBuildable $builder): void
     {
         $this->builder = $builder;
     }
-    public function getBuilder(): BuilderInterface
+    public function getBuilder(): DEBuildable
     {
         return $this->builder;
     }
