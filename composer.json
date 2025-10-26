@@ -3,7 +3,9 @@
     "description": "A php package to simplify integration with Paraguay's SIFEN API for electronic invoicing.",
     "type": "library",
     "require": {
-        "robrichards/xmlseclibs": "^3.1"
+        "robrichards/xmlseclibs": "^3.1",
+        "symfony/event-dispatcher": "^7.3",
+        "monolog/monolog": "^3.9"
     },
     "require-dev": {
         "phpunit/phpunit": "12.1.x",

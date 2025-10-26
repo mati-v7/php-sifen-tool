@@ -44,6 +44,7 @@ class SiConsRUCTest extends TestCase
                 Host::PRODUCTION,
                 $this->sifenCredential
             );
+            $sifen->enableDebugLogging(__DIR__ . '/../../storage/logs/soap.log');
 
             /**
              * @var \Nyxcode\PhpSifenTool\Soap\Classmap\ResConsRUC $response

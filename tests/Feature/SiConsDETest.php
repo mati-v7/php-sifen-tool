@@ -42,6 +42,7 @@ class SiConsDETest extends TestCase
                 Host::PRODUCTION,
                 $this->sifenCredential
             );
+            $sifen->enableDebugLogging(__DIR__ . '/../../storage/logs/soap.log');
 
             $response = $sifen->consultarDE($data['dId'], $data['dCDC']);
 
