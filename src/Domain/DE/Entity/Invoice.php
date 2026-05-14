@@ -44,7 +44,7 @@ final class Invoice
 
     public function total(): Money
     {
-        return (new InvoiceTotalsCalculator())
+        return (new InvoiceTotalsCalculator)
             ->calculate($this);
     }
 }
