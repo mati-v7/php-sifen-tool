@@ -19,7 +19,7 @@ final class InvoiceXmlGeneratorTest extends TestCase
     #[DataProvider('buildSampleInvoice')]
     public function test_generate_with_valid_invoice_returns_xml_string(Invoice $invoice): void
     {
-        $generator = new InvoiceXmlGenerator();
+        $generator = new InvoiceXmlGenerator;
 
         $xmlString = $generator->generate($invoice);
 

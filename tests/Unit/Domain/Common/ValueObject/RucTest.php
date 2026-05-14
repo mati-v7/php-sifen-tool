@@ -9,13 +9,13 @@ use PHPUnit\Framework\TestCase;
 
 final class RucTest extends TestCase
 {
-    public function testValidRuc(): void
+    public function test_valid_ruc(): void
     {
         $ruc = new Ruc('12345678-9');
         $this->assertSame('12345678-9', $ruc->value());
     }
 
-    public function testInvalidRuc(): void
+    public function test_invalid_ruc(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new Ruc('invalid-ruc');
