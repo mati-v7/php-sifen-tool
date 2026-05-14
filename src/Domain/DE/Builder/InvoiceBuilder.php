@@ -8,6 +8,7 @@ use Nyxcode\PhpSifenTool\Domain\DE\Entity\Invoice;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Issuer;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Item;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Receiver;
+use Nyxcode\PhpSifenTool\Domain\DE\Validator\InvoiceValidator;
 
 final class InvoiceBuilder
 {
@@ -15,10 +16,17 @@ final class InvoiceBuilder
 
     private ?Receiver $receiver = null;
 
+    private InvoiceValidator $validator;
+
     /**
      * @var Item[]
      */
     private array $items = [];
+
+    private function __construct()
+    {
+        $this->validator = new InvoiceValidator;
+    }
 
     public static function make(): self
     {
@@ -48,11 +56,15 @@ final class InvoiceBuilder
 
     public function build(): Invoice
     {
-        return new Invoice(
+        $invoice = new Invoice(
             issuer: $this->issuer,
             receiver: $this->receiver,
             items: $this->items,
             issuedAt: new \DateTimeImmutable,
         );
+
+        $this->validator->validate($invoice);
+
+        return $invoice;
     }
 }
