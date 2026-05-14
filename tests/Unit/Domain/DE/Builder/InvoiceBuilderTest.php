@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Nyxcode\PhpSifenTool\Tests\Unit\Domain\DE\Builder;
 
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Money;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Percentage;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Ruc;
 use Nyxcode\PhpSifenTool\Domain\DE\Builder\InvoiceBuilder;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Issuer;
@@ -28,13 +30,15 @@ final class InvoiceBuilderTest extends TestCase
         $item1 = new Item(
             description: 'Product 1',
             quantity: 2,
-            unitPrice: 10.0,
+            unitPrice: Money::guaranies('10.0'),
+            vatPercentage: new Percentage(10)
         );
 
         $item2 = new Item(
             description: 'Product 2',
             quantity: 1,
-            unitPrice: 20.0,
+            unitPrice: Money::guaranies('20.0'),
+            vatPercentage: new Percentage(10)
         );
 
         $invoice = InvoiceBuilder::make()

@@ -61,7 +61,7 @@ final class InvoiceXmlGenerator implements XmlGeneratorInterface
         $totals = $xml->createElement('gTotSub');
 
         $totals->appendChild(
-            $xml->createElement('dTotGralOpe', (string) $document->total())
+            $xml->createElement('dTotGralOpe', (string) $document->total()->amount())
         );
 
         $de->appendChild($totals);
@@ -85,11 +85,11 @@ final class InvoiceXmlGenerator implements XmlGeneratorInterface
         );
 
         $node->appendChild(
-            $xml->createElement('dPUniProSer', (string) $item->unitPrice())
+            $xml->createElement('dPUniProSer', (string) $item->unitPrice()->amount())
         );
 
         $node->appendChild(
-            $xml->createElement('dTotOpeItem', (string) $item->total())
+            $xml->createElement('dTotOpeItem', (string) $item->total()->amount())
         );
 
         $parent->appendChild($node);

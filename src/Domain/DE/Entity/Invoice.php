@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Nyxcode\PhpSifenTool\Domain\DE\Entity;
 
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Money;
+use Nyxcode\PhpSifenTool\Domain\DE\Calculator\InvoiceTotalsCalculator;
+
 final class Invoice
 {
     /**
@@ -39,12 +42,9 @@ final class Invoice
         return $this->issuedAt;
     }
 
-    public function total(): float
+    public function total(): Money
     {
-        return array_reduce(
-            $this->items,
-            fn (float $carry, Item $item) => $carry + $item->total(),
-            0
-        );
+        return (new InvoiceTotalsCalculator())
+            ->calculate($this);
     }
 }
