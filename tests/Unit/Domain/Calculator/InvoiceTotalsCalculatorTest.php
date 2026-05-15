@@ -2,20 +2,33 @@
 
 declare(strict_types=1);
 
-namespace Nyxcode\PhpSifenTool\Tests\Unit\Domain\DE\Builder;
+namespace Nyxcode\PhpSifenTool\Tests\Unit\Domain\Calculator;
 
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Money;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Percentage;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Ruc;
 use Nyxcode\PhpSifenTool\Domain\DE\Builder\InvoiceBuilder;
+use Nyxcode\PhpSifenTool\Domain\DE\Calculator\InvoiceTotalsCalculator;
+use Nyxcode\PhpSifenTool\Domain\DE\Entity\Invoice;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Issuer;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Item;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Receiver;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-final class InvoiceBuilderTest extends TestCase
+final class InvoiceTotalsCalculatorTest extends TestCase
 {
-    public function test_it_builds_an_invoice(): void
+    #[DataProvider('buildSampleInvoice')]
+    public function test_calculate(Invoice $invoice): void
+    {
+        $calculator = new InvoiceTotalsCalculator;
+
+        $total = $calculator->calculate($invoice);
+
+        $this->assertSame('40', $total->amount());
+    }
+
+    public static function buildSampleInvoice(): array
     {
         $issuer = new Issuer(
             ruc: new Ruc('1234567-9'),
@@ -48,10 +61,8 @@ final class InvoiceBuilderTest extends TestCase
             ->addItem($item2)
             ->build();
 
-        $this->assertSame($issuer, $invoice->issuer());
-        $this->assertSame($receiver, $invoice->receiver());
-        $this->assertCount(2, $invoice->items());
-        $this->assertSame($item1, $invoice->items()[0]);
-        $this->assertSame($item2, $invoice->items()[1]);
+        return [
+            'invoice' => [$invoice],
+        ];
     }
 }
