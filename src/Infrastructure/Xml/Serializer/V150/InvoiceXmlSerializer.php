@@ -7,7 +7,7 @@ namespace Nyxcode\PhpSifenTool\Infrastructure\Xml\Serializer\V150;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Invoice;
 use Nyxcode\PhpSifenTool\Infrastructure\Xml\Contracts\XmlSerializerInterface;
 use Nyxcode\PhpSifenTool\Infrastructure\Xml\Mapper\V150\InvoiceNodeMapper;
-use Nyxcode\PhpSifenTool\Infrastructure\Xml\Writer\DomXmlWriter;
+use Nyxcode\PhpSifenTool\Infrastructure\Xml\Writer\XmlTreeRenderer;
 use Override;
 
 final class InvoiceXmlSerializer implements XmlSerializerInterface
@@ -21,13 +21,14 @@ final class InvoiceXmlSerializer implements XmlSerializerInterface
             );
         }
 
-        $writer = new DomXmlWriter;
-        $writer->startDocument();
-        $writer->createRoot('rDE');
+        if (! $document instanceof Invoice) {
+            throw new \InvalidArgumentException;
+        }
 
-        $mapper = new InvoiceNodeMapper($writer);
-        $mapper->map($document);
+        $tree = (new InvoiceNodeMapper)
+            ->map($document);
 
-        return $writer->toString();
+        return (new XmlTreeRenderer)
+            ->render($tree);
     }
 }

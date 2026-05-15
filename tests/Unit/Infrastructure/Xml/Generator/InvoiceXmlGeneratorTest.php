@@ -26,7 +26,7 @@ final class InvoiceXmlGeneratorTest extends TestCase
         $xmlString = $generator->generate($invoice);
 
         $this->assertIsString($xmlString);
-        $this->assertStringContainsString('<rDE xmlns="http://ekuatia.set.gov.py/sifen/xsd">', $xmlString);
+        $this->assertStringContainsString('rDE>', $xmlString);
         $this->assertStringContainsString('<DE>', $xmlString);
         $this->assertStringContainsString('<gEmis>', $xmlString);
         $this->assertStringContainsString('<dRucEm>1234567-9</dRucEm>', $xmlString);

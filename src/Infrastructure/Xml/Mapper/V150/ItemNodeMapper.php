@@ -6,68 +6,61 @@ namespace Nyxcode\PhpSifenTool\Infrastructure\Xml\Mapper\V150;
 
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Invoice;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Item;
-use Nyxcode\PhpSifenTool\Infrastructure\Xml\Contracts\XmlNodeMapperInterface;
-use Nyxcode\PhpSifenTool\Infrastructure\Xml\Contracts\XmlWriterInterface;
-use Override;
+use Nyxcode\PhpSifenTool\Infrastructure\Xml\Support\XmlElement;
 
-final class ItemNodeMapper implements XmlNodeMapperInterface
+final class ItemNodeMapper
 {
-    public function __construct(
-        private readonly XmlWriterInterface $writer,
-    ) {}
-
-    #[Override]
-    public function map(object $document): void
+    public function mapItems(Invoice $invoice): array
     {
-        if (! $document instanceof Invoice) {
-            throw new \InvalidArgumentException;
-        }
-
-        foreach ($document->items() as $item) {
-            $this->mapItem($item);
-        }
+        return array_map(
+            fn (Item $item) => $this->map($item),
+            $invoice->items()
+        );
     }
 
-    private function mapItem(Item $item): void
+    private function map(Item $item): XmlElement
     {
-        $this->writer->appendNode(
-            'DE',
-            'gCamItem'
+        $node = XmlElement::make('gCamItem');
+
+        $node->addChild(
+            XmlElement::make(
+                'dDesProSer',
+                $item->description()
+            )
         );
 
-        $this->writer->appendNode(
-            'gCamItem',
-            'dDesProSer',
-            $item->description()
+        $node->addChild(
+            XmlElement::make(
+                'dCantProSer',
+                (string) $item->quantity()
+            )
         );
 
-        $this->writer->appendNode(
-            'gCamItem',
-            'dCantProSer',
-            (string) $item->quantity()
+        $node->addChild(
+            XmlElement::make(
+                'dPUniProSer',
+                $item->unitPrice()->amount()
+            )
         );
 
-        $this->writer->appendNode(
-            'gCamItem',
-            'dPUniProSer',
-            $item->unitPrice()->amount()
+        $node->addChild(
+            XmlElement::make(
+                'dTotOpeItem',
+                $item->total()->amount()
+            )
         );
 
-        $this->writer->appendNode(
-            'gCamItem',
-            'dTotOpeItem',
-            $item->total()->amount()
+        $iva = XmlElement::make('gCamIVA');
+
+        $iva->addChild(
+            XmlElement::make(
+                'dTasaIVA',
+                (string) $item->vatPercentage()->value()
+            )
         );
 
-        $this->writer->appendNode(
-            'gCamItem',
-            'gCamIVA'
-        );
+        $node->addChild($iva);
 
-        $this->writer->appendNode(
-            'gCamIVA',
-            'dTasaIVA',
-            (string) $item->vatPercentage()->value()
-        );
+        return $node;
     }
 }
