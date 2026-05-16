@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Nyxcode\PhpSifenTool\Domain\DE\Validator;
 
 use Nyxcode\PhpSifenTool\Domain\Common\Exception\ValidationException;
-use Nyxcode\PhpSifenTool\Domain\DE\Entity\Invoice;
+use Nyxcode\PhpSifenTool\Domain\DE\Entity\ElectronicDocument;
 
 final class InvoiceValidator
 {
-    public function validate(Invoice $invoice): void
+    public function validate(ElectronicDocument $invoice): void
     {
         if (count($invoice->items()) === 0) {
             throw new ValidationException(

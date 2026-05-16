@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Nyxcode\PhpSifenTool\Infrastructure\Xml\Mapper\V150;
 
-use Nyxcode\PhpSifenTool\Domain\DE\Entity\Invoice;
+use Nyxcode\PhpSifenTool\Domain\DE\Entity\ElectronicDocument;
 use Nyxcode\PhpSifenTool\Infrastructure\Xml\Contracts\XmlNodeMapperInterface;
 use Nyxcode\PhpSifenTool\Infrastructure\Xml\Support\XmlElement;
 use Override;
@@ -14,7 +14,7 @@ final class TotalsNodeMapper implements XmlNodeMapperInterface
     #[Override]
     public function map(object $document): XmlElement
     {
-        if (! $document instanceof Invoice) {
+        if (! $document instanceof ElectronicDocument) {
             throw new \InvalidArgumentException;
         }
 
@@ -23,7 +23,7 @@ final class TotalsNodeMapper implements XmlNodeMapperInterface
         $node->addChild(
             XmlElement::make(
                 'dTotGralOpe',
-                $document->total()->amount()
+                $document->totals()->totalAmount()->amount()
             )
         );
 
