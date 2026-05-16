@@ -21,7 +21,6 @@ use Nyxcode\PhpSifenTool\Domain\DE\Entity\Operation;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\PaymentCondition;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Receiver;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\TaxAuthorization;
-use Nyxcode\PhpSifenTool\Domain\DE\Entity\Totals;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\EmissionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationConditionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\PresenceIndicator;

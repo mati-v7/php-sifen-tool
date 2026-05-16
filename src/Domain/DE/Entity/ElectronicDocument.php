@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Nyxcode\PhpSifenTool\Domain\DE\Entity;
 
-use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Money;
 use Nyxcode\PhpSifenTool\Domain\DE\Calculator\InvoiceTotalsCalculator;
 
 final class ElectronicDocument
