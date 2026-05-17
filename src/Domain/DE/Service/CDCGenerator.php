@@ -13,13 +13,17 @@ final class CDCGenerator
         ElectronicDocument $document,
     ): CDC {
         $timbrado = $document->taxAuthorization();
+        $operation = $document->operation();
 
         $value =
-            '01'
+            $timbrado->documentType()->value
             .$document->issuer()->ruc()->value()
             .$timbrado->establishment()->value()
             .$timbrado->expeditionPoint()->value()
-            .$timbrado->documentNumber()->value();
+            .$timbrado->documentNumber()->value()
+            .$document->issuedAt()->format('Ymd')
+            .$operation->emissionType()->value
+            .$operation->securityCode()->value();
 
         return new CDC($value);
     }

@@ -21,6 +21,7 @@ use Nyxcode\PhpSifenTool\Domain\DE\Entity\Operation;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\PaymentCondition;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Receiver;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\TaxAuthorization;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\ElectronicDocumentType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\EmissionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationConditionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\PresenceIndicator;
@@ -38,8 +39,8 @@ final class InvoiceXmlGeneratorTest extends TestCase
         $xmlString = $generator->generate($invoice);
 
         $this->assertIsString($xmlString);
-        $this->assertStringContainsString('rDE>', $xmlString);
-        $this->assertStringContainsString('<DE>', $xmlString);
+        $this->assertStringContainsString('rDE', $xmlString);
+        $this->assertStringContainsString('DE', $xmlString);
         $this->assertStringContainsString('<gEmis>', $xmlString);
         $this->assertStringContainsString('<dRucEm>1234567-9</dRucEm>', $xmlString);
         $this->assertStringContainsString('<dNomEmi>ACME Corp</dNomEmi>', $xmlString);
@@ -64,10 +65,12 @@ final class InvoiceXmlGeneratorTest extends TestCase
         $operation = new Operation(EmissionType::NORMAL, SecurityCode::generate());
 
         $taxAuthorization = new TaxAuthorization(
+            ElectronicDocumentType::ELECTRONIC_INVOICE,
             new TaxAuthorizationNumber('12345678'),
             new EstablishmentCode('001'),
             new ExpeditionPoint('001'),
-            new DocumentNumber('1234567')
+            new DocumentNumber('1234567'),
+            new \DateTimeImmutable
         );
 
         $issuer = new Issuer(

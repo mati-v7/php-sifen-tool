@@ -21,6 +21,7 @@ use Nyxcode\PhpSifenTool\Domain\DE\Entity\Operation;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\PaymentCondition;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Receiver;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\TaxAuthorization;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\ElectronicDocumentType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\EmissionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationConditionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\PresenceIndicator;
@@ -93,10 +94,12 @@ final class InvoiceValidatorTest extends TestCase
     private function taxAuth(): TaxAuthorization
     {
         return new TaxAuthorization(
+            ElectronicDocumentType::ELECTRONIC_INVOICE,
             new TaxAuthorizationNumber('12345678'),
             new EstablishmentCode('001'),
             new ExpeditionPoint('001'),
-            new DocumentNumber('1234567')
+            new DocumentNumber('1234567'),
+            new \DateTimeImmutable
         );
     }
 

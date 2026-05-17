@@ -20,7 +20,7 @@ use Nyxcode\PhpSifenTool\Domain\DE\Entity\Operation;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\PaymentCondition;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Receiver;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\TaxAuthorization;
-use Nyxcode\PhpSifenTool\Domain\DE\Entity\Totals;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\ElectronicDocumentType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\EmissionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationConditionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\PresenceIndicator;
@@ -33,10 +33,12 @@ final class InvoiceBuilderTest extends TestCase
         $operation = new Operation(EmissionType::NORMAL, SecurityCode::generate());
 
         $taxAuthorization = new TaxAuthorization(
+            ElectronicDocumentType::ELECTRONIC_INVOICE,
             new TaxAuthorizationNumber('12345678'),
             new EstablishmentCode('001'),
             new ExpeditionPoint('001'),
-            new DocumentNumber('1234567')
+            new DocumentNumber('1234567'),
+            new \DateTimeImmutable
         );
 
         $issuer = new Issuer(
@@ -64,13 +66,6 @@ final class InvoiceBuilderTest extends TestCase
             quantity: 1,
             unitPrice: Money::guaranies('20.0'),
             vatPercentage: new Percentage(10)
-        );
-        $totals = new Totals(
-            Money::guaranies(0),
-            Money::guaranies(0),
-            Money::guaranies(0),
-            Money::guaranies(0),
-            Money::guaranies(0),
         );
 
         $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
