@@ -4,14 +4,27 @@ declare(strict_types=1);
 
 namespace Nyxcode\PhpSifenTool\Tests\Unit\Infrastructure\Xml\Generator;
 
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\DocumentNumber;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\EstablishmentCode;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\ExpeditionPoint;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Money;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Percentage;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Ruc;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\SecurityCode;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\TaxAuthorizationNumber;
 use Nyxcode\PhpSifenTool\Domain\DE\Builder\InvoiceBuilder;
-use Nyxcode\PhpSifenTool\Domain\DE\Entity\Invoice;
+use Nyxcode\PhpSifenTool\Domain\DE\Entity\ElectronicDocument;
+use Nyxcode\PhpSifenTool\Domain\DE\Entity\InvoiceData;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Issuer;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Item;
+use Nyxcode\PhpSifenTool\Domain\DE\Entity\Operation;
+use Nyxcode\PhpSifenTool\Domain\DE\Entity\PaymentCondition;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Receiver;
+use Nyxcode\PhpSifenTool\Domain\DE\Entity\TaxAuthorization;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\ElectronicDocumentType;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\EmissionType;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationConditionType;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\PresenceIndicator;
 use Nyxcode\PhpSifenTool\Infrastructure\Xml\Generator\InvoiceXmlGenerator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -19,15 +32,15 @@ use PHPUnit\Framework\TestCase;
 final class InvoiceXmlGeneratorTest extends TestCase
 {
     #[DataProvider('buildSampleInvoice')]
-    public function test_generate_with_valid_invoice_returns_xml_string(Invoice $invoice): void
+    public function test_generate_with_valid_invoice_returns_xml_string(ElectronicDocument $invoice): void
     {
         $generator = new InvoiceXmlGenerator;
 
         $xmlString = $generator->generate($invoice);
 
         $this->assertIsString($xmlString);
-        $this->assertStringContainsString('rDE>', $xmlString);
-        $this->assertStringContainsString('<DE>', $xmlString);
+        $this->assertStringContainsString('rDE', $xmlString);
+        $this->assertStringContainsString('DE', $xmlString);
         $this->assertStringContainsString('<gEmis>', $xmlString);
         $this->assertStringContainsString('<dRucEm>1234567-9</dRucEm>', $xmlString);
         $this->assertStringContainsString('<dNomEmi>ACME Corp</dNomEmi>', $xmlString);
@@ -49,6 +62,17 @@ final class InvoiceXmlGeneratorTest extends TestCase
 
     public static function buildSampleInvoice(): array
     {
+        $operation = new Operation(EmissionType::NORMAL, SecurityCode::generate());
+
+        $taxAuthorization = new TaxAuthorization(
+            ElectronicDocumentType::ELECTRONIC_INVOICE,
+            new TaxAuthorizationNumber('12345678'),
+            new EstablishmentCode('001'),
+            new ExpeditionPoint('001'),
+            new DocumentNumber('1234567'),
+            new \DateTimeImmutable
+        );
+
         $issuer = new Issuer(
             ruc: new Ruc('1234567-9'),
             name: 'ACME Corp',
@@ -58,6 +82,9 @@ final class InvoiceXmlGeneratorTest extends TestCase
             documentNumber: '987654321',
             name: 'John Doe',
         );
+
+        $paymentCondition = new PaymentCondition(OperationConditionType::CASH);
+        $invoiceData = new InvoiceData(PresenceIndicator::IN_PERSON);
 
         $item1 = new Item(
             description: 'Product 1',
@@ -73,9 +100,13 @@ final class InvoiceXmlGeneratorTest extends TestCase
             vatPercentage: new Percentage(10)
         );
 
-        $invoice = InvoiceBuilder::make()
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($operation)
+            ->taxAuthorization($taxAuthorization)
             ->issuer($issuer)
             ->receiver($receiver)
+            ->invoiceData($invoiceData)
+            ->paymentCondition($paymentCondition)
             ->addItem($item1)
             ->addItem($item2)
             ->build();

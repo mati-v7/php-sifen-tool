@@ -9,29 +9,28 @@ use Nyxcode\PhpSifenTool\Infrastructure\Xml\Contracts\XmlNodeMapperInterface;
 use Nyxcode\PhpSifenTool\Infrastructure\Xml\Support\XmlElement;
 use Override;
 
-final class ReceiverNodeMapper implements XmlNodeMapperInterface
+final class GeneralOperationDataNodeMapper implements XmlNodeMapperInterface
 {
     #[Override]
-    public function map(object $document): XmlElement
+    public function map(ElectronicDocument $document): XmlElement
     {
-        if (! $document instanceof ElectronicDocument) {
-            throw new \InvalidArgumentException;
-        }
-
-        $node = XmlElement::make('gDatRec');
+        $node = XmlElement::make('gDatGralOpe');
 
         $node->addChild(
             XmlElement::make(
-                'dNumIDRec',
-                $document->receiver()->documentNumber()
+                'dFeEmiDE',
+                $document->issuedAt()->format('Y-m-d\TH:i:s')
             )
         );
 
         $node->addChild(
-            XmlElement::make(
-                'dNomRec',
-                $document->receiver()->name()
-            )
+            (new IssuerNodeMapper)
+                ->map($document)
+        );
+
+        $node->addChild(
+            (new ReceiverNodeMapper)
+                ->map($document)
         );
 
         return $node;

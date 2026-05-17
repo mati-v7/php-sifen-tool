@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Nyxcode\PhpSifenTool\Infrastructure\Xml\Mapper\V150;
 
-use Nyxcode\PhpSifenTool\Domain\DE\Entity\Invoice;
+use Nyxcode\PhpSifenTool\Domain\DE\Entity\ElectronicDocument;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Item;
 use Nyxcode\PhpSifenTool\Infrastructure\Xml\Support\XmlElement;
 
 final class ItemNodeMapper
 {
-    public function mapItems(Invoice $invoice): array
+    public function mapItems(ElectronicDocument $invoice): array
     {
         return array_map(
             fn (Item $item) => $this->map($item),
