@@ -14,7 +14,6 @@ use PHPUnit\Framework\TestCase;
 
 final class ItemVatCalculatorTest extends TestCase
 {
-
     public function test_calculates_taxable_base_for_10_percent_vat(): void
     {
         $item = new Item(
@@ -28,7 +27,7 @@ final class ItemVatCalculatorTest extends TestCase
             )
         );
 
-        $calculator = new ItemVatCalculator();
+        $calculator = new ItemVatCalculator;
         $base = $calculator->taxableBase($item);
 
         $this->assertEquals(100000, $base->amount());
@@ -47,7 +46,7 @@ final class ItemVatCalculatorTest extends TestCase
             )
         );
 
-        $calculator = new ItemVatCalculator();
+        $calculator = new ItemVatCalculator;
         $base = $calculator->taxableBase($item);
 
         $this->assertEquals(100000, $base->amount());
@@ -66,7 +65,7 @@ final class ItemVatCalculatorTest extends TestCase
             )
         );
 
-        $calculator = new ItemVatCalculator();
+        $calculator = new ItemVatCalculator;
         $base = $calculator->taxableBase($item);
 
         $this->assertEquals(0, $base->amount());
@@ -85,7 +84,7 @@ final class ItemVatCalculatorTest extends TestCase
             )
         );
 
-        $calculator = new ItemVatCalculator();
+        $calculator = new ItemVatCalculator;
 
         $base = $calculator->taxableBase($item);
 
@@ -109,7 +108,7 @@ final class ItemVatCalculatorTest extends TestCase
             )
         );
 
-        $calculator = new ItemVatCalculator();
+        $calculator = new ItemVatCalculator;
 
         $vatAmount = $calculator->vatAmount($item);
 
