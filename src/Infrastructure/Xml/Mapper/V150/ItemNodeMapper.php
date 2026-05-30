@@ -13,7 +13,7 @@ final class ItemNodeMapper
     public function mapItems(ElectronicDocument $invoice): array
     {
         return array_map(
-            fn(Item $item) => $this->map($item),
+            fn (Item $item) => $this->map($item),
             $invoice->items()
         );
     }
