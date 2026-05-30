@@ -7,6 +7,7 @@ namespace Nyxcode\PhpSifenTool\Tests\Unit\Domain\Calculator;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\DocumentNumber;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\EstablishmentCode;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\ExpeditionPoint;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\ItemVat;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Money;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Percentage;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Ruc;
@@ -27,6 +28,7 @@ use Nyxcode\PhpSifenTool\Domain\DE\Enum\ElectronicDocumentType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\EmissionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationConditionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\PresenceIndicator;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\VatTreatment;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -73,14 +75,22 @@ final class InvoiceTotalsCalculatorTest extends TestCase
             description: 'Product 1',
             quantity: 2,
             unitPrice: Money::guaranies('10.0'),
-            vatPercentage: new Percentage(10)
+            vat: new ItemVat(
+                tratment: VatTreatment::VAT_TAXABLE,
+                rate: new Percentage(10),
+                taxableProportion: new Percentage(100)
+            )
         );
 
         $item2 = new Item(
             description: 'Product 2',
             quantity: 1,
             unitPrice: Money::guaranies('20.0'),
-            vatPercentage: new Percentage(10)
+            vat: new ItemVat(
+                tratment: VatTreatment::VAT_TAXABLE,
+                rate: new Percentage(10),
+                taxableProportion: new Percentage(100)
+            )
         );
 
         $totals = new Totals(

@@ -8,6 +8,7 @@ use Nyxcode\PhpSifenTool\Domain\Common\Exception\ValidationException;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\DocumentNumber;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\EstablishmentCode;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\ExpeditionPoint;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\ItemVat;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Money;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Percentage;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Ruc;
@@ -25,6 +26,7 @@ use Nyxcode\PhpSifenTool\Domain\DE\Enum\ElectronicDocumentType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\EmissionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationConditionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\PresenceIndicator;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\VatTreatment;
 use Nyxcode\PhpSifenTool\Domain\DE\Validator\InvoiceValidator;
 use PHPUnit\Framework\TestCase;
 
@@ -135,7 +137,11 @@ final class InvoiceValidatorTest extends TestCase
             description: 'Product',
             quantity: $quantity,
             unitPrice: Money::guaranies((string) $unitPrice),
-            vatPercentage: new Percentage(10)
+            vat: new ItemVat(
+                tratment: VatTreatment::VAT_TAXABLE,
+                rate: new Percentage(10),
+                taxableProportion: new Percentage(100)
+            )
         );
     }
 }

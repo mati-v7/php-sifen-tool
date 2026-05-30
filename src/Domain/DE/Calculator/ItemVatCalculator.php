@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Nyxcode\PhpSifenTool\Domain\DE\Service;
+namespace Nyxcode\PhpSifenTool\Domain\DE\Calculator;
 
 use Brick\Math\BigDecimal;
 use DomainException;
