@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Nyxcode\PhpSifenTool\Domain\DE\Entity;
 
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\ItemVat;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Money;
-use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Percentage;
 
 final class Item
 {
@@ -13,7 +13,7 @@ final class Item
         private readonly string $description,
         private readonly float $quantity,
         private readonly Money $unitPrice,
-        private readonly Percentage $vatPercentage,
+        private readonly ItemVat $vat,
     ) {}
 
     public function description(): string
@@ -31,9 +31,9 @@ final class Item
         return $this->unitPrice;
     }
 
-    public function vatPercentage(): Percentage
+    public function vat(): ItemVat
     {
-        return $this->vatPercentage;
+        return $this->vat;
     }
 
     public function total(): Money

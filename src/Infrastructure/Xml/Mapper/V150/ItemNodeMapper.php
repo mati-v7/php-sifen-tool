@@ -55,7 +55,7 @@ final class ItemNodeMapper
         $iva->addChild(
             XmlElement::make(
                 'dTasaIVA',
-                (string) $item->vatPercentage()->value()
+                (string) $item->vat()->rate()->value()
             )
         );
 

@@ -16,6 +16,7 @@
     ],
     "require": {
         "php": "^8.4",
+        "brick/math": "^0.14.8",
         "moneyphp/money": "^4.9"
     },
     "require-dev": {
