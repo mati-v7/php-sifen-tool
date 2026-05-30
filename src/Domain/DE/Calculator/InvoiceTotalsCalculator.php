@@ -44,11 +44,13 @@ final class InvoiceTotalsCalculator
 
             if ($vat->tratment() === VatTreatment::VAT_EXEMPT) {
                 $exemptSubtotal = $exemptSubtotal->add($itemTotal);
+
                 continue;
             }
 
             if ($vat->tratment() === VatTreatment::VAT_EXONERATED) {
                 $exoneratedSubtotal = $exoneratedSubtotal->add($itemTotal);
+
                 continue;
             }
 

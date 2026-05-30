@@ -69,6 +69,7 @@ final class ElectronicDocument
     public function totals(): Totals
     {
         $calculator = new InvoiceTotalsCalculator(new ItemVatCalculator);
+
         return $calculator->calculate($this);
     }
 }
