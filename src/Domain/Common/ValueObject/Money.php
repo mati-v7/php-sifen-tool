@@ -36,6 +36,16 @@ final class Money
         );
     }
 
+    public static function zero(string $currency): self
+    {
+        return new self(
+            new BaseMoney(
+                '0',
+                new Currency($currency)
+            )
+        );
+    }
+
     public function add(self $money): self
     {
         return new self(

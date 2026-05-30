@@ -15,6 +15,7 @@ use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\SecurityCode;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\TaxAuthorizationNumber;
 use Nyxcode\PhpSifenTool\Domain\DE\Builder\InvoiceBuilder;
 use Nyxcode\PhpSifenTool\Domain\DE\Calculator\InvoiceTotalsCalculator;
+use Nyxcode\PhpSifenTool\Domain\DE\Calculator\ItemVatCalculator;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\ElectronicDocument;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\InvoiceData;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Issuer;
@@ -23,7 +24,6 @@ use Nyxcode\PhpSifenTool\Domain\DE\Entity\Operation;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\PaymentCondition;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Receiver;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\TaxAuthorization;
-use Nyxcode\PhpSifenTool\Domain\DE\Entity\Totals;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\ElectronicDocumentType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\EmissionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationConditionType;
@@ -37,11 +37,13 @@ final class InvoiceTotalsCalculatorTest extends TestCase
     #[DataProvider('buildSampleInvoice')]
     public function test_calculate(ElectronicDocument $invoice): void
     {
-        $calculator = new InvoiceTotalsCalculator;
+        $calculator = new InvoiceTotalsCalculator(
+            new ItemVatCalculator
+        );
 
-        $total = $calculator->calculateTotalAmount($invoice);
+        $total = $calculator->calculate($invoice);
 
-        $this->assertSame('40', $total->amount());
+        $this->assertSame('40', $total->totalOperation()->amount());
     }
 
     public static function buildSampleInvoice(): array
@@ -91,14 +93,6 @@ final class InvoiceTotalsCalculatorTest extends TestCase
                 rate: new Percentage(10),
                 taxableProportion: new Percentage(100)
             )
-        );
-
-        $totals = new Totals(
-            Money::guaranies(0),
-            Money::guaranies(0),
-            Money::guaranies(0),
-            Money::guaranies(0),
-            Money::guaranies(0),
         );
 
         $invoice = InvoiceBuilder::make(new \DateTimeImmutable)

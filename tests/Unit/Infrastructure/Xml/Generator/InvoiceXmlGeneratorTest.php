@@ -52,14 +52,14 @@ final class InvoiceXmlGeneratorTest extends TestCase
         $this->assertStringContainsString('<gCamItem>', $xmlString);
         $this->assertStringContainsString('<dDesProSer>Product 1</dDesProSer>', $xmlString);
         $this->assertStringContainsString('<dCantProSer>2</dCantProSer>', $xmlString);
-        $this->assertStringContainsString('<dPUniProSer>10</dPUniProSer>', $xmlString);
-        $this->assertStringContainsString('<dTotOpeItem>20</dTotOpeItem>', $xmlString);
+        $this->assertStringContainsString('<dPUniProSer>110000</dPUniProSer>', $xmlString);
+        $this->assertStringContainsString('<dTotOpeItem>220000</dTotOpeItem>', $xmlString);
         $this->assertStringContainsString('<dDesProSer>Product 2</dDesProSer>', $xmlString);
         $this->assertStringContainsString('<dCantProSer>1</dCantProSer>', $xmlString);
-        $this->assertStringContainsString('<dPUniProSer>20</dPUniProSer>', $xmlString);
-        $this->assertStringContainsString('<dTotOpeItem>20</dTotOpeItem>', $xmlString);
+        $this->assertStringContainsString('<dPUniProSer>150000</dPUniProSer>', $xmlString);
+        $this->assertStringContainsString('<dTotOpeItem>150000</dTotOpeItem>', $xmlString);
         $this->assertStringContainsString('<gTotSub>', $xmlString);
-        $this->assertStringContainsString('<dTotGralOpe>40</dTotGralOpe>', $xmlString);
+        $this->assertStringContainsString('<dTotGralOpe>480000</dTotGralOpe>', $xmlString);
     }
 
     public static function buildSampleInvoice(): array
@@ -91,7 +91,7 @@ final class InvoiceXmlGeneratorTest extends TestCase
         $item1 = new Item(
             description: 'Product 1',
             quantity: 2,
-            unitPrice: Money::guaranies('10.0'),
+            unitPrice: Money::guaranies('110000.0'),
             vat: new ItemVat(
                 tratment: VatTreatment::VAT_TAXABLE,
                 rate: new Percentage(10),
@@ -102,11 +102,22 @@ final class InvoiceXmlGeneratorTest extends TestCase
         $item2 = new Item(
             description: 'Product 2',
             quantity: 1,
-            unitPrice: Money::guaranies('20.0'),
+            unitPrice: Money::guaranies('150000.0'),
             vat: new ItemVat(
                 tratment: VatTreatment::VAT_TAXABLE,
-                rate: new Percentage(10),
+                rate: new Percentage(5),
                 taxableProportion: new Percentage(100)
+            )
+        );
+
+        $item3 = new Item(
+            description: 'Product 3',
+            quantity: 1,
+            unitPrice: Money::guaranies('110000.0'),
+            vat: new ItemVat(
+                tratment: VatTreatment::VAT_EXEMPT,
+                rate: new Percentage(0),
+                taxableProportion: new Percentage(0)
             )
         );
 
@@ -119,6 +130,7 @@ final class InvoiceXmlGeneratorTest extends TestCase
             ->paymentCondition($paymentCondition)
             ->addItem($item1)
             ->addItem($item2)
+            ->addItem($item3)
             ->build();
 
         return [

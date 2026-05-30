@@ -18,12 +18,62 @@ final class TotalsNodeMapper implements XmlNodeMapperInterface
             throw new \InvalidArgumentException;
         }
 
+        $totals = $document->totals();
         $node = XmlElement::make('gTotSub');
 
         $node->addChild(
             XmlElement::make(
+                'dSubExe',
+                $totals->exemptSubtotal()->amount()
+            )
+        );
+
+        $node->addChild(
+            XmlElement::make(
+                'dSubExo',
+                $totals->exoneratedSubtotal()->amount()
+            )
+        );
+
+        $node->addChild(
+            XmlElement::make(
+                'dSub5',
+                $totals->taxableSubtotal5()->amount()
+            )
+        );
+
+        $node->addChild(
+            XmlElement::make(
+                'dSub10',
+                $totals->taxableSubtotal10()->amount()
+            )
+        );
+
+        $node->addChild(
+            XmlElement::make(
+                'dIVA5',
+                $totals->vat5()->amount()
+            )
+        );
+
+        $node->addChild(
+            XmlElement::make(
+                'dIVA10',
+                $totals->vat10()->amount()
+            )
+        );
+
+        $node->addChild(
+            XmlElement::make(
+                'dTotIVA',
+                $totals->totalVat()->amount()
+            )
+        );
+
+        $node->addChild(
+            XmlElement::make(
                 'dTotGralOpe',
-                $document->totals()->totalAmount()->amount()
+                $totals->totalOperation()->amount()
             )
         );
 

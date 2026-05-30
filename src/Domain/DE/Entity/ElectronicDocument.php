@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Nyxcode\PhpSifenTool\Domain\DE\Entity;
 
 use Nyxcode\PhpSifenTool\Domain\DE\Calculator\InvoiceTotalsCalculator;
+use Nyxcode\PhpSifenTool\Domain\DE\Calculator\ItemVatCalculator;
 
 final class ElectronicDocument
 {
@@ -67,14 +68,8 @@ final class ElectronicDocument
 
     public function totals(): Totals
     {
-        $calculator = new InvoiceTotalsCalculator;
+        $calculator = new InvoiceTotalsCalculator(new ItemVatCalculator);
 
-        return new Totals(
-            $calculator->calculateTotalAmount($this),
-            null,
-            null,
-            null,
-            null,
-        );
+        return $calculator->calculate($this);
     }
 }
