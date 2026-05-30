@@ -9,35 +9,53 @@ use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Money;
 final class Totals
 {
     public function __construct(
-        private readonly Money $totalAmount,
-        private readonly ?Money $taxableAmount10,
-        private readonly ?Money $taxableAmount5,
-        private readonly ?Money $vatAmount10,
-        private readonly ?Money $vatAmount5,
+        private Money $exemptSubtotal,
+        private Money $exoneratedSubtotal,
+        private Money $taxableSubtotal5,
+        private Money $taxableSubtotal10,
+        private Money $totalOperation,
+        private Money $vat5,
+        private Money $vat10,
+        private Money $totalVat,
     ) {}
 
-    public function taxableAmount10(): ?Money
+    public function exemptSubtotal(): Money
     {
-        return $this->taxableAmount10;
+        return $this->exemptSubtotal;
     }
 
-    public function taxableAmount5(): ?Money
+    public function exoneratedSubtotal(): Money
     {
-        return $this->taxableAmount5;
+        return $this->exoneratedSubtotal;
     }
 
-    public function vatAmount10(): ?Money
+    public function taxableSubtotal5(): Money
     {
-        return $this->vatAmount10;
+        return $this->taxableSubtotal5;
     }
 
-    public function vatAmount5(): ?Money
+    public function taxableSubtotal10(): Money
     {
-        return $this->vatAmount5;
+        return $this->taxableSubtotal10;
     }
 
-    public function totalAmount(): Money
+    public function vat5(): Money
     {
-        return $this->totalAmount;
+        return $this->vat5;
+    }
+
+    public function vat10(): Money
+    {
+        return $this->vat10;
+    }
+
+    public function totalVat(): Money
+    {
+        return $this->totalVat;
+    }
+
+    public function totalOperation(): Money
+    {
+        return $this->totalOperation;
     }
 }
