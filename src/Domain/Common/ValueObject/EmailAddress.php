@@ -9,7 +9,7 @@ final readonly class EmailAddress
     public function __construct(
         private string $value,
     ) {
-        # TODO: Implement email validations
+        // TODO: Implement email validations
     }
 
     public function value(): string

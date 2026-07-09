@@ -17,7 +17,7 @@ final class Ruc
         }
 
         if ($checkDigit < 0 || $checkDigit > 9) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'Check Digit must be between 0 and 9.'
             );
         }
