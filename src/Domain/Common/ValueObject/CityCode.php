@@ -7,17 +7,11 @@ namespace Nyxcode\PhpSifenTool\Domain\Common\ValueObject;
 final readonly class CityCode
 {
     public function __construct(
-        private int $code,
-        private string $description,
+        private int $code
     ) {}
 
-    public function code(): int
+    public function value(): int
     {
         return $this->code;
-    }
-
-    public function description(): string
-    {
-        return $this->description;
     }
 }

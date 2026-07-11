@@ -1,0 +1,1262 @@
+[
+    {
+        "code": "1",
+        "name": "ASUNCION (DISTRITO)",
+        "department": "1"
+    },
+    {
+        "code": "2",
+        "name": "CONCEPCION (MUNICIPIO)",
+        "department": "2"
+    },
+    {
+        "code": "3",
+        "name": "SAN LAZARO",
+        "department": "2"
+    },
+    {
+        "code": "4",
+        "name": "SAN CARLOS",
+        "department": "2"
+    },
+    {
+        "code": "5",
+        "name": "BELEN",
+        "department": "2"
+    },
+    {
+        "code": "6",
+        "name": "LORETO",
+        "department": "2"
+    },
+    {
+        "code": "7",
+        "name": "HORQUETA",
+        "department": "2"
+    },
+    {
+        "code": "8",
+        "name": "SAN SALVADOR",
+        "department": "2"
+    },
+    {
+        "code": "9",
+        "name": "YBY YAU",
+        "department": "2"
+    },
+    {
+        "code": "10",
+        "name": "SAN PEDRO DE YCUAMANDYYU",
+        "department": "3"
+    },
+    {
+        "code": "11",
+        "name": "ANTEQUERA",
+        "department": "3"
+    },
+    {
+        "code": "12",
+        "name": "GRAL. E.AQUINO",
+        "department": "3"
+    },
+    {
+        "code": "13",
+        "name": "ITACURUBI DEL ROSARIO",
+        "department": "3"
+    },
+    {
+        "code": "14",
+        "name": "SAN ESTANISLAO (SANTANI)",
+        "department": "3"
+    },
+    {
+        "code": "15",
+        "name": "LIMA",
+        "department": "3"
+    },
+    {
+        "code": "16",
+        "name": "NUEVA GERMANIA",
+        "department": "3"
+    },
+    {
+        "code": "17",
+        "name": "TACUATI",
+        "department": "3"
+    },
+    {
+        "code": "18",
+        "name": "UNION",
+        "department": "3"
+    },
+    {
+        "code": "19",
+        "name": "25 DE DICIEMBRE",
+        "department": "3"
+    },
+    {
+        "code": "20",
+        "name": "VILLA DEL ROSARIO",
+        "department": "3"
+    },
+    {
+        "code": "21",
+        "name": "YATAITY DEL NORTE",
+        "department": "3"
+    },
+    {
+        "code": "22",
+        "name": "ISIDORO RESQUIN",
+        "department": "3"
+    },
+    {
+        "code": "23",
+        "name": "CHORE",
+        "department": "3"
+    },
+    {
+        "code": "24",
+        "name": "SAN PABLO",
+        "department": "3"
+    },
+    {
+        "code": "25",
+        "name": "SAN JOSE DEL ROSARIO",
+        "department": "3"
+    },
+    {
+        "code": "26",
+        "name": "CAACUPE",
+        "department": "4"
+    },
+    {
+        "code": "27",
+        "name": "ALTOS",
+        "department": "4"
+    },
+    {
+        "code": "28",
+        "name": "ARROYOS Y ESTEROS",
+        "department": "4"
+    },
+    {
+        "code": "29",
+        "name": "ATYRA",
+        "department": "4"
+    },
+    {
+        "code": "30",
+        "name": "CARAGUATAY",
+        "department": "4"
+    },
+    {
+        "code": "31",
+        "name": "EMBOSCADA",
+        "department": "4"
+    },
+    {
+        "code": "32",
+        "name": "EUSEBIO AYALA",
+        "department": "4"
+    },
+    {
+        "code": "33",
+        "name": "ISLA PUCU",
+        "department": "4"
+    },
+    {
+        "code": "34",
+        "name": "ITACURUBI DE LA CORDILLERA",
+        "department": "4"
+    },
+    {
+        "code": "35",
+        "name": "JUAN DE MENA",
+        "department": "4"
+    },
+    {
+        "code": "36",
+        "name": "NUEVA COLOMBIA",
+        "department": "4"
+    },
+    {
+        "code": "37",
+        "name": "PIRIBEBUY",
+        "department": "4"
+    },
+    {
+        "code": "38",
+        "name": "1RO.DE MARZO",
+        "department": "4"
+    },
+    {
+        "code": "39",
+        "name": "SAN BERNARDINO",
+        "department": "4"
+    },
+    {
+        "code": "40",
+        "name": "SANTA ELENA",
+        "department": "4"
+    },
+    {
+        "code": "41",
+        "name": "TOBATI",
+        "department": "4"
+    },
+    {
+        "code": "42",
+        "name": "VALENZUELA",
+        "department": "4"
+    },
+    {
+        "code": "43",
+        "name": "LOMA GRANDE",
+        "department": "4"
+    },
+    {
+        "code": "44",
+        "name": "SAN JOSE OBRERO",
+        "department": "4"
+    },
+    {
+        "code": "45",
+        "name": "VILLARRICA",
+        "department": "5"
+    },
+    {
+        "code": "46",
+        "name": "SAN SALVADOR",
+        "department": "5"
+    },
+    {
+        "code": "47",
+        "name": "BORJA",
+        "department": "5"
+    },
+    {
+        "code": "48",
+        "name": "INDEPENDENCIA (R.D.MELGAREJO)",
+        "department": "5"
+    },
+    {
+        "code": "49",
+        "name": "GRAL.EUGENIO A. GARAY",
+        "department": "5"
+    },
+    {
+        "code": "50",
+        "name": "CNEL. MARTINEZ",
+        "department": "5"
+    },
+    {
+        "code": "51",
+        "name": "JOSE FASSARDI",
+        "department": "5"
+    },
+    {
+        "code": "52",
+        "name": "FELIX PEREZ CARDOZO",
+        "department": "5"
+    },
+    {
+        "code": "53",
+        "name": "MAURICIO JOSE TROCHE",
+        "department": "5"
+    },
+    {
+        "code": "54",
+        "name": "ITAPE",
+        "department": "5"
+    },
+    {
+        "code": "55",
+        "name": "ITURBE",
+        "department": "5"
+    },
+    {
+        "code": "56",
+        "name": "MBOCAYATY",
+        "department": "5"
+    },
+    {
+        "code": "57",
+        "name": "NATALICIO TALAVERA",
+        "department": "5"
+    },
+    {
+        "code": "58",
+        "name": "ÑUMI",
+        "department": "5"
+    },
+    {
+        "code": "59",
+        "name": "YATAITY",
+        "department": "5"
+    },
+    {
+        "code": "60",
+        "name": "DR. BOTREL",
+        "department": "5"
+    },
+    {
+        "code": "61",
+        "name": "CNEL. OVIEDO",
+        "department": "6"
+    },
+    {
+        "code": "62",
+        "name": "CAAGUAZU",
+        "department": "6"
+    },
+    {
+        "code": "63",
+        "name": "CARAYAO",
+        "department": "6"
+    },
+    {
+        "code": "64",
+        "name": "CECILIO BAEZ",
+        "department": "6"
+    },
+    {
+        "code": "65",
+        "name": "NUEVA LONDRES",
+        "department": "6"
+    },
+    {
+        "code": "66",
+        "name": "SAN JOAQUIN",
+        "department": "6"
+    },
+    {
+        "code": "67",
+        "name": "SAN JOSE DE LOS ARROYOS",
+        "department": "6"
+    },
+    {
+        "code": "68",
+        "name": "YHU",
+        "department": "6"
+    },
+    {
+        "code": "69",
+        "name": "JUAN MANUEL FRUTOS",
+        "department": "6"
+    },
+    {
+        "code": "70",
+        "name": "REPATRIACION",
+        "department": "6"
+    },
+    {
+        "code": "71",
+        "name": "SANTA ROSA DEL MBUTUY",
+        "department": "6"
+    },
+    {
+        "code": "72",
+        "name": "J. EULOGIO ESTIGARRIBIA",
+        "department": "6"
+    },
+    {
+        "code": "73",
+        "name": "JOSE D. OCAMPOS",
+        "department": "6"
+    },
+    {
+        "code": "74",
+        "name": "R.I.3 CORRALES",
+        "department": "6"
+    },
+    {
+        "code": "75",
+        "name": "RAUL A. OVIEDO",
+        "department": "6"
+    },
+    {
+        "code": "76",
+        "name": "MCAL.F.SOLANO LOPEZ",
+        "department": "6"
+    },
+    {
+        "code": "77",
+        "name": "CAAZAPA",
+        "department": "7"
+    },
+    {
+        "code": "78",
+        "name": "BUENA VISTA",
+        "department": "7"
+    },
+    {
+        "code": "79",
+        "name": "GRAL. H. MORINIGO",
+        "department": "7"
+    },
+    {
+        "code": "80",
+        "name": "MACIEL",
+        "department": "7"
+    },
+    {
+        "code": "81",
+        "name": "MOISES BERTONI",
+        "department": "7"
+    },
+    {
+        "code": "82",
+        "name": "SAN JUAN NEPOMUCENO",
+        "department": "7"
+    },
+    {
+        "code": "83",
+        "name": "ABAI",
+        "department": "7"
+    },
+    {
+        "code": "84",
+        "name": "TAVAI",
+        "department": "7"
+    },
+    {
+        "code": "85",
+        "name": "YEGROS",
+        "department": "7"
+    },
+    {
+        "code": "86",
+        "name": "YUTY",
+        "department": "7"
+    },
+    {
+        "code": "87",
+        "name": "ENCARNACION",
+        "department": "8"
+    },
+    {
+        "code": "88",
+        "name": "BELLA VISTA",
+        "department": "8"
+    },
+    {
+        "code": "89",
+        "name": "CAMBYRETA",
+        "department": "8"
+    },
+    {
+        "code": "90",
+        "name": "CAPITAN MEZA",
+        "department": "8"
+    },
+    {
+        "code": "91",
+        "name": "CARMEN DEL PARANA",
+        "department": "8"
+    },
+    {
+        "code": "92",
+        "name": "CAPITAN MIRANDA",
+        "department": "8"
+    },
+    {
+        "code": "93",
+        "name": "CORONEL BOGADO",
+        "department": "8"
+    },
+    {
+        "code": "94",
+        "name": "FRAM",
+        "department": "8"
+    },
+    {
+        "code": "95",
+        "name": "GRAL. ARTIGAS",
+        "department": "8"
+    },
+    {
+        "code": "96",
+        "name": "GRAL. DELGADO",
+        "department": "8"
+    },
+    {
+        "code": "97",
+        "name": "HOHENAU",
+        "department": "8"
+    },
+    {
+        "code": "98",
+        "name": "JESUS",
+        "department": "8"
+    },
+    {
+        "code": "99",
+        "name": "OBLIGADO",
+        "department": "8"
+    },
+    {
+        "code": "100",
+        "name": "SAN COSME Y DAMIAN",
+        "department": "8"
+    },
+    {
+        "code": "101",
+        "name": "SAN PEDRO DEL PARANA",
+        "department": "8"
+    },
+    {
+        "code": "102",
+        "name": "NUEVA ALBORADA",
+        "department": "8"
+    },
+    {
+        "code": "103",
+        "name": "TRINIDAD",
+        "department": "8"
+    },
+    {
+        "code": "104",
+        "name": "NATALIO",
+        "department": "8"
+    },
+    {
+        "code": "105",
+        "name": "JOSE LEANDRO OVIEDO",
+        "department": "8"
+    },
+    {
+        "code": "106",
+        "name": "SAN RAFAEL DEL PARANA",
+        "department": "8"
+    },
+    {
+        "code": "107",
+        "name": "CARLOS A. LOPEZ",
+        "department": "8"
+    },
+    {
+        "code": "108",
+        "name": "JULIO D. OTAÑO",
+        "department": "8"
+    },
+    {
+        "code": "109",
+        "name": "EDELIRA",
+        "department": "8"
+    },
+    {
+        "code": "110",
+        "name": "SAN JUAN DEL PARANA",
+        "department": "8"
+    },
+    {
+        "code": "111",
+        "name": "LA PAZ",
+        "department": "8"
+    },
+    {
+        "code": "112",
+        "name": "TOMAS R. PEREIRA",
+        "department": "8"
+    },
+    {
+        "code": "113",
+        "name": "YATYTAY",
+        "department": "8"
+    },
+    {
+        "code": "114",
+        "name": "HERIBERTA S.DE IGLESIAS",
+        "department": "8"
+    },
+    {
+        "code": "115",
+        "name": "SAN JUAN BAUTISTA",
+        "department": "9"
+    },
+    {
+        "code": "116",
+        "name": "AYOLAS",
+        "department": "9"
+    },
+    {
+        "code": "117",
+        "name": "SAN IGNACIO",
+        "department": "9"
+    },
+    {
+        "code": "118",
+        "name": "SAN MIGUEL",
+        "department": "9"
+    },
+    {
+        "code": "119",
+        "name": "SAN PATRICIO",
+        "department": "9"
+    },
+    {
+        "code": "120",
+        "name": "SANTIAGO",
+        "department": "9"
+    },
+    {
+        "code": "121",
+        "name": "SANTA MARIA",
+        "department": "9"
+    },
+    {
+        "code": "122",
+        "name": "SANTA ROSA",
+        "department": "9"
+    },
+    {
+        "code": "123",
+        "name": "VILLA FLORIDA",
+        "department": "9"
+    },
+    {
+        "code": "124",
+        "name": "YABEBYRY",
+        "department": "9"
+    },
+    {
+        "code": "125",
+        "name": "PARAGUARI",
+        "department": "10"
+    },
+    {
+        "code": "126",
+        "name": "ACAHAY",
+        "department": "10"
+    },
+    {
+        "code": "127",
+        "name": "CAAPUCU",
+        "department": "10"
+    },
+    {
+        "code": "128",
+        "name": "CABALLERO",
+        "department": "10"
+    },
+    {
+        "code": "129",
+        "name": "CARAPEGUA",
+        "department": "10"
+    },
+    {
+        "code": "130",
+        "name": "LA COLMENA",
+        "department": "10"
+    },
+    {
+        "code": "131",
+        "name": "ESCOBAR",
+        "department": "10"
+    },
+    {
+        "code": "132",
+        "name": "MBUYAPEY",
+        "department": "10"
+    },
+    {
+        "code": "133",
+        "name": "PIRAYU",
+        "department": "10"
+    },
+    {
+        "code": "134",
+        "name": "QUIINDY",
+        "department": "10"
+    },
+    {
+        "code": "135",
+        "name": "ROQUE GONZALEZ",
+        "department": "10"
+    },
+    {
+        "code": "136",
+        "name": "SAPUCAI",
+        "department": "10"
+    },
+    {
+        "code": "137",
+        "name": "YBYCUI",
+        "department": "10"
+    },
+    {
+        "code": "138",
+        "name": "QUYQUYHO",
+        "department": "10"
+    },
+    {
+        "code": "139",
+        "name": "YBYTYMI",
+        "department": "10"
+    },
+    {
+        "code": "140",
+        "name": "TEBICUARY MI",
+        "department": "10"
+    },
+    {
+        "code": "141",
+        "name": "YAGUARON",
+        "department": "10"
+    },
+    {
+        "code": "142",
+        "name": "HERNANDARIAS",
+        "department": "11"
+    },
+    {
+        "code": "143",
+        "name": "DOMINGO MARTINEZ DE IRALA",
+        "department": "11"
+    },
+    {
+        "code": "144",
+        "name": "ÑACUNDAY",
+        "department": "11"
+    },
+    {
+        "code": "145",
+        "name": "CIUDAD DEL ESTE",
+        "department": "11"
+    },
+    {
+        "code": "146",
+        "name": "JUAN LEON MALLORQUIN",
+        "department": "11"
+    },
+    {
+        "code": "147",
+        "name": "ITAKYRY",
+        "department": "11"
+    },
+    {
+        "code": "148",
+        "name": "JUAN E.OLEARY",
+        "department": "11"
+    },
+    {
+        "code": "149",
+        "name": "PRESIDENTE FRANCO",
+        "department": "11"
+    },
+    {
+        "code": "150",
+        "name": "YGUAZU",
+        "department": "11"
+    },
+    {
+        "code": "151",
+        "name": "SAN CRISTOBAL",
+        "department": "11"
+    },
+    {
+        "code": "152",
+        "name": "AREGUA",
+        "department": "12"
+    },
+    {
+        "code": "153",
+        "name": "CAPIATA",
+        "department": "12"
+    },
+    {
+        "code": "154",
+        "name": "FERNANDO DE LA MORA",
+        "department": "12"
+    },
+    {
+        "code": "155",
+        "name": "GUARAMBARE",
+        "department": "12"
+    },
+    {
+        "code": "156",
+        "name": "ITA",
+        "department": "12"
+    },
+    {
+        "code": "157",
+        "name": "ITAUGUA",
+        "department": "12"
+    },
+    {
+        "code": "158",
+        "name": "LIMPIO",
+        "department": "12"
+    },
+    {
+        "code": "159",
+        "name": "LUQUE",
+        "department": "12"
+    },
+    {
+        "code": "160",
+        "name": "MARIANO ROQUE ALONSO",
+        "department": "12"
+    },
+    {
+        "code": "161",
+        "name": "ÑEMBY",
+        "department": "12"
+    },
+    {
+        "code": "162",
+        "name": "NUEVA ITALIA",
+        "department": "12"
+    },
+    {
+        "code": "163",
+        "name": "SAN ANTONIO",
+        "department": "12"
+    },
+    {
+        "code": "164",
+        "name": "SAN LORENZO",
+        "department": "12"
+    },
+    {
+        "code": "165",
+        "name": "VILLA ELISA",
+        "department": "12"
+    },
+    {
+        "code": "166",
+        "name": "VILLETA",
+        "department": "12"
+    },
+    {
+        "code": "167",
+        "name": "YPACARAI",
+        "department": "12"
+    },
+    {
+        "code": "168",
+        "name": "YPANE",
+        "department": "12"
+    },
+    {
+        "code": "169",
+        "name": "LAMBARE",
+        "department": "12"
+    },
+    {
+        "code": "170",
+        "name": "J.AUGUSTO SALDIVAR",
+        "department": "12"
+    },
+    {
+        "code": "171",
+        "name": "PILAR",
+        "department": "13"
+    },
+    {
+        "code": "172",
+        "name": "ALBERDI",
+        "department": "13"
+    },
+    {
+        "code": "173",
+        "name": "CERRITO",
+        "department": "13"
+    },
+    {
+        "code": "174",
+        "name": "DESMOCHADOS",
+        "department": "13"
+    },
+    {
+        "code": "175",
+        "name": "GUAZU CUA",
+        "department": "13"
+    },
+    {
+        "code": "176",
+        "name": "HUMAITA",
+        "department": "13"
+    },
+    {
+        "code": "177",
+        "name": "ISLA UMBU",
+        "department": "13"
+    },
+    {
+        "code": "178",
+        "name": "LAURELES",
+        "department": "13"
+    },
+    {
+        "code": "179",
+        "name": "PASO DE PATRIA",
+        "department": "13"
+    },
+    {
+        "code": "180",
+        "name": "MAYOR J.D.MARTINEZ",
+        "department": "13"
+    },
+    {
+        "code": "181",
+        "name": "SAN JUAN DE ÑEEMBUCU",
+        "department": "13"
+    },
+    {
+        "code": "182",
+        "name": "TACUARAS",
+        "department": "13"
+    },
+    {
+        "code": "183",
+        "name": "VILLA OLIVA",
+        "department": "13"
+    },
+    {
+        "code": "184",
+        "name": "VILLALBIN",
+        "department": "13"
+    },
+    {
+        "code": "185",
+        "name": "PEDRO JUAN CABALLERO",
+        "department": "14"
+    },
+    {
+        "code": "186",
+        "name": "BELLA VISTA",
+        "department": "14"
+    },
+    {
+        "code": "187",
+        "name": "CAPITAN BADO",
+        "department": "14"
+    },
+    {
+        "code": "188",
+        "name": "VILLA HAYES",
+        "department": "15"
+    },
+    {
+        "code": "189",
+        "name": "BENJAMIN ACEVAL(MONTE SOCIEDAD",
+        "department": "15"
+    },
+    {
+        "code": "190",
+        "name": "PTO.PINAZCO",
+        "department": "15"
+    },
+    {
+        "code": "191",
+        "name": "NANAWA",
+        "department": "15"
+    },
+    {
+        "code": "192",
+        "name": "MCAL.ESTIGARRIBIA",
+        "department": "16"
+    },
+    {
+        "code": "193",
+        "name": "BOQUERON",
+        "department": "16"
+    },
+    {
+        "code": "194",
+        "name": "PEDRO P.PEÑA",
+        "department": "16"
+    },
+    {
+        "code": "195",
+        "name": "FUERTE OLIMPO",
+        "department": "17"
+    },
+    {
+        "code": "196",
+        "name": "BAHIA NEGRA",
+        "department": "17"
+    },
+    {
+        "code": "197",
+        "name": "SAN ISIDRO DEL CURUGUATY",
+        "department": "18"
+    },
+    {
+        "code": "198",
+        "name": "VILLA YGATIMI",
+        "department": "18"
+    },
+    {
+        "code": "199",
+        "name": "YPEJHU",
+        "department": "18"
+    },
+    {
+        "code": "200",
+        "name": "CORPUS CHRISTI",
+        "department": "18"
+    },
+    {
+        "code": "201",
+        "name": "ITANARA",
+        "department": "18"
+    },
+    {
+        "code": "202",
+        "name": "FRANCISCO CABALLERO ALVAREZ",
+        "department": "18"
+    },
+    {
+        "code": "203",
+        "name": "GRAL.JOSE EDUVIGIS DIAZ",
+        "department": "13"
+    },
+    {
+        "code": "205",
+        "name": "VILLA FRANCA",
+        "department": "13"
+    },
+    {
+        "code": "206",
+        "name": "POZO COLORADO",
+        "department": "15"
+    },
+    {
+        "code": "207",
+        "name": "SALTO DEL GUAIRA",
+        "department": "18"
+    },
+    {
+        "code": "209",
+        "name": "SANTA RITA",
+        "department": "11"
+    },
+    {
+        "code": "210",
+        "name": "MINGA GUAZU",
+        "department": "11"
+    },
+    {
+        "code": "211",
+        "name": "LOS CEDRALES",
+        "department": "11"
+    },
+    {
+        "code": "212",
+        "name": "SAN ALBERTO",
+        "department": "11"
+    },
+    {
+        "code": "213",
+        "name": "MINGA PORA",
+        "department": "11"
+    },
+    {
+        "code": "214",
+        "name": "MBOCAYATY DEL YHAGUY",
+        "department": "4"
+    },
+    {
+        "code": "215",
+        "name": "NARANJAL",
+        "department": "11"
+    },
+    {
+        "code": "216",
+        "name": "SANTA ROSA DEL MONDAY",
+        "department": "11"
+    },
+    {
+        "code": "217",
+        "name": "IRUÑA",
+        "department": "11"
+    },
+    {
+        "code": "218",
+        "name": "PUERTO CASADO",
+        "department": "17"
+    },
+    {
+        "code": "219",
+        "name": "MBARACAYU",
+        "department": "11"
+    },
+    {
+        "code": "220",
+        "name": "GUAYAIBI",
+        "department": "3"
+    },
+    {
+        "code": "221",
+        "name": "PIRAPO",
+        "department": "8"
+    },
+    {
+        "code": "223",
+        "name": "PUERTO GUARANI",
+        "department": "17"
+    },
+    {
+        "code": "225",
+        "name": "PASO YOBAY",
+        "department": "5"
+    },
+    {
+        "code": "226",
+        "name": "CAPIIBARY",
+        "department": "3"
+    },
+    {
+        "code": "227",
+        "name": "3 DE FEBRERO",
+        "department": "6"
+    },
+    {
+        "code": "228",
+        "name": "SIMON BOLIVAR",
+        "department": "6"
+    },
+    {
+        "code": "229",
+        "name": "LA PASTORA",
+        "department": "6"
+    },
+    {
+        "code": "230",
+        "name": "VILLA FRANCA",
+        "department": "13"
+    },
+    {
+        "code": "231",
+        "name": "VILLALBIN",
+        "department": "13"
+    },
+    {
+        "code": "232",
+        "name": "ITAPUA POTY",
+        "department": "8"
+    },
+    {
+        "code": "233",
+        "name": "MAYOR PABLO LAGERENZA",
+        "department": "17"
+    },
+    {
+        "code": "234",
+        "name": "GRAL. EUGENIO A. GARAY",
+        "department": "16"
+    },
+    {
+        "code": "235",
+        "name": "LA PALOMA",
+        "department": "18"
+    },
+    {
+        "code": "236",
+        "name": "KATUETE",
+        "department": "18"
+    },
+    {
+        "code": "237",
+        "name": "VAQUERIA",
+        "department": "6"
+    },
+    {
+        "code": "238",
+        "name": "NUEVA ESPERANZA",
+        "department": "18"
+    },
+    {
+        "code": "239",
+        "name": "SANTA FE DEL PARANA",
+        "department": "11"
+    },
+    {
+        "code": "240",
+        "name": "NUEVA ESPERANZA",
+        "department": "11"
+    },
+    {
+        "code": "241",
+        "name": "YASY KAÑY",
+        "department": "18"
+    },
+    {
+        "code": "242",
+        "name": "JOSE FALCON",
+        "department": "15"
+    },
+    {
+        "code": "243",
+        "name": "FEDERICO CHAVEZ",
+        "department": "8"
+    },
+    {
+        "code": "244",
+        "name": "ESCULIES",
+        "department": "6"
+    },
+    {
+        "code": "245",
+        "name": "YRYBUCUA",
+        "department": "3"
+    },
+    {
+        "code": "246",
+        "name": "SIN EQUIVALENCIA",
+        "department": "5"
+    },
+    {
+        "code": "259",
+        "name": "FILADELFIA",
+        "department": "16"
+    },
+    {
+        "code": "260",
+        "name": "LOMA PLATA",
+        "department": "16"
+    },
+    {
+        "code": "265",
+        "name": "TEBICUARY",
+        "department": "5"
+    },
+    {
+        "code": "270",
+        "name": "SARGENTO JOSE FELIX LOPEZ",
+        "department": "2"
+    },
+    {
+        "code": "271",
+        "name": "YBYRAROBANA",
+        "department": "18"
+    },
+    {
+        "code": "272",
+        "name": "3 DE MAYO",
+        "department": "7"
+    },
+    {
+        "code": "274",
+        "name": "YBY PYTA",
+        "department": "18"
+    },
+    {
+        "code": "275",
+        "name": "TEMBIAPORA",
+        "department": "6"
+    },
+    {
+        "code": "277",
+        "name": "LOMA PYTA",
+        "department": "12"
+    },
+    {
+        "code": "278",
+        "name": "KARAPAI",
+        "department": "14"
+    }
+]

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Nyxcode\PhpSifenTool\Infrastructure\Xml\Mapper\V150;
 
+use Nyxcode\PhpSifenTool\Domain\Catalog\Contracts\GeographicCatalog;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\ElectronicDocument;
 use Nyxcode\PhpSifenTool\Infrastructure\Xml\Contracts\XmlNodeMapperInterface;
 use Nyxcode\PhpSifenTool\Infrastructure\Xml\Support\XmlElement;
@@ -11,6 +12,10 @@ use Override;
 
 final class IssuerNodeMapper implements XmlNodeMapperInterface
 {
+    public function __construct(
+        private GeographicCatalog $catalog,
+    ) {}
+
     #[Override]
     public function map(object $document): XmlElement
     {
@@ -100,47 +105,47 @@ final class IssuerNodeMapper implements XmlNodeMapperInterface
             );
         }
 
+        $location = $this->catalog->resolve($address->city());
+
         $node->addChild(
             XmlElement::make(
                 'cDepEmi',
-                (string) $address->departament()->code()
+                (string) $location->department()->code()
             )
         );
 
         $node->addChild(
             XmlElement::make(
                 'dDesDepEmi',
-                $address->departament()->description()
+                $location->department()->name()
             )
         );
 
-        if ($address->district()) {
-            $node->addChild(
-                XmlElement::make(
-                    'cDisEmi',
-                    (string) $address->district()->code()
-                )
-            );
+        $node->addChild(
+            XmlElement::make(
+                'cDisEmi',
+                (string) $location->district()->code()
+            )
+        );
 
-            $node->addChild(
-                XmlElement::make(
-                    'dDisEmi',
-                    $address->district()->description()
-                )
-            );
-        }
+        $node->addChild(
+            XmlElement::make(
+                'dDisEmi',
+                $location->district()->name()
+            )
+        );
 
         $node->addChild(
             XmlElement::make(
                 'cCiuEmi',
-                (string) $address->city()->code()
+                (string) $location->city()->code()
             )
         );
 
         $node->addChild(
             XmlElement::make(
                 'dDesCiuEmi',
-                $address->city()->description()
+                $location->city()->name()
             )
         );
 

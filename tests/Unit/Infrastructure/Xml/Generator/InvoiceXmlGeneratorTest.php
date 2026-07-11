@@ -9,8 +9,6 @@ use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Address;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\BranchName;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\BusinessName;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\CityCode;
-use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\DepartmentCode;
-use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\DistrictCode;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\DocumentNumber;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\EconomicActivity;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\EmailAddress;
@@ -95,9 +93,7 @@ final class InvoiceXmlGeneratorTest extends TestCase
             address: new Address(
                 street: 'Main street',
                 houseNumber: 123,
-                department: new DepartmentCode(1, 'CAPITAL'),
-                district: new DistrictCode(1, 'ASUNCION (DISTRITO)'),
-                city: new CityCode(1, 'ASUNCION (DISTRITO)'),
+                city: new CityCode(1),
                 complement1: 'Alternative street 1',
                 complement2: 'Alternative street 2',
             ),
