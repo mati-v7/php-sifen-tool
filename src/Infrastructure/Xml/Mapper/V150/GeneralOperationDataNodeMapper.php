@@ -26,7 +26,7 @@ final class GeneralOperationDataNodeMapper implements XmlNodeMapperInterface
 
         $node->addChild(
             (new IssuerNodeMapper(
-                new JsonGeographicCatalog(__DIR__ . '/../../../../Resources/catalog')
+                new JsonGeographicCatalog(__DIR__.'/../../../../Resources/catalog')
             ))
                 ->map($document)
         );

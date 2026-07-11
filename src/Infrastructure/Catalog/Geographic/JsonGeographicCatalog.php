@@ -17,14 +17,14 @@ final class JsonGeographicCatalog implements GeographicCatalog
 
     public function __construct(string $resourcePath)
     {
-        foreach ($this->load($resourcePath . '/departments.json') as $row) {
+        foreach ($this->load($resourcePath.'/departments.json') as $row) {
             $this->departments[$row['code']] = new Department(
                 code: $row['code'],
                 name: $row['name'],
             );
         }
 
-        foreach ($this->load($resourcePath . '/districts.json') as $row) {
+        foreach ($this->load($resourcePath.'/districts.json') as $row) {
             $this->districts[$row['code']] = new District(
                 code: $row['code'],
                 departmentCode: $row['department'],
@@ -32,7 +32,7 @@ final class JsonGeographicCatalog implements GeographicCatalog
             );
         }
 
-        foreach ($this->load($resourcePath . '/cities.json') as $row) {
+        foreach ($this->load($resourcePath.'/cities.json') as $row) {
             $this->cities[$row['code']] = new City(
                 code: $row['code'],
                 districtCode: $row['district'],

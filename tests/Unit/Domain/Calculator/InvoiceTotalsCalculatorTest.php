@@ -8,8 +8,6 @@ use Nyxcode\PhpSifenTool\Domain\Common\Collection\EconomicActivityCollection;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Address;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\BusinessName;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\CityCode;
-use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\DepartmentCode;
-use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\DistrictCode;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\DocumentNumber;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\EconomicActivity;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\EmailAddress;

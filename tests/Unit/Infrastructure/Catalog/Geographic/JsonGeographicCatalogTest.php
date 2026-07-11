@@ -12,12 +12,12 @@ class JsonGeographicCatalogTest extends TestCase
     protected JsonGeographicCatalog $catalog;
 
     #[Override]
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->catalog = new JsonGeographicCatalog(
-            __DIR__ . '/../../../../Fixtures/catalog'
+            __DIR__.'/../../../../Fixtures/catalog'
         );
     }
 

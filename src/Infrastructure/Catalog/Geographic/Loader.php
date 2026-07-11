@@ -9,7 +9,7 @@ final class Loader
     public static function default(): GeographicCatalog
     {
         return new JsonGeographicCatalog(
-            __DIR__ . '/../../../Resources/catalogs'
+            __DIR__.'/../../../Resources/catalogs'
         );
     }
 }
