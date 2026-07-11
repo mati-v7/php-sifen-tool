@@ -76,9 +76,7 @@ final class InvoiceTotalsCalculatorTest extends TestCase
             address: new Address(
                 street: 'Main street',
                 houseNumber: 0,
-                department: new DepartmentCode(1, 'CAPITAL'),
-                district: new DistrictCode(1, 'ASUNCION (DISTRITO)'),
-                city: new CityCode(1, 'ASUNCION (DISTRITO)'),
+                city: new CityCode(1),
                 complement1: null,
                 complement2: null,
             ),

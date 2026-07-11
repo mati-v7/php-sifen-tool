@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Nyxcode\PhpSifenTool\Infrastructure\Xml\Mapper\V150;
 
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\ElectronicDocument;
+use Nyxcode\PhpSifenTool\Infrastructure\Catalog\Geographic\JsonGeographicCatalog;
 use Nyxcode\PhpSifenTool\Infrastructure\Xml\Contracts\XmlNodeMapperInterface;
 use Nyxcode\PhpSifenTool\Infrastructure\Xml\Support\XmlElement;
 use Override;
@@ -24,7 +25,9 @@ final class GeneralOperationDataNodeMapper implements XmlNodeMapperInterface
         );
 
         $node->addChild(
-            (new IssuerNodeMapper)
+            (new IssuerNodeMapper(
+                new JsonGeographicCatalog(__DIR__ . '/../../../../Resources/catalog')
+            ))
                 ->map($document)
         );
 

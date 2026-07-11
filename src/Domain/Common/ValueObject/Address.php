@@ -11,8 +11,6 @@ final readonly class Address
         private int $houseNumber,
         private ?string $complement1,
         private ?string $complement2,
-        private DepartmentCode $department,
-        private ?DistrictCode $district,
         private CityCode $city,
     ) {}
 
@@ -34,16 +32,6 @@ final readonly class Address
     public function complement2(): ?string
     {
         return $this->complement2;
-    }
-
-    public function departament(): DepartmentCode
-    {
-        return $this->department;
-    }
-
-    public function district(): ?DistrictCode
-    {
-        return $this->district;
     }
 
     public function city(): CityCode

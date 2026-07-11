@@ -127,9 +127,7 @@ final class InvoiceValidatorTest extends TestCase
             address: new Address(
                 street: 'Main street',
                 houseNumber: 123,
-                department: new DepartmentCode(1, 'CAPITAL'),
-                district: new DistrictCode(1, 'ASUNCION (DISTRITO)'),
-                city: new CityCode(1, 'ASUNCION (DISTRITO)'),
+                city: new CityCode(1),
                 complement1: 'Alternative street 1',
                 complement2: 'Alternative street 2',
             ),
