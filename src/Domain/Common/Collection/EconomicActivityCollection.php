@@ -7,9 +7,8 @@ namespace Nyxcode\PhpSifenTool\Domain\Common\Collection;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\EconomicActivity;
 use Override;
 
-final class EconomicActivityCollection implements \IteratorAggregate, \Countable
+final class EconomicActivityCollection implements \Countable, \IteratorAggregate
 {
-
     /**
      * @var EconomicActivity[]
      */

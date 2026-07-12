@@ -15,6 +15,7 @@ final class IssuerEconomicActivityNodeMapper
         foreach ($issuer->activities() as $activity) {
             $activities[] = $this->map($activity);
         }
+
         return $activities;
     }
 
