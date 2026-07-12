@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Nyxcode\PhpSifenTool\Domain\Common\ValueObject;
+namespace Nyxcode\PhpSifenTool\Domain\DE\Entity;
 
 final readonly class EconomicActivity
 {

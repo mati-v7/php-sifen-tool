@@ -4,32 +4,36 @@ declare(strict_types=1);
 
 namespace Nyxcode\PhpSifenTool\Domain\Common\Collection;
 
-use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\EconomicActivity;
+use Nyxcode\PhpSifenTool\Domain\DE\Entity\EconomicActivity;
+use Override;
 
-final class EconomicActivityCollection
+final class EconomicActivityCollection implements \Countable, \IteratorAggregate
 {
     /**
      * @var EconomicActivity[]
      */
     private array $items;
 
-    public function __construct(
-        EconomicActivity ...$items
-    ) {
-        if (count($items) === 0) {
+    public function __construct(EconomicActivity ...$items)
+    {
+        if ($items === []) {
             throw new \DomainException(
-                'Issuer must have at least one economic activity.'
+                'Issuer must contain at least one economic activity.'
             );
         }
 
         $this->items = $items;
     }
 
-    /**
-     * @return EconomicActivity[]
-     */
-    public function all(): array
+    #[Override]
+    public function getIterator(): \Traversable
     {
-        return $this->items;
+        yield from $this->items;
+    }
+
+    #[Override]
+    public function count(): int
+    {
+        return count($this->items);
     }
 }

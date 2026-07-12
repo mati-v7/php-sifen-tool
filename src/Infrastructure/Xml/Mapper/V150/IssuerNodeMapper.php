@@ -172,6 +172,11 @@ final class IssuerNodeMapper implements XmlNodeMapperInterface
             );
         }
 
+        $node->addChildren(
+            (new IssuerEconomicActivityNodeMapper)
+                ->mapItems($document)
+        );
+
         return $node;
     }
 }
