@@ -4,16 +4,25 @@ declare(strict_types=1);
 
 namespace Nyxcode\PhpSifenTool\Tests\Unit\Infrastructure\Xml\Generator;
 
+use Nyxcode\PhpSifenTool\Domain\Common\Collection\EconomicActivityCollection;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Address;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\BranchName;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\BusinessName;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\CityCode;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\DocumentNumber;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\EmailAddress;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\EstablishmentCode;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\ExpeditionPoint;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\ItemVat;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Money;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Percentage;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\PhoneNumber;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Ruc;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\SecurityCode;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\TaxAuthorizationNumber;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\TradeName;
 use Nyxcode\PhpSifenTool\Domain\DE\Builder\InvoiceBuilder;
+use Nyxcode\PhpSifenTool\Domain\DE\Entity\EconomicActivity;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\ElectronicDocument;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\InvoiceData;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Issuer;
@@ -26,6 +35,8 @@ use Nyxcode\PhpSifenTool\Domain\DE\Enum\ElectronicDocumentType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\EmissionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationConditionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\PresenceIndicator;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\TaxpayerType;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\TaxRegimeType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\VatTreatment;
 use Nyxcode\PhpSifenTool\Infrastructure\Xml\Generator\InvoiceXmlGenerator;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -44,8 +55,9 @@ final class InvoiceXmlGeneratorTest extends TestCase
         $this->assertStringContainsString('rDE', $xmlString);
         $this->assertStringContainsString('DE', $xmlString);
         $this->assertStringContainsString('<gEmis>', $xmlString);
-        $this->assertStringContainsString('<dRucEm>1234567-9</dRucEm>', $xmlString);
+        $this->assertStringContainsString('<dRucEm>1234567</dRucEm>', $xmlString);
         $this->assertStringContainsString('<dNomEmi>ACME Corp</dNomEmi>', $xmlString);
+        $this->assertStringContainsString('<cActEco>0000</cActEco>', $xmlString);
         $this->assertStringContainsString('<gDatRec>', $xmlString);
         $this->assertStringContainsString('<dNumIDRec>987654321</dNumIDRec>', $xmlString);
         $this->assertStringContainsString('<dNomRec>John Doe</dNomRec>', $xmlString);
@@ -76,8 +88,24 @@ final class InvoiceXmlGeneratorTest extends TestCase
         );
 
         $issuer = new Issuer(
-            ruc: new Ruc('1234567-9'),
-            name: 'ACME Corp',
+            ruc: new Ruc('1234567', 6),
+            taxpayerType: TaxpayerType::LEGAL_ENTITY,
+            name: new BusinessName('ACME Corp'),
+            address: new Address(
+                street: 'Main street',
+                houseNumber: 123,
+                city: new CityCode(1),
+                complement1: 'Alternative street 1',
+                complement2: 'Alternative street 2',
+            ),
+            phoneNumber: new PhoneNumber('(+595 21) 000 000'),
+            emailAddress: new EmailAddress('info@email.com'),
+            activities: new EconomicActivityCollection(
+                new EconomicActivity('0000', 'ECONOMIC ACTIVITY')
+            ),
+            taxRegimeType: TaxRegimeType::SMALL_PRODUCER_REGIME,
+            branchName: new BranchName('ACME Main store'),
+            tradeName: new TradeName('ACME store')
         );
 
         $receiver = new Receiver(

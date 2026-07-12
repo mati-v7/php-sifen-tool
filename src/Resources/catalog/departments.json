@@ -1,0 +1,74 @@
+[
+    {
+        "code": "1",
+        "name": "CAPITAL"
+    },
+    {
+        "code": "2",
+        "name": "CONCEPCION"
+    },
+    {
+        "code": "3",
+        "name": "SAN PEDRO"
+    },
+    {
+        "code": "4",
+        "name": "CORDILLERA"
+    },
+    {
+        "code": "5",
+        "name": "GUAIRA"
+    },
+    {
+        "code": "6",
+        "name": "CAAGUAZU"
+    },
+    {
+        "code": "7",
+        "name": "CAAZAPA"
+    },
+    {
+        "code": "8",
+        "name": "ITAPUA"
+    },
+    {
+        "code": "9",
+        "name": "MISIONES"
+    },
+    {
+        "code": "10",
+        "name": "PARAGUARI"
+    },
+    {
+        "code": "11",
+        "name": "ALTO PARANA"
+    },
+    {
+        "code": "12",
+        "name": "CENTRAL"
+    },
+    {
+        "code": "13",
+        "name": "NEEMBUCU"
+    },
+    {
+        "code": "14",
+        "name": "AMAMBAY"
+    },
+    {
+        "code": "15",
+        "name": "PTE. HAYES"
+    },
+    {
+        "code": "16",
+        "name": "BOQUERON"
+    },
+    {
+        "code": "17",
+        "name": "ALTO PARAGUAY"
+    },
+    {
+        "code": "18",
+        "name": "CANINDEYU"
+    }
+]
