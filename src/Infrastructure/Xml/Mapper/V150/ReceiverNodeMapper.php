@@ -23,14 +23,14 @@ final class ReceiverNodeMapper implements XmlNodeMapperInterface
         $node->addChild(
             XmlElement::make(
                 'dNumIDRec',
-                $document->receiver()->documentNumber()
+                $document->receiver()->document()->number()
             )
         );
 
         $node->addChild(
             XmlElement::make(
                 'dNomRec',
-                $document->receiver()->name()
+                $document->receiver()->legalName()
             )
         );
 
