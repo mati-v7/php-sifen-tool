@@ -16,7 +16,7 @@ final class JsonCountryCatalog implements CountryCatalog
     public function __construct(
         string $resourcePath,
     ) {
-        $countries = $this->load($resourcePath . '/countries.json');
+        $countries = $this->load($resourcePath.'/countries.json');
 
         foreach ($countries as $row) {
             $this->countries[$row['code']] = new Country(

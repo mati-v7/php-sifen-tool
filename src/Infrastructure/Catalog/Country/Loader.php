@@ -9,7 +9,7 @@ final class CountryCatalogLoader
     public static function default(): CountryCatalog
     {
         return new JsonCountryCatalog(
-            __DIR__ . '/../../../Resources/catalogs'
+            __DIR__.'/../../../Resources/catalogs'
         );
     }
 }

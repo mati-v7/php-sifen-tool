@@ -16,7 +16,7 @@ final class JsonCountryCatalogTest extends TestCase
     {
         parent::setUp();
         $this->catalog = new JsonCountryCatalog(
-            __DIR__ . '/../../../../Fixtures/catalog'
+            __DIR__.'/../../../../Fixtures/catalog'
         );
     }
 
