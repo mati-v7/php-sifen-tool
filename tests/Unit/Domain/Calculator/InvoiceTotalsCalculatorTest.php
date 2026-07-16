@@ -102,7 +102,9 @@ final class InvoiceTotalsCalculatorTest extends TestCase
             fantasyName: null,
             address: null,
             phone: null,
-            email: null
+            cellphone: null,
+            email: null,
+            customerCode: null
         );
 
         $paymentCondition = new PaymentCondition(OperationConditionType::CASH);

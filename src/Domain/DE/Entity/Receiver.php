@@ -7,6 +7,7 @@ namespace Nyxcode\PhpSifenTool\Domain\DE\Entity;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Address;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Contracts\ReceiverDocument;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\CountryCode;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\CustomerCode;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\EmailAddress;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\PhoneNumber;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationType;
@@ -23,7 +24,9 @@ final class Receiver
         private readonly ?string $fantasyName,
         private readonly ?Address $address,
         private readonly ?PhoneNumber $phone,
+        private readonly ?PhoneNumber $cellphone,
         private readonly ?EmailAddress $email,
+        private readonly ?CustomerCode $customerCode,
     ) {}
 
     public function nature(): ReceiverNature
@@ -66,8 +69,18 @@ final class Receiver
         return $this->phone;
     }
 
+    public function cellphone(): ?PhoneNumber
+    {
+        return $this->phone;
+    }
+
     public function email(): ?EmailAddress
     {
         return $this->email;
+    }
+
+    public function customerCode(): ?CustomerCode
+    {
+        return $this->customerCode;
     }
 }

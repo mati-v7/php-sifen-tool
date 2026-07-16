@@ -156,7 +156,9 @@ final class InvoiceValidatorTest extends TestCase
             fantasyName: null,
             address: null,
             phone: null,
-            email: null
+            cellphone: null,
+            email: null,
+            customerCode: null
         );
     }
 
