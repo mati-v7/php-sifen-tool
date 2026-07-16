@@ -9,6 +9,6 @@ enum ReceiverNature: int
 
     public function isTaxpayer(): bool
     {
-        return self::TAXPAYER === $this;
+        return $this === self::TAXPAYER;
     }
 }

@@ -18,7 +18,7 @@ final class GeneralOperationDataNodeMapper implements XmlNodeMapperInterface
     public function map(ElectronicDocument $document): XmlElement
     {
         $node = XmlElement::make('gDatGralOpe');
-        $catalogDirectory = dirname(__DIR__, 4) . '/Resources/catalog';
+        $catalogDirectory = dirname(__DIR__, 4).'/Resources/catalog';
 
         $node->addChild(
             XmlElement::make(
@@ -40,7 +40,7 @@ final class GeneralOperationDataNodeMapper implements XmlNodeMapperInterface
                 $geographicCatalog,
                 new CompositeReceiverDocumentNodeMapper([
                     new TaxpayerDocumentNodeMapper,
-                    new IdentityDocumentNodeMapper
+                    new IdentityDocumentNodeMapper,
                 ]),
                 new ReceiverAddressNodeMapper,
                 new ReceiverContactNodeMapper

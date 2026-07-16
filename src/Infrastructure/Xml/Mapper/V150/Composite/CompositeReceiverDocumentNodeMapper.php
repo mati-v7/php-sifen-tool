@@ -8,9 +8,8 @@ use Nyxcode\PhpSifenTool\Infrastructure\Xml\Support\XmlElement;
 
 final readonly class CompositeReceiverDocumentNodeMapper
 {
-
     /**
-     * @param iterable<ReceiverDocumentNodeMapper> $mappers
+     * @param  iterable<ReceiverDocumentNodeMapper>  $mappers
      */
     public function __construct(
         private iterable $mappers,
