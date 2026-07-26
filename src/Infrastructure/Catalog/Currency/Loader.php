@@ -9,7 +9,7 @@ final class Loader
     public static function currencies(): CurrencyCatalog
     {
         return new JsonCurrencyCatalog(
-            dirname(__DIR__, 3) . '/resources/catalogs'
+            dirname(__DIR__, 3).'/resources/catalogs'
         );
     }
 }

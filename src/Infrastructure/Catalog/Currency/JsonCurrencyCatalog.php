@@ -15,7 +15,7 @@ final class JsonCurrencyCatalog implements CurrencyCatalog
 
     public function __construct(string $resourcePath)
     {
-        foreach ($this->load($resourcePath . '/currencies.json') as $row) {
+        foreach ($this->load($resourcePath.'/currencies.json') as $row) {
             $this->currencies[$row['code']] = new Currency(
                 code: $row['code'],
                 description: $row['description'],

@@ -16,7 +16,7 @@ final class JsonCurrencyCatalogTest extends TestCase
     {
         parent::setUp();
         $this->catalog = new JsonCurrencyCatalog(
-            __DIR__ . '/../../../../Fixtures/catalog'
+            __DIR__.'/../../../../Fixtures/catalog'
         );
     }
 
