@@ -7,6 +7,7 @@ namespace Nyxcode\PhpSifenTool\Domain\DE\Entity;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\DocumentNumber;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\EstablishmentCode;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\ExpeditionPoint;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Serie;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\TaxAuthorizationNumber;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\ElectronicDocumentType;
 
@@ -19,6 +20,7 @@ final class TaxAuthorization
         private readonly ExpeditionPoint $expeditionPoint,
         private readonly DocumentNumber $documentNumber,
         private readonly \DateTimeImmutable $validFrom,
+        private readonly ?Serie $serie,
     ) {}
 
     public function documentType(): ElectronicDocumentType
@@ -49,5 +51,10 @@ final class TaxAuthorization
     public function validFrom(): \DateTimeImmutable
     {
         return $this->validFrom;
+    }
+
+    public function serie(): ?Serie
+    {
+        return $this->serie;
     }
 }

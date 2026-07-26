@@ -12,11 +12,13 @@ use Override;
 final class TotalsNodeMapper implements XmlNodeMapperInterface
 {
     #[Override]
-    public function map(object $document): XmlElement
+    public static function supports(): string
     {
-        if (! $document instanceof ElectronicDocument) {
-            throw new \InvalidArgumentException;
-        }
+        return ElectronicDocument::class;
+    }
+
+    public function map(ElectronicDocument $document): XmlElement
+    {
 
         $totals = $document->totals();
         $node = XmlElement::make('gTotSub');

@@ -14,6 +14,11 @@ use Override;
 final class InvoiceNodeMapper implements XmlNodeMapperInterface
 {
     #[Override]
+    public static function supports(): string
+    {
+        return ElectronicDocument::class;
+    }
+
     public function map(ElectronicDocument $document): XmlElement
     {
         $root = XmlElement::make('rDE')
@@ -49,12 +54,12 @@ final class InvoiceNodeMapper implements XmlNodeMapperInterface
 
         $de->addChild(
             (new OperationNodeMapper)
-                ->map($document)
+                ->map($document->operation())
         );
 
         $de->addChild(
             (new TaxAuthorizationNodeMapper)
-                ->map($document)
+                ->map($document->taxAuthorization())
         );
 
         $de->addChild(

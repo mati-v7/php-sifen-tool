@@ -12,6 +12,8 @@ final class Operation
     public function __construct(
         private readonly EmissionType $emissionType,
         private readonly SecurityCode $securityCode,
+        private readonly ?string $issuerInfo,
+        private readonly ?string $fiscalInfo,
     ) {}
 
     public function emissionType(): EmissionType
@@ -22,5 +24,15 @@ final class Operation
     public function securityCode(): SecurityCode
     {
         return $this->securityCode;
+    }
+
+    public function issuerInfo(): ?string
+    {
+        return $this->issuerInfo;
+    }
+
+    public function fiscalInfo(): ?string
+    {
+        return $this->fiscalInfo;
     }
 }

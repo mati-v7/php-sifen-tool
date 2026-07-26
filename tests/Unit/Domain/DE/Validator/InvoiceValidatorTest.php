@@ -10,10 +10,12 @@ use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Address;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\BranchName;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\BusinessName;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\CityCode;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\CountryCode;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\DocumentNumber;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\EmailAddress;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\EstablishmentCode;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\ExpeditionPoint;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\IdentityDocument;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\ItemVat;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Money;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Percentage;
@@ -33,8 +35,11 @@ use Nyxcode\PhpSifenTool\Domain\DE\Entity\Receiver;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\TaxAuthorization;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\ElectronicDocumentType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\EmissionType;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\IdentityDocumentType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationConditionType;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\PresenceIndicator;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\ReceiverNature;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\TaxpayerType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\TaxRegimeType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\VatTreatment;
@@ -101,7 +106,12 @@ final class InvoiceValidatorTest extends TestCase
 
     private function operation(): Operation
     {
-        return new Operation(EmissionType::NORMAL, SecurityCode::generate());
+        return new Operation(
+            EmissionType::NORMAL,
+            SecurityCode::generate(),
+            null,
+            null
+        );
     }
 
     private function taxAuth(): TaxAuthorization
@@ -112,7 +122,8 @@ final class InvoiceValidatorTest extends TestCase
             new EstablishmentCode('001'),
             new ExpeditionPoint('001'),
             new DocumentNumber('1234567'),
-            new \DateTimeImmutable
+            new \DateTimeImmutable,
+            null
         );
     }
 
@@ -143,8 +154,17 @@ final class InvoiceValidatorTest extends TestCase
     private function receiver(): Receiver
     {
         return new Receiver(
-            documentNumber: '987654321',
-            name: 'John Doe',
+            nature: ReceiverNature::NON_TAXPAYER,
+            operation: OperationType::B2C,
+            countryCode: new CountryCode('PRY'),
+            document: new IdentityDocument(IdentityDocumentType::NATIONAL_ID, '987654321'),
+            legalName: 'John Doe',
+            fantasyName: null,
+            address: null,
+            phone: null,
+            cellphone: null,
+            email: null,
+            customerCode: null
         );
     }
 

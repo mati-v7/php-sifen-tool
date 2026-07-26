@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Nyxcode\PhpSifenTool\Infrastructure\Xml\Mapper\V150;
 
 use Nyxcode\PhpSifenTool\Domain\Catalog\Contracts\GeographicCatalog;
-use Nyxcode\PhpSifenTool\Domain\DE\Entity\ElectronicDocument;
+use Nyxcode\PhpSifenTool\Domain\DE\Entity\Issuer;
 use Nyxcode\PhpSifenTool\Infrastructure\Xml\Contracts\XmlNodeMapperInterface;
 use Nyxcode\PhpSifenTool\Infrastructure\Xml\Support\XmlElement;
 use Override;
@@ -17,14 +17,14 @@ final class IssuerNodeMapper implements XmlNodeMapperInterface
     ) {}
 
     #[Override]
-    public function map(object $document): XmlElement
+    public static function supports(): string
     {
-        if (! $document instanceof ElectronicDocument) {
-            throw new \InvalidArgumentException;
-        }
+        return Issuer::class;
+    }
 
+    public function map(Issuer $issuer): XmlElement
+    {
         $node = XmlElement::make('gEmis');
-        $issuer = $document->issuer();
         $address = $issuer->address();
 
         $node->addChild(
@@ -130,7 +130,7 @@ final class IssuerNodeMapper implements XmlNodeMapperInterface
 
         $node->addChild(
             XmlElement::make(
-                'dDisEmi',
+                'dDesDisEmi',
                 $location->district()->name()
             )
         );
@@ -174,7 +174,7 @@ final class IssuerNodeMapper implements XmlNodeMapperInterface
 
         $node->addChildren(
             (new IssuerEconomicActivityNodeMapper)
-                ->mapItems($document)
+                ->mapItems($issuer)
         );
 
         return $node;
