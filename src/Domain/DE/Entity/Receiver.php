@@ -71,7 +71,7 @@ final class Receiver
 
     public function cellphone(): ?PhoneNumber
     {
-        return $this->phone;
+        return $this->cellphone;
     }
 
     public function email(): ?EmailAddress

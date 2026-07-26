@@ -31,4 +31,9 @@ enum IdentityDocumentType: int
             )
         };
     }
+
+    public function isUnidentified(): bool
+    {
+        return $this === self::UNIDENTIFIED;
+    }
 }

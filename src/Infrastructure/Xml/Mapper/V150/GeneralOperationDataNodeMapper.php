@@ -15,10 +15,15 @@ use Override;
 final class GeneralOperationDataNodeMapper implements XmlNodeMapperInterface
 {
     #[Override]
+    public static function supports(): string
+    {
+        return ElectronicDocument::class;
+    }
+
     public function map(ElectronicDocument $document): XmlElement
     {
         $node = XmlElement::make('gDatGralOpe');
-        $catalogDirectory = dirname(__DIR__, 4).'/Resources/catalog';
+        $catalogDirectory = dirname(__DIR__, 4) . '/Resources/catalog';
 
         $node->addChild(
             XmlElement::make(
@@ -31,7 +36,7 @@ final class GeneralOperationDataNodeMapper implements XmlNodeMapperInterface
 
         $node->addChild(
             (new IssuerNodeMapper($geographicCatalog))
-                ->map($document)
+                ->map($document->issuer())
         );
 
         $node->addChild(
@@ -45,7 +50,7 @@ final class GeneralOperationDataNodeMapper implements XmlNodeMapperInterface
                 new ReceiverAddressNodeMapper,
                 new ReceiverContactNodeMapper
             ))
-                ->map($document)
+                ->map($document->receiver())
         );
 
         return $node;

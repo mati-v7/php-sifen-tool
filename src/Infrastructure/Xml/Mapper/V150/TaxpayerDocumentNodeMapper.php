@@ -35,5 +35,12 @@ final readonly class TaxpayerDocumentNodeMapper implements ReceiverDocumentNodeM
                 $document->ruc()->checkDigit()
             )
         );
+
+        $parentNode->addChild(
+            XmlElement::make(
+                'dNomRec',
+                $receiver->legalName()
+            )
+        );
     }
 }

@@ -106,7 +106,12 @@ final class InvoiceValidatorTest extends TestCase
 
     private function operation(): Operation
     {
-        return new Operation(EmissionType::NORMAL, SecurityCode::generate());
+        return new Operation(
+            EmissionType::NORMAL,
+            SecurityCode::generate(),
+            null,
+            null
+        );
     }
 
     private function taxAuth(): TaxAuthorization
@@ -117,7 +122,8 @@ final class InvoiceValidatorTest extends TestCase
             new EstablishmentCode('001'),
             new ExpeditionPoint('001'),
             new DocumentNumber('1234567'),
-            new \DateTimeImmutable
+            new \DateTimeImmutable,
+            null
         );
     }
 

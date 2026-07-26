@@ -6,7 +6,7 @@ namespace Nyxcode\PhpSifenTool\Infrastructure\Xml\Mapper\V150;
 
 use Nyxcode\PhpSifenTool\Domain\Catalog\Contracts\CountryCatalog;
 use Nyxcode\PhpSifenTool\Domain\Catalog\Contracts\GeographicCatalog;
-use Nyxcode\PhpSifenTool\Domain\DE\Entity\ElectronicDocument;
+use Nyxcode\PhpSifenTool\Domain\DE\Entity\Receiver;
 use Nyxcode\PhpSifenTool\Infrastructure\Xml\Contracts\XmlNodeMapperInterface;
 use Nyxcode\PhpSifenTool\Infrastructure\Xml\Mapper\V150\Composite\CompositeReceiverDocumentNodeMapper;
 use Nyxcode\PhpSifenTool\Infrastructure\Xml\Support\XmlElement;
@@ -25,14 +25,15 @@ final class ReceiverNodeMapper implements XmlNodeMapperInterface
     }
 
     #[Override]
-    public function map(object $document): XmlElement
+    public static function supports(): string
     {
-        if (! $document instanceof ElectronicDocument) {
-            throw new \InvalidArgumentException;
-        }
+        return Receiver::class;
+    }
+
+    public function map(Receiver $receiver): XmlElement
+    {
 
         $node = XmlElement::make('gDatRec');
-        $receiver = $document->receiver();
 
         $node->addChild(
             XmlElement::make(
@@ -78,13 +79,6 @@ final class ReceiverNodeMapper implements XmlNodeMapperInterface
         $this->compositeReceiverDocument->map(
             $node,
             $receiver
-        );
-
-        $node->addChild(
-            XmlElement::make(
-                'dNomRec',
-                $receiver->legalName()
-            )
         );
 
         if ($receiver->fantasyName() !== null) {

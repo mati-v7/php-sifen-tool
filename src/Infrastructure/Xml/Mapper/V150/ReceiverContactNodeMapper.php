@@ -25,7 +25,7 @@ final readonly class ReceiverContactNodeMapper
             $parentNode->addChild(
                 XmlElement::make(
                     'dCelRec',
-                    $receiver->phone()->value()
+                    $receiver->cellphone()->value()
                 )
             );
         }

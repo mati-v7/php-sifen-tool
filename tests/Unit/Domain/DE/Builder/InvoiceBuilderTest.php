@@ -48,7 +48,12 @@ final class InvoiceBuilderTest extends TestCase
 {
     public function test_it_builds_an_invoice(): void
     {
-        $operation = new Operation(EmissionType::NORMAL, SecurityCode::generate());
+        $operation = new Operation(
+            EmissionType::NORMAL,
+            SecurityCode::generate(),
+            null,
+            null
+        );
 
         $taxAuthorization = new TaxAuthorization(
             ElectronicDocumentType::ELECTRONIC_INVOICE,
@@ -56,7 +61,8 @@ final class InvoiceBuilderTest extends TestCase
             new EstablishmentCode('001'),
             new ExpeditionPoint('001'),
             new DocumentNumber('1234567'),
-            new \DateTimeImmutable
+            new \DateTimeImmutable,
+            null
         );
 
         $issuer = new Issuer(

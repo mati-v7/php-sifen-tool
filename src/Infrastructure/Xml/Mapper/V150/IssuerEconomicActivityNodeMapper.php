@@ -3,14 +3,13 @@
 namespace Nyxcode\PhpSifenTool\Infrastructure\Xml\Mapper\V150;
 
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\EconomicActivity;
-use Nyxcode\PhpSifenTool\Domain\DE\Entity\ElectronicDocument;
+use Nyxcode\PhpSifenTool\Domain\DE\Entity\Issuer;
 use Nyxcode\PhpSifenTool\Infrastructure\Xml\Support\XmlElement;
 
 final class IssuerEconomicActivityNodeMapper
 {
-    public function mapItems(ElectronicDocument $document): array
+    public function mapItems(Issuer $issuer): array
     {
-        $issuer = $document->issuer();
         $activities = [];
         foreach ($issuer->activities() as $activity) {
             $activities[] = $this->map($activity);

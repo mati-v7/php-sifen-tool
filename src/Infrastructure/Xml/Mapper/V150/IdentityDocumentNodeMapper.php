@@ -23,28 +23,47 @@ final readonly class IdentityDocumentNodeMapper implements ReceiverDocumentNodeM
         /** @var IdentityDocument $document */
         $document = $receiver->document();
 
+        $documentType = $document->documentType();
+        $isUnidentified = $documentType->isUnidentified();
+        $legalName = $isUnidentified
+            ? 'Sin Nombre' : $receiver->legalName();
+
         if ($receiver->operation()->isForeign()) {
+            $parentNode->addChild(
+                XmlElement::make(
+                    'dNomRec',
+                    $legalName
+                )
+            );
+
             return;
         }
 
         $parentNode->addChild(
             XmlElement::make(
                 'iTipIDRec',
-                (string) $document->documentType()->value
+                (string) $documentType->value
             )
         );
 
         $parentNode->addChild(
             XmlElement::make(
                 'dDTipIDRec',
-                $document->documentType()->description()
+                $documentType->description()
             )
         );
 
         $parentNode->addChild(
             XmlElement::make(
                 'dNumIDRec',
-                $document->number()
+                $isUnidentified ? '0' : $document->number()
+            )
+        );
+
+        $parentNode->addChild(
+            XmlElement::make(
+                'dNomRec',
+                $legalName
             )
         );
     }
