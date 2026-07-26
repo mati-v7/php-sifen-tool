@@ -1,0 +1,22 @@
+[
+    {
+        "code": "PYG",
+        "description": "Guarani"
+    },
+    {
+        "code": "USD",
+        "description": "Dólar Estadounidense"
+    },
+    {
+        "code": "EUR",
+        "description": "Euro"
+    },
+    {
+        "code": "BRL",
+        "description": "Real Brasileño"
+    },
+    {
+        "code": "ARS",
+        "description": "Peso Argentino"
+    }
+]
