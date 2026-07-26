@@ -15,7 +15,6 @@ use Nyxcode\PhpSifenTool\Tests\Unit\Infrastructure\Xml\XmlTestCase;
 
 final class TaxAuthorizationNodeMapperTest extends XmlTestCase
 {
-
     public function test_maps_required_receiver_fields(): void
     {
         $taxAuth = new TaxAuthorization(

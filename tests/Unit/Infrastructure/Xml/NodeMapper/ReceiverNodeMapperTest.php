@@ -38,7 +38,7 @@ final class ReceiverNodeMapperTest extends XmlTestCase
     {
         parent::setUp();
 
-        $catalogDirectory = dirname(__DIR__, 4) . '/Fixtures/catalog';
+        $catalogDirectory = dirname(__DIR__, 4).'/Fixtures/catalog';
         $this->countryCatalog = new JsonCountryCatalog($catalogDirectory);
         $this->geographicCatalog = new JsonGeographicCatalog($catalogDirectory);
     }
@@ -67,7 +67,7 @@ final class ReceiverNodeMapperTest extends XmlTestCase
             $this->countryCatalog,
             $this->geographicCatalog,
             new CompositeReceiverDocumentNodeMapper([
-                new TaxpayerDocumentNodeMapper
+                new TaxpayerDocumentNodeMapper,
             ]),
             new ReceiverAddressNodeMapper,
             new ReceiverContactNodeMapper
@@ -108,7 +108,7 @@ final class ReceiverNodeMapperTest extends XmlTestCase
             $this->countryCatalog,
             $this->geographicCatalog,
             new CompositeReceiverDocumentNodeMapper([
-                new TaxpayerDocumentNodeMapper
+                new TaxpayerDocumentNodeMapper,
             ]),
             new ReceiverAddressNodeMapper,
             new ReceiverContactNodeMapper
@@ -144,7 +144,7 @@ final class ReceiverNodeMapperTest extends XmlTestCase
             $this->countryCatalog,
             $this->geographicCatalog,
             new CompositeReceiverDocumentNodeMapper([
-                new TaxpayerDocumentNodeMapper
+                new TaxpayerDocumentNodeMapper,
             ]),
             new ReceiverAddressNodeMapper,
             new ReceiverContactNodeMapper
@@ -183,7 +183,7 @@ final class ReceiverNodeMapperTest extends XmlTestCase
             $this->geographicCatalog,
             new CompositeReceiverDocumentNodeMapper([
                 new TaxpayerDocumentNodeMapper,
-                new IdentityDocumentNodeMapper
+                new IdentityDocumentNodeMapper,
             ]),
             new ReceiverAddressNodeMapper,
             new ReceiverContactNodeMapper
@@ -221,7 +221,7 @@ final class ReceiverNodeMapperTest extends XmlTestCase
             $this->geographicCatalog,
             new CompositeReceiverDocumentNodeMapper([
                 new TaxpayerDocumentNodeMapper,
-                new IdentityDocumentNodeMapper
+                new IdentityDocumentNodeMapper,
             ]),
             new ReceiverAddressNodeMapper,
             new ReceiverContactNodeMapper
@@ -260,7 +260,7 @@ final class ReceiverNodeMapperTest extends XmlTestCase
             $this->geographicCatalog,
             new CompositeReceiverDocumentNodeMapper([
                 new TaxpayerDocumentNodeMapper,
-                new IdentityDocumentNodeMapper
+                new IdentityDocumentNodeMapper,
             ]),
             new ReceiverAddressNodeMapper,
             new ReceiverContactNodeMapper
@@ -300,7 +300,7 @@ final class ReceiverNodeMapperTest extends XmlTestCase
             $this->geographicCatalog,
             new CompositeReceiverDocumentNodeMapper([
                 new TaxpayerDocumentNodeMapper,
-                new IdentityDocumentNodeMapper
+                new IdentityDocumentNodeMapper,
             ]),
             new ReceiverAddressNodeMapper,
             new ReceiverContactNodeMapper
@@ -338,7 +338,7 @@ final class ReceiverNodeMapperTest extends XmlTestCase
             $this->countryCatalog,
             $this->geographicCatalog,
             new CompositeReceiverDocumentNodeMapper([
-                new TaxpayerDocumentNodeMapper
+                new TaxpayerDocumentNodeMapper,
             ]),
             new ReceiverAddressNodeMapper,
             new ReceiverContactNodeMapper
@@ -374,7 +374,7 @@ final class ReceiverNodeMapperTest extends XmlTestCase
             $this->countryCatalog,
             $this->geographicCatalog,
             new CompositeReceiverDocumentNodeMapper([
-                new TaxpayerDocumentNodeMapper
+                new TaxpayerDocumentNodeMapper,
             ]),
             new ReceiverAddressNodeMapper,
             new ReceiverContactNodeMapper
@@ -416,7 +416,7 @@ final class ReceiverNodeMapperTest extends XmlTestCase
             $this->countryCatalog,
             $this->geographicCatalog,
             new CompositeReceiverDocumentNodeMapper([
-                new TaxpayerDocumentNodeMapper
+                new TaxpayerDocumentNodeMapper,
             ]),
             new ReceiverAddressNodeMapper,
             new ReceiverContactNodeMapper
@@ -466,7 +466,7 @@ final class ReceiverNodeMapperTest extends XmlTestCase
             $this->geographicCatalog,
             new CompositeReceiverDocumentNodeMapper([
                 new TaxpayerDocumentNodeMapper,
-                new IdentityDocumentNodeMapper
+                new IdentityDocumentNodeMapper,
             ]),
             new ReceiverAddressNodeMapper,
             new ReceiverContactNodeMapper
@@ -507,7 +507,7 @@ final class ReceiverNodeMapperTest extends XmlTestCase
             $this->geographicCatalog,
             new CompositeReceiverDocumentNodeMapper([
                 new TaxpayerDocumentNodeMapper,
-                new IdentityDocumentNodeMapper
+                new IdentityDocumentNodeMapper,
             ]),
             new ReceiverAddressNodeMapper,
             new ReceiverContactNodeMapper
@@ -548,7 +548,7 @@ final class ReceiverNodeMapperTest extends XmlTestCase
             $this->geographicCatalog,
             new CompositeReceiverDocumentNodeMapper([
                 new TaxpayerDocumentNodeMapper,
-                new IdentityDocumentNodeMapper
+                new IdentityDocumentNodeMapper,
             ]),
             new ReceiverAddressNodeMapper,
             new ReceiverContactNodeMapper
@@ -585,7 +585,7 @@ final class ReceiverNodeMapperTest extends XmlTestCase
             $this->geographicCatalog,
             new CompositeReceiverDocumentNodeMapper([
                 new TaxpayerDocumentNodeMapper,
-                new IdentityDocumentNodeMapper
+                new IdentityDocumentNodeMapper,
             ]),
             new ReceiverAddressNodeMapper,
             new ReceiverContactNodeMapper

@@ -11,7 +11,6 @@ use Nyxcode\PhpSifenTool\Tests\Unit\Infrastructure\Xml\XmlTestCase;
 
 final class OperationNodeMapperTest extends XmlTestCase
 {
-
     public function test_maps_required_operation_fields(): void
     {
 
@@ -22,7 +21,7 @@ final class OperationNodeMapperTest extends XmlTestCase
             null
         );
 
-        $operationNode = new OperationNodeMapper();
+        $operationNode = new OperationNodeMapper;
         $tree = $operationNode->map($operation);
         $xml = (new XmlTreeRenderer)
             ->render($tree);
@@ -41,7 +40,7 @@ final class OperationNodeMapperTest extends XmlTestCase
             null
         );
 
-        $operationNode = new OperationNodeMapper();
+        $operationNode = new OperationNodeMapper;
         $tree = $operationNode->map($operation);
         $xml = (new XmlTreeRenderer)
             ->render($tree);
@@ -58,7 +57,7 @@ final class OperationNodeMapperTest extends XmlTestCase
             'Fiscal information'
         );
 
-        $operationNode = new OperationNodeMapper();
+        $operationNode = new OperationNodeMapper;
         $tree = $operationNode->map($operation);
         $xml = (new XmlTreeRenderer)
             ->render($tree);
@@ -75,7 +74,7 @@ final class OperationNodeMapperTest extends XmlTestCase
             null
         );
 
-        $operationNode = new OperationNodeMapper();
+        $operationNode = new OperationNodeMapper;
         $tree = $operationNode->map($operation);
         $xml = (new XmlTreeRenderer)
             ->render($tree);

@@ -11,7 +11,6 @@ use Override;
 
 final class TotalsNodeMapper implements XmlNodeMapperInterface
 {
-
     #[Override]
     public static function supports(): string
     {

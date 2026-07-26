@@ -27,7 +27,7 @@ final class IssuerNodeMapperTest extends XmlTestCase
     {
         parent::setUp();
 
-        $catalogDirectory = dirname(__DIR__, 4) . '/Fixtures/catalog';
+        $catalogDirectory = dirname(__DIR__, 4).'/Fixtures/catalog';
         $this->geographicCatalog = new JsonGeographicCatalog($catalogDirectory);
     }
 
