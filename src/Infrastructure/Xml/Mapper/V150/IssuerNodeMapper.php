@@ -177,6 +177,13 @@ final class IssuerNodeMapper implements XmlNodeMapperInterface
                 ->mapItems($issuer)
         );
 
+        if ($issuer->responsible()) {
+            $node->addChild(
+                (new DEResponsibleNodeMapper)
+                    ->map($issuer->responsible())
+            );
+        }
+
         return $node;
     }
 }

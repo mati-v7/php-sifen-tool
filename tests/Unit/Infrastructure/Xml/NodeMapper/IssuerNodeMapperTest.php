@@ -8,9 +8,14 @@ use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\BusinessName;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\CityCode;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\EmailAddress;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\PhoneNumber;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\ResponsibleDocument;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\ResponsibleName;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\ResponsiblePosition;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Ruc;
+use Nyxcode\PhpSifenTool\Domain\DE\Entity\DEResponsible;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\EconomicActivity;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Issuer;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\ResponsibleIdentityDocumentType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\TaxpayerType;
 use Nyxcode\PhpSifenTool\Infrastructure\Catalog\Geographic\JsonGeographicCatalog;
 use Nyxcode\PhpSifenTool\Infrastructure\Xml\Mapper\V150\IssuerNodeMapper;
@@ -77,5 +82,49 @@ final class IssuerNodeMapperTest extends XmlTestCase
         $this->assertNotNull($this->evaluateXPath($xml, '/gEmis/gActEco'));
         $this->assertXmlPathValue('1234', '/gEmis/gActEco/cActEco', $xml);
         $this->assertXmlPathValue('Economic Activity', '/gEmis/gActEco/dDesActEco', $xml);
+        $this->assertNull($this->evaluateXPath($xml, '/gEmis/gRespDE'));
+    }
+
+    public function test_maps_optional_responsible_de_group(): void
+    {
+        $issuer = new Issuer(
+            new Ruc('80000000', 0),
+            TaxpayerType::LEGAL_ENTITY,
+            null,
+            new BusinessName('Acme Corp.'),
+            null,
+            null,
+            new Address(
+                'Main street',
+                123,
+                null,
+                null,
+                new CityCode(2301)
+            ),
+            new PhoneNumber('0900 000 000'),
+            new EmailAddress('email@example.com'),
+            new EconomicActivityCollection(
+                new EconomicActivity('1234', 'Economic Activity'),
+            ),
+            new DEResponsible(
+                new ResponsibleDocument(
+                    ResponsibleIdentityDocumentType::NATIONAL_ID,
+                    '1234567'
+                ),
+                new ResponsibleName('John Doe'),
+                new ResponsiblePosition('Contador')
+            )
+        );
+        $issuerMapper = new IssuerNodeMapper($this->geographicCatalog);
+
+        $tree = $issuerMapper->map($issuer);
+        $xml = (new XmlTreeRenderer)
+            ->render($tree);
+
+        $this->assertXmlPathValue('1', '/gEmis/gRespDE/iTipIDRespDE', $xml);
+        $this->assertXmlPathValue('Cédula paraguaya', '/gEmis/gRespDE/dDTipIDRespDE', $xml);
+        $this->assertXmlPathValue('1234567', '/gEmis/gRespDE/dNumIDRespDE', $xml);
+        $this->assertXmlPathValue('John Doe', '/gEmis/gRespDE/dNomRespDE', $xml);
+        $this->assertXmlPathValue('Contador', '/gEmis/gRespDE/dCarRespDE', $xml);
     }
 }

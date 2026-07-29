@@ -28,6 +28,7 @@ final class Issuer
         private readonly PhoneNumber $phoneNumber,
         private readonly EmailAddress $emailAddress,
         private readonly EconomicActivityCollection $activities,
+        private readonly ?DEResponsible $responsible = null,
     ) {}
 
     public function ruc(): Ruc
@@ -78,5 +79,10 @@ final class Issuer
     public function activities(): EconomicActivityCollection
     {
         return $this->activities;
+    }
+
+    public function responsible(): ?DEResponsible
+    {
+        return $this->responsible;
     }
 }
