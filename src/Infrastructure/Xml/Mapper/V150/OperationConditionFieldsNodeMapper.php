@@ -35,6 +35,13 @@ final readonly class OperationConditionFieldsNodeMapper
                 ->mapCashPayments($paymentCondition)
         );
 
+        if ($paymentCondition->creditOperation() !== null) {
+            $node->addChild(
+                (new CreditOperationNodeMapper(new JsonCurrencyCatalog($catalogDirectory)))
+                    ->map($paymentCondition->creditOperation())
+            );
+        }
+
         return $node;
     }
 }

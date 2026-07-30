@@ -14,6 +14,7 @@ final class PaymentCondition
     public function __construct(
         private readonly OperationConditionType $conditionType,
         private readonly array $cashPayments = [],
+        private readonly ?CreditOperation $creditOperation = null,
     ) {}
 
     public function conditionType(): OperationConditionType
@@ -27,5 +28,10 @@ final class PaymentCondition
     public function cashPayments(): array
     {
         return $this->cashPayments;
+    }
+
+    public function creditOperation(): ?CreditOperation
+    {
+        return $this->creditOperation;
     }
 }
