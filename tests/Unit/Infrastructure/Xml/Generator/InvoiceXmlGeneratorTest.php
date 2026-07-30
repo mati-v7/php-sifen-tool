@@ -70,6 +70,9 @@ final class InvoiceXmlGeneratorTest extends TestCase
         $this->assertStringContainsString('<gCamFE>', $xmlString);
         $this->assertStringContainsString('<iIndPres>1</iIndPres>', $xmlString);
         $this->assertStringContainsString('<dDesIndPres>Operación presencial</dDesIndPres>', $xmlString);
+        $this->assertStringContainsString('<gCamCond>', $xmlString);
+        $this->assertStringContainsString('<iCondOpe>1</iCondOpe>', $xmlString);
+        $this->assertStringContainsString('<dDCondOpe>Contado</dDCondOpe>', $xmlString);
         $this->assertStringContainsString('<gCamItem>', $xmlString);
         $this->assertStringContainsString('<dDesProSer>Product 1</dDesProSer>', $xmlString);
         $this->assertStringContainsString('<dCantProSer>2</dCantProSer>', $xmlString);

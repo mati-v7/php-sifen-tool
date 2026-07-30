@@ -29,6 +29,16 @@ final class DocumentTypeFieldsNodeMapper implements XmlNodeMapperInterface
             );
         }
 
+        if (in_array($document->taxAuthorization()->documentType(), [
+            ElectronicDocumentType::ELECTRONIC_INVOICE,
+            ElectronicDocumentType::ELECTRONIC_SELF_BILLED_INVOICE,
+        ], true)) {
+            $node->addChild(
+                (new OperationConditionFieldsNodeMapper)
+                    ->map($document->paymentCondition())
+            );
+        }
+
         return $node;
     }
 }
