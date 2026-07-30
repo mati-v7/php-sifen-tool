@@ -6,6 +6,7 @@ namespace Nyxcode\PhpSifenTool\Domain\DE\Validator;
 
 use Nyxcode\PhpSifenTool\Domain\Common\Exception\ValidationException;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\ElectronicDocument;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\CardBrand;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationConditionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\PaymentType;
@@ -67,6 +68,32 @@ final class InvoiceValidator
             if ($cashPayment->amount()->currency() !== 'PYG' && $cashPayment->exchangeRate() === null) {
                 throw new ValidationException(
                     'The exchange rate (dTiCamTiPag) is required when the cash payment currency is not PYG.'
+                );
+            }
+
+            $isCardPaymentType = in_array(
+                $cashPayment->type(),
+                [PaymentType::CREDIT_CARD, PaymentType::DEBIT_CARD],
+                true
+            );
+
+            if ($isCardPaymentType && $cashPayment->cardPayment() === null) {
+                throw new ValidationException(
+                    'Card payment data (gPagTarCD) is required when the payment type is credit or debit card (iTiPago = 3 or 4).'
+                );
+            }
+
+            if (! $isCardPaymentType && $cashPayment->cardPayment() !== null) {
+                throw new ValidationException(
+                    'Card payment data (gPagTarCD) can only be informed when the payment type is credit or debit card (iTiPago = 3 or 4).'
+                );
+            }
+
+            if ($cashPayment->cardPayment() !== null
+                && $cashPayment->cardPayment()->brand() === CardBrand::OTHER
+                && $cashPayment->cardPayment()->customBrandDescription() === null) {
+                throw new ValidationException(
+                    'A custom card brand description (dDesDenTarj) is required when the card denomination is "Otro" (iDenTarj = 99).'
                 );
             }
         }

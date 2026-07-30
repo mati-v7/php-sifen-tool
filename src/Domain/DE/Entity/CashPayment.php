@@ -14,6 +14,7 @@ final class CashPayment
         private readonly Money $amount,
         private readonly ?string $customDescription = null,
         private readonly ?string $exchangeRate = null,
+        private readonly ?CardPayment $cardPayment = null,
     ) {}
 
     public function type(): PaymentType
@@ -39,5 +40,10 @@ final class CashPayment
     public function exchangeRate(): ?string
     {
         return $this->exchangeRate;
+    }
+
+    public function cardPayment(): ?CardPayment
+    {
+        return $this->cardPayment;
     }
 }

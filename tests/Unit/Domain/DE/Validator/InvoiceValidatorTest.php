@@ -29,6 +29,7 @@ use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\SecurityCode;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\TaxAuthorizationNumber;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\TradeName;
 use Nyxcode\PhpSifenTool\Domain\DE\Builder\InvoiceBuilder;
+use Nyxcode\PhpSifenTool\Domain\DE\Entity\CardPayment;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\CashPayment;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\EconomicActivity;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\InvoiceData;
@@ -39,6 +40,8 @@ use Nyxcode\PhpSifenTool\Domain\DE\Entity\PaymentCondition;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\PublicProcurement;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Receiver;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\TaxAuthorization;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\CardBrand;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\CardPaymentProcessingType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\ElectronicDocumentType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\EmissionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\IdentityDocumentType;
@@ -228,6 +231,119 @@ final class InvoiceValidatorTest extends TestCase
 
         $validator = new InvoiceValidator;
         $validator->validate($invoice);
+    }
+
+    public function test_expect_card_payment_required_when_payment_type_is_credit_card(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver())
+            ->paymentCondition(new PaymentCondition(
+                OperationConditionType::CASH,
+                [new CashPayment(PaymentType::CREDIT_CARD, Money::guaranies('100'))]
+            ))
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item())
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+    }
+
+    public function test_expect_card_payment_not_allowed_when_payment_type_is_not_card(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver())
+            ->paymentCondition(new PaymentCondition(
+                OperationConditionType::CASH,
+                [
+                    new CashPayment(
+                        type: PaymentType::CASH,
+                        amount: Money::guaranies('100'),
+                        cardPayment: new CardPayment(
+                            brand: CardBrand::VISA,
+                            processingType: CardPaymentProcessingType::POS,
+                        ),
+                    ),
+                ]
+            ))
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item())
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+    }
+
+    public function test_expect_custom_card_brand_description_required_when_brand_is_other(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver())
+            ->paymentCondition(new PaymentCondition(
+                OperationConditionType::CASH,
+                [
+                    new CashPayment(
+                        type: PaymentType::CREDIT_CARD,
+                        amount: Money::guaranies('100'),
+                        cardPayment: new CardPayment(
+                            brand: CardBrand::OTHER,
+                            processingType: CardPaymentProcessingType::POS,
+                        ),
+                    ),
+                ]
+            ))
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item())
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+    }
+
+    public function test_accepts_valid_card_payment(): void
+    {
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver())
+            ->paymentCondition(new PaymentCondition(
+                OperationConditionType::CASH,
+                [
+                    new CashPayment(
+                        type: PaymentType::CREDIT_CARD,
+                        amount: Money::guaranies('100'),
+                        cardPayment: new CardPayment(
+                            brand: CardBrand::VISA,
+                            processingType: CardPaymentProcessingType::POS,
+                        ),
+                    ),
+                ]
+            ))
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item())
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+
+        $this->assertNotNull(
+            $invoice->paymentCondition()->cashPayments()[0]->cardPayment()
+        );
     }
 
     private function publicProcurement(\DateTimeImmutable $codeIssuedAt): PublicProcurement
