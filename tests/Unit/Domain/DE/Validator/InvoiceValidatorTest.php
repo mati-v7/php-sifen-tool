@@ -10,6 +10,10 @@ use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Address;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\BranchName;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\BusinessName;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\CityCode;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\ContractingEntityCode;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\ContractModalityCode;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\ContractSequenceCode;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\ContractYearCode;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\CountryCode;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\DocumentNumber;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\EmailAddress;
@@ -31,6 +35,7 @@ use Nyxcode\PhpSifenTool\Domain\DE\Entity\Issuer;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Item;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Operation;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\PaymentCondition;
+use Nyxcode\PhpSifenTool\Domain\DE\Entity\PublicProcurement;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Receiver;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\TaxAuthorization;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\ElectronicDocumentType;
@@ -104,6 +109,76 @@ final class InvoiceValidatorTest extends TestCase
         $validator->validate($invoice);
     }
 
+    public function test_expect_public_procurement_data_required_when_receiver_operation_is_b2g(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver(OperationType::B2G))
+            ->paymentCondition($this->paymentCondition())
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item())
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+    }
+
+    public function test_expect_public_procurement_code_issued_before_invoice_issue_date(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $issuedAt = new \DateTimeImmutable('2026-07-01');
+
+        $invoice = InvoiceBuilder::make($issuedAt)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver(OperationType::B2G))
+            ->paymentCondition($this->paymentCondition())
+            ->invoiceData($this->invoiceData($this->publicProcurement($issuedAt)))
+            ->addItem($this->item())
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+    }
+
+    public function test_accepts_valid_public_procurement_data_for_b2g_operation(): void
+    {
+        $issuedAt = new \DateTimeImmutable('2026-07-30');
+        $codeIssuedAt = new \DateTimeImmutable('2026-07-01');
+
+        $invoice = InvoiceBuilder::make($issuedAt)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver(OperationType::B2G))
+            ->paymentCondition($this->paymentCondition())
+            ->invoiceData($this->invoiceData($this->publicProcurement($codeIssuedAt)))
+            ->addItem($this->item())
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+
+        $this->assertNotNull($invoice->invoiceData()->publicProcurement());
+    }
+
+    private function publicProcurement(\DateTimeImmutable $codeIssuedAt): PublicProcurement
+    {
+        return new PublicProcurement(
+            new ContractModalityCode('LC'),
+            new ContractingEntityCode('00001'),
+            new ContractYearCode('26'),
+            new ContractSequenceCode('1234567'),
+            $codeIssuedAt
+        );
+    }
+
     private function operation(): Operation
     {
         return new Operation(
@@ -151,11 +226,11 @@ final class InvoiceValidatorTest extends TestCase
         );
     }
 
-    private function receiver(): Receiver
+    private function receiver(OperationType $operation = OperationType::B2C): Receiver
     {
         return new Receiver(
             nature: ReceiverNature::NON_TAXPAYER,
-            operation: OperationType::B2C,
+            operation: $operation,
             countryCode: new CountryCode('PRY'),
             document: new IdentityDocument(IdentityDocumentType::NATIONAL_ID, '987654321'),
             legalName: 'John Doe',
@@ -173,9 +248,9 @@ final class InvoiceValidatorTest extends TestCase
         return new PaymentCondition(OperationConditionType::CASH);
     }
 
-    private function invoiceData(): InvoiceData
+    private function invoiceData(?PublicProcurement $publicProcurement = null): InvoiceData
     {
-        return new InvoiceData(PresenceIndicator::IN_PERSON);
+        return new InvoiceData(PresenceIndicator::IN_PERSON, null, null, $publicProcurement);
     }
 
     private function item(int $quantity = 1, float $unitPrice = 10): Item

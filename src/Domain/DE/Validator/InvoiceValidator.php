@@ -6,6 +6,7 @@ namespace Nyxcode\PhpSifenTool\Domain\DE\Validator;
 
 use Nyxcode\PhpSifenTool\Domain\Common\Exception\ValidationException;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\ElectronicDocument;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationType;
 
 final class InvoiceValidator
 {
@@ -29,6 +30,20 @@ final class InvoiceValidator
                     'Item price cannot be negative.'
                 );
             }
+        }
+
+        $publicProcurement = $invoice->invoiceData()->publicProcurement();
+
+        if ($invoice->receiver()->operation() === OperationType::B2G && $publicProcurement === null) {
+            throw new ValidationException(
+                'Public procurement data (gCompPub) is required when the receiver operation type is B2G.'
+            );
+        }
+
+        if ($publicProcurement !== null && $publicProcurement->codeIssuedAt() >= $invoice->issuedAt()) {
+            throw new ValidationException(
+                'The public procurement code issuance date must be earlier than the invoice issue date.'
+            );
         }
     }
 }
