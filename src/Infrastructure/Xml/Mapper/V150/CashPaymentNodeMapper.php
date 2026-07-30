@@ -62,6 +62,12 @@ final readonly class CashPaymentNodeMapper
             );
         }
 
+        if ($cashPayment->cardPayment() !== null) {
+            $node->addChild(
+                (new CardPaymentNodeMapper)->map($cashPayment->cardPayment())
+            );
+        }
+
         return $node;
     }
 }
