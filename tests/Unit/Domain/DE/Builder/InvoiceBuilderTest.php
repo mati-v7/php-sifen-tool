@@ -24,6 +24,7 @@ use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\SecurityCode;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\TaxAuthorizationNumber;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\TradeName;
 use Nyxcode\PhpSifenTool\Domain\DE\Builder\InvoiceBuilder;
+use Nyxcode\PhpSifenTool\Domain\DE\Entity\CashPayment;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\EconomicActivity;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\InvoiceData;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Issuer;
@@ -37,6 +38,7 @@ use Nyxcode\PhpSifenTool\Domain\DE\Enum\EmissionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\IdentityDocumentType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationConditionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationType;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\PaymentType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\PresenceIndicator;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\ReceiverNature;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\TaxpayerType;
@@ -100,7 +102,10 @@ final class InvoiceBuilderTest extends TestCase
             customerCode: null
         );
 
-        $paymentCondition = new PaymentCondition(OperationConditionType::CASH);
+        $paymentCondition = new PaymentCondition(
+            OperationConditionType::CASH,
+            [new CashPayment(PaymentType::CASH, Money::guaranies('30'))]
+        );
         $invoiceData = new InvoiceData(PresenceIndicator::IN_PERSON);
 
         $item1 = new Item(

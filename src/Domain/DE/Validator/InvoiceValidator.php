@@ -6,7 +6,9 @@ namespace Nyxcode\PhpSifenTool\Domain\DE\Validator;
 
 use Nyxcode\PhpSifenTool\Domain\Common\Exception\ValidationException;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\ElectronicDocument;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationConditionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationType;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\PaymentType;
 
 final class InvoiceValidator
 {
@@ -44,6 +46,29 @@ final class InvoiceValidator
             throw new ValidationException(
                 'The public procurement code issuance date must be earlier than the invoice issue date.'
             );
+        }
+
+        $paymentCondition = $invoice->paymentCondition();
+
+        if ($paymentCondition->conditionType() === OperationConditionType::CASH
+            && count($paymentCondition->cashPayments()) === 0) {
+            throw new ValidationException(
+                'At least one cash payment (gPaConEIni) is required when the operation condition is cash (E601 = 1).'
+            );
+        }
+
+        foreach ($paymentCondition->cashPayments() as $cashPayment) {
+            if ($cashPayment->type() === PaymentType::OTHER && $cashPayment->customDescription() === null) {
+                throw new ValidationException(
+                    'A custom payment type description (dDesTiPag) is required when the payment type is "Otro" (iTiPago = 99).'
+                );
+            }
+
+            if ($cashPayment->amount()->currency() !== 'PYG' && $cashPayment->exchangeRate() === null) {
+                throw new ValidationException(
+                    'The exchange rate (dTiCamTiPag) is required when the cash payment currency is not PYG.'
+                );
+            }
         }
     }
 }
