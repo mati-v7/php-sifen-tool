@@ -67,6 +67,11 @@ final class InvoiceNodeMapper implements XmlNodeMapperInterface
                 ->map($document)
         );
 
+        $de->addChild(
+            (new DocumentTypeFieldsNodeMapper)
+                ->map($document)
+        );
+
         $de->addChildren(
             (new ItemNodeMapper)
                 ->mapItems($document)
