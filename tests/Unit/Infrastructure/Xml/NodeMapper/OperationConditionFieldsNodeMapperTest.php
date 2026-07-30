@@ -8,6 +8,7 @@ use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Money;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Ruc;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\CardPayment;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\CashPayment;
+use Nyxcode\PhpSifenTool\Domain\DE\Entity\ChequePayment;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\PaymentCondition;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\CardBrand;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\CardPaymentProcessingType;
@@ -149,5 +150,28 @@ final class OperationConditionFieldsNodeMapperTest extends XmlTestCase
         $this->assertXmlPathValue('99', '/gCamCond/gPaConEIni/gPagTarCD/iDenTarj', $xml);
         $this->assertXmlPathValue('Tarjeta regional', '/gCamCond/gPaConEIni/gPagTarCD/dDesDenTarj', $xml);
         $this->assertXmlPathValue('2', '/gCamCond/gPaConEIni/gPagTarCD/iForProPa', $xml);
+    }
+
+    public function test_maps_cheque_payment_data_for_cheque_payment(): void
+    {
+        $paymentCondition = new PaymentCondition(
+            OperationConditionType::CASH,
+            [
+                new CashPayment(
+                    type: PaymentType::CHECK,
+                    amount: Money::guaranies('100000'),
+                    chequePayment: new ChequePayment(
+                        number: '1234',
+                        issuingBank: 'Banco S.A.',
+                    ),
+                ),
+            ]
+        );
+
+        $tree = (new OperationConditionFieldsNodeMapper)->map($paymentCondition);
+        $xml = (new XmlTreeRenderer)->render($tree);
+
+        $this->assertXmlPathValue('00001234', '/gCamCond/gPaConEIni/gPagCheq/dNumCheq', $xml);
+        $this->assertXmlPathValue('Banco S.A.', '/gCamCond/gPaConEIni/gPagCheq/dBcoEmi', $xml);
     }
 }

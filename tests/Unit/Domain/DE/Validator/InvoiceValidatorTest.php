@@ -31,6 +31,7 @@ use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\TradeName;
 use Nyxcode\PhpSifenTool\Domain\DE\Builder\InvoiceBuilder;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\CardPayment;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\CashPayment;
+use Nyxcode\PhpSifenTool\Domain\DE\Entity\ChequePayment;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\EconomicActivity;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\InvoiceData;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Issuer;
@@ -343,6 +344,89 @@ final class InvoiceValidatorTest extends TestCase
 
         $this->assertNotNull(
             $invoice->paymentCondition()->cashPayments()[0]->cardPayment()
+        );
+    }
+
+    public function test_expect_cheque_payment_required_when_payment_type_is_cheque(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver())
+            ->paymentCondition(new PaymentCondition(
+                OperationConditionType::CASH,
+                [new CashPayment(PaymentType::CHECK, Money::guaranies('100'))]
+            ))
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item())
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+    }
+
+    public function test_expect_cheque_payment_not_allowed_when_payment_type_is_not_cheque(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver())
+            ->paymentCondition(new PaymentCondition(
+                OperationConditionType::CASH,
+                [
+                    new CashPayment(
+                        type: PaymentType::CASH,
+                        amount: Money::guaranies('100'),
+                        chequePayment: new ChequePayment(
+                            number: '1234',
+                            issuingBank: 'Banco S.A.',
+                        ),
+                    ),
+                ]
+            ))
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item())
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+    }
+
+    public function test_accepts_valid_cheque_payment(): void
+    {
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver())
+            ->paymentCondition(new PaymentCondition(
+                OperationConditionType::CASH,
+                [
+                    new CashPayment(
+                        type: PaymentType::CHECK,
+                        amount: Money::guaranies('100'),
+                        chequePayment: new ChequePayment(
+                            number: '1234',
+                            issuingBank: 'Banco S.A.',
+                        ),
+                    ),
+                ]
+            ))
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item())
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+
+        $this->assertNotNull(
+            $invoice->paymentCondition()->cashPayments()[0]->chequePayment()
         );
     }
 

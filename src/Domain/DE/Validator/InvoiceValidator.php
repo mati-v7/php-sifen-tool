@@ -96,6 +96,20 @@ final class InvoiceValidator
                     'A custom card brand description (dDesDenTarj) is required when the card denomination is "Otro" (iDenTarj = 99).'
                 );
             }
+
+            $isChequePaymentType = $cashPayment->type() === PaymentType::CHECK;
+
+            if ($isChequePaymentType && $cashPayment->chequePayment() === null) {
+                throw new ValidationException(
+                    'Cheque payment data (gPagCheq) is required when the payment type is cheque (iTiPago = 2).'
+                );
+            }
+
+            if (! $isChequePaymentType && $cashPayment->chequePayment() !== null) {
+                throw new ValidationException(
+                    'Cheque payment data (gPagCheq) can only be informed when the payment type is cheque (iTiPago = 2).'
+                );
+            }
         }
     }
 }
