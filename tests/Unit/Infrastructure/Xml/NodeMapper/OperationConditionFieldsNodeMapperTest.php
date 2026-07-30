@@ -9,9 +9,12 @@ use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Ruc;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\CardPayment;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\CashPayment;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\ChequePayment;
+use Nyxcode\PhpSifenTool\Domain\DE\Entity\CreditOperation;
+use Nyxcode\PhpSifenTool\Domain\DE\Entity\Installment;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\PaymentCondition;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\CardBrand;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\CardPaymentProcessingType;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\CreditConditionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationConditionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\PaymentType;
 use Nyxcode\PhpSifenTool\Infrastructure\Xml\Mapper\V150\OperationConditionFieldsNodeMapper;
@@ -173,5 +176,57 @@ final class OperationConditionFieldsNodeMapperTest extends XmlTestCase
 
         $this->assertXmlPathValue('00001234', '/gCamCond/gPaConEIni/gPagCheq/dNumCheq', $xml);
         $this->assertXmlPathValue('Banco S.A.', '/gCamCond/gPaConEIni/gPagCheq/dBcoEmi', $xml);
+    }
+
+    public function test_maps_credit_operation_with_term(): void
+    {
+        $paymentCondition = new PaymentCondition(
+            OperationConditionType::CREDIT,
+            [],
+            new CreditOperation(
+                conditionType: CreditConditionType::TERM,
+                term: '30 días',
+                initialPayment: Money::guaranies('50000'),
+            )
+        );
+
+        $tree = (new OperationConditionFieldsNodeMapper)->map($paymentCondition);
+        $xml = (new XmlTreeRenderer)->render($tree);
+
+        $this->assertXmlPathValue('1', '/gCamCond/gPagCred/iCondCred', $xml);
+        $this->assertXmlPathValue('Plazo', '/gCamCond/gPagCred/dDCondCred', $xml);
+        $this->assertXmlPathValue('30 días', '/gCamCond/gPagCred/dPlazoCre', $xml);
+        $this->assertXmlPathValue('50000', '/gCamCond/gPagCred/dMonEnt', $xml);
+    }
+
+    public function test_maps_credit_operation_with_installments(): void
+    {
+        $paymentCondition = new PaymentCondition(
+            OperationConditionType::CREDIT,
+            [],
+            new CreditOperation(
+                conditionType: CreditConditionType::INSTALLMENT,
+                installmentsCount: 2,
+                installments: [
+                    new Installment(
+                        amount: Money::guaranies('25000'),
+                        dueDate: new \DateTimeImmutable('2026-08-30')
+                    ),
+                    new Installment(amount: Money::guaranies('25000')),
+                ],
+            )
+        );
+
+        $tree = (new OperationConditionFieldsNodeMapper)->map($paymentCondition);
+        $xml = (new XmlTreeRenderer)->render($tree);
+
+        $this->assertXmlPathValue('2', '/gCamCond/gPagCred/iCondCred', $xml);
+        $this->assertXmlPathValue('Cuota', '/gCamCond/gPagCred/dDCondCred', $xml);
+        $this->assertXmlPathValue('2', '/gCamCond/gPagCred/dCuotas', $xml);
+        $this->assertXmlPathValue('PYG', '/gCamCond/gPagCred/gCuotas[1]/cMoneCuo', $xml);
+        $this->assertXmlPathValue('Guarani', '/gCamCond/gPagCred/gCuotas[1]/dDMoneCuo', $xml);
+        $this->assertXmlPathValue('25000', '/gCamCond/gPagCred/gCuotas[1]/dMonCuota', $xml);
+        $this->assertXmlPathValue('2026-08-30', '/gCamCond/gPagCred/gCuotas[1]/dVencCuo', $xml);
+        $this->assertXmlPathValue('25000', '/gCamCond/gPagCred/gCuotas[2]/dMonCuota', $xml);
     }
 }

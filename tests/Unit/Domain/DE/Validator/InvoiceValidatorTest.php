@@ -32,7 +32,9 @@ use Nyxcode\PhpSifenTool\Domain\DE\Builder\InvoiceBuilder;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\CardPayment;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\CashPayment;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\ChequePayment;
+use Nyxcode\PhpSifenTool\Domain\DE\Entity\CreditOperation;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\EconomicActivity;
+use Nyxcode\PhpSifenTool\Domain\DE\Entity\Installment;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\InvoiceData;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Issuer;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Item;
@@ -43,6 +45,7 @@ use Nyxcode\PhpSifenTool\Domain\DE\Entity\Receiver;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\TaxAuthorization;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\CardBrand;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\CardPaymentProcessingType;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\CreditConditionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\ElectronicDocumentType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\EmissionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\IdentityDocumentType;
@@ -427,6 +430,170 @@ final class InvoiceValidatorTest extends TestCase
 
         $this->assertNotNull(
             $invoice->paymentCondition()->cashPayments()[0]->chequePayment()
+        );
+    }
+
+    public function test_expect_credit_operation_required_when_condition_is_credit(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver())
+            ->paymentCondition(new PaymentCondition(OperationConditionType::CREDIT))
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item())
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+    }
+
+    public function test_expect_credit_operation_not_allowed_when_condition_is_not_credit(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver())
+            ->paymentCondition(new PaymentCondition(
+                OperationConditionType::CASH,
+                [new CashPayment(PaymentType::CASH, Money::guaranies('100'))],
+                new CreditOperation(CreditConditionType::TERM, term: '30 días'),
+            ))
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item())
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+    }
+
+    public function test_expect_term_required_when_credit_condition_is_term(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver())
+            ->paymentCondition(new PaymentCondition(
+                OperationConditionType::CREDIT,
+                [],
+                new CreditOperation(CreditConditionType::TERM),
+            ))
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item())
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+    }
+
+    public function test_expect_installments_count_required_when_credit_condition_is_installment(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver())
+            ->paymentCondition(new PaymentCondition(
+                OperationConditionType::CREDIT,
+                [],
+                new CreditOperation(CreditConditionType::INSTALLMENT),
+            ))
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item())
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+    }
+
+    public function test_expect_installments_not_allowed_when_credit_condition_is_not_installment(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver())
+            ->paymentCondition(new PaymentCondition(
+                OperationConditionType::CREDIT,
+                [],
+                new CreditOperation(
+                    conditionType: CreditConditionType::TERM,
+                    term: '30 días',
+                    installments: [new Installment(Money::guaranies('100'))],
+                ),
+            ))
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item())
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+    }
+
+    public function test_accepts_valid_credit_operation_with_term(): void
+    {
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver())
+            ->paymentCondition(new PaymentCondition(
+                OperationConditionType::CREDIT,
+                [],
+                new CreditOperation(CreditConditionType::TERM, term: '30 días'),
+            ))
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item())
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+
+        $this->assertNotNull($invoice->paymentCondition()->creditOperation());
+    }
+
+    public function test_accepts_valid_credit_operation_with_installments(): void
+    {
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver())
+            ->paymentCondition(new PaymentCondition(
+                OperationConditionType::CREDIT,
+                [],
+                new CreditOperation(
+                    conditionType: CreditConditionType::INSTALLMENT,
+                    installmentsCount: 2,
+                    installments: [
+                        new Installment(Money::guaranies('50')),
+                        new Installment(Money::guaranies('50')),
+                    ],
+                ),
+            ))
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item())
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+
+        $this->assertCount(
+            2,
+            $invoice->paymentCondition()->creditOperation()->installments()
         );
     }
 

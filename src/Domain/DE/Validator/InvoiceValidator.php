@@ -7,6 +7,7 @@ namespace Nyxcode\PhpSifenTool\Domain\DE\Validator;
 use Nyxcode\PhpSifenTool\Domain\Common\Exception\ValidationException;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\ElectronicDocument;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\CardBrand;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\CreditConditionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationConditionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\PaymentType;
@@ -108,6 +109,42 @@ final class InvoiceValidator
             if (! $isChequePaymentType && $cashPayment->chequePayment() !== null) {
                 throw new ValidationException(
                     'Cheque payment data (gPagCheq) can only be informed when the payment type is cheque (iTiPago = 2).'
+                );
+            }
+        }
+
+        $creditOperation = $paymentCondition->creditOperation();
+
+        if ($paymentCondition->conditionType() === OperationConditionType::CREDIT && $creditOperation === null) {
+            throw new ValidationException(
+                'Credit operation data (gPagCred) is required when the operation condition is credit (E601 = 2).'
+            );
+        }
+
+        if ($paymentCondition->conditionType() !== OperationConditionType::CREDIT && $creditOperation !== null) {
+            throw new ValidationException(
+                'Credit operation data (gPagCred) can only be informed when the operation condition is credit (E601 = 2).'
+            );
+        }
+
+        if ($creditOperation !== null) {
+            if ($creditOperation->conditionType() === CreditConditionType::TERM && $creditOperation->term() === null) {
+                throw new ValidationException(
+                    'Credit term (dPlazoCre) is required when the credit condition is term (iCondCred = 1).'
+                );
+            }
+
+            if ($creditOperation->conditionType() === CreditConditionType::INSTALLMENT
+                && $creditOperation->installmentsCount() === null) {
+                throw new ValidationException(
+                    'Installments count (dCuotas) is required when the credit condition is installment (iCondCred = 2).'
+                );
+            }
+
+            if ($creditOperation->conditionType() !== CreditConditionType::INSTALLMENT
+                && count($creditOperation->installments()) > 0) {
+                throw new ValidationException(
+                    'Installments (gCuotas) can only be informed when the credit condition is installment (iCondCred = 2).'
                 );
             }
         }
