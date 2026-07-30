@@ -13,6 +13,7 @@ final class InvoiceData
         private readonly PresenceIndicator $presenceIndicator,
         private readonly ?string $customPresenceIndicatorDescription = null,
         private readonly ?\DateTimeImmutable $futureDeliveryDate = null,
+        private readonly ?PublicProcurement $publicProcurement = null,
     ) {
         if ($this->presenceIndicator->isOther()) {
             $length = mb_strlen((string) $customPresenceIndicatorDescription);
@@ -40,5 +41,10 @@ final class InvoiceData
     public function futureDeliveryDate(): ?\DateTimeImmutable
     {
         return $this->futureDeliveryDate;
+    }
+
+    public function publicProcurement(): ?PublicProcurement
+    {
+        return $this->publicProcurement;
     }
 }

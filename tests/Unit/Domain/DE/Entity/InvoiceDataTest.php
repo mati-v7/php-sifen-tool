@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 namespace Nyxcode\PhpSifenTool\Tests\Unit\Domain\DE\Entity;
 
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\ContractingEntityCode;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\ContractModalityCode;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\ContractSequenceCode;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\ContractYearCode;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\InvoiceData;
+use Nyxcode\PhpSifenTool\Domain\DE\Entity\PublicProcurement;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\PresenceIndicator;
 use PHPUnit\Framework\TestCase;
 
@@ -54,5 +59,32 @@ final class InvoiceDataTest extends TestCase
         );
 
         $this->assertSame($date, $invoiceData->futureDeliveryDate());
+    }
+
+    public function test_accepts_optional_public_procurement_data(): void
+    {
+        $this->assertNull($this->invoiceData()->publicProcurement());
+
+        $publicProcurement = new PublicProcurement(
+            new ContractModalityCode('LC'),
+            new ContractingEntityCode('00001'),
+            new ContractYearCode('26'),
+            new ContractSequenceCode('1234567'),
+            new \DateTimeImmutable('2026-07-01')
+        );
+
+        $invoiceData = new InvoiceData(
+            PresenceIndicator::IN_PERSON,
+            null,
+            null,
+            $publicProcurement
+        );
+
+        $this->assertSame($publicProcurement, $invoiceData->publicProcurement());
+    }
+
+    private function invoiceData(): InvoiceData
+    {
+        return new InvoiceData(PresenceIndicator::IN_PERSON);
     }
 }
