@@ -15,6 +15,7 @@ final class CashPayment
         private readonly ?string $customDescription = null,
         private readonly ?string $exchangeRate = null,
         private readonly ?CardPayment $cardPayment = null,
+        private readonly ?ChequePayment $chequePayment = null,
     ) {}
 
     public function type(): PaymentType
@@ -45,5 +46,10 @@ final class CashPayment
     public function cardPayment(): ?CardPayment
     {
         return $this->cardPayment;
+    }
+
+    public function chequePayment(): ?ChequePayment
+    {
+        return $this->chequePayment;
     }
 }
