@@ -29,6 +29,7 @@ use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\SecurityCode;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\TaxAuthorizationNumber;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\TradeName;
 use Nyxcode\PhpSifenTool\Domain\DE\Builder\InvoiceBuilder;
+use Nyxcode\PhpSifenTool\Domain\DE\Entity\CashPayment;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\EconomicActivity;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\InvoiceData;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Issuer;
@@ -43,6 +44,7 @@ use Nyxcode\PhpSifenTool\Domain\DE\Enum\EmissionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\IdentityDocumentType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationConditionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationType;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\PaymentType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\PresenceIndicator;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\ReceiverNature;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\TaxpayerType;
@@ -168,6 +170,66 @@ final class InvoiceValidatorTest extends TestCase
         $this->assertNotNull($invoice->invoiceData()->publicProcurement());
     }
 
+    public function test_expect_cash_payment_required_when_condition_is_cash(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver())
+            ->paymentCondition(new PaymentCondition(OperationConditionType::CASH))
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item())
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+    }
+
+    public function test_expect_custom_description_required_when_payment_type_is_other(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver())
+            ->paymentCondition(new PaymentCondition(
+                OperationConditionType::CASH,
+                [new CashPayment(PaymentType::OTHER, Money::guaranies('100'))]
+            ))
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item())
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+    }
+
+    public function test_expect_exchange_rate_required_when_currency_is_not_pyg(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver())
+            ->paymentCondition(new PaymentCondition(
+                OperationConditionType::CASH,
+                [new CashPayment(PaymentType::CASH, Money::fromAmount('100', 'USD'))]
+            ))
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item())
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+    }
+
     private function publicProcurement(\DateTimeImmutable $codeIssuedAt): PublicProcurement
     {
         return new PublicProcurement(
@@ -245,7 +307,12 @@ final class InvoiceValidatorTest extends TestCase
 
     private function paymentCondition(): PaymentCondition
     {
-        return new PaymentCondition(OperationConditionType::CASH);
+        return new PaymentCondition(
+            OperationConditionType::CASH,
+            [
+                new CashPayment(PaymentType::CASH, Money::guaranies('100')),
+            ]
+        );
     }
 
     private function invoiceData(?PublicProcurement $publicProcurement = null): InvoiceData

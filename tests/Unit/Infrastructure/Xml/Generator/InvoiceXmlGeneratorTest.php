@@ -24,6 +24,7 @@ use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\SecurityCode;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\TaxAuthorizationNumber;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\TradeName;
 use Nyxcode\PhpSifenTool\Domain\DE\Builder\InvoiceBuilder;
+use Nyxcode\PhpSifenTool\Domain\DE\Entity\CashPayment;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\EconomicActivity;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\ElectronicDocument;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\InvoiceData;
@@ -38,6 +39,7 @@ use Nyxcode\PhpSifenTool\Domain\DE\Enum\EmissionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\IdentityDocumentType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationConditionType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationType;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\PaymentType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\PresenceIndicator;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\ReceiverNature;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\TaxpayerType;
@@ -73,6 +75,12 @@ final class InvoiceXmlGeneratorTest extends TestCase
         $this->assertStringContainsString('<gCamCond>', $xmlString);
         $this->assertStringContainsString('<iCondOpe>1</iCondOpe>', $xmlString);
         $this->assertStringContainsString('<dDCondOpe>Contado</dDCondOpe>', $xmlString);
+        $this->assertStringContainsString('<gPaConEIni>', $xmlString);
+        $this->assertStringContainsString('<iTiPago>1</iTiPago>', $xmlString);
+        $this->assertStringContainsString('<dDesTiPag>Efectivo</dDesTiPag>', $xmlString);
+        $this->assertStringContainsString('<dMonTiPag>480000</dMonTiPag>', $xmlString);
+        $this->assertStringContainsString('<cMoneTiPag>PYG</cMoneTiPag>', $xmlString);
+        $this->assertStringContainsString('<dDMoneTiPag>Guarani</dDMoneTiPag>', $xmlString);
         $this->assertStringContainsString('<gCamItem>', $xmlString);
         $this->assertStringContainsString('<dDesProSer>Product 1</dDesProSer>', $xmlString);
         $this->assertStringContainsString('<dCantProSer>2</dCantProSer>', $xmlString);
@@ -140,7 +148,10 @@ final class InvoiceXmlGeneratorTest extends TestCase
             customerCode: null
         );
 
-        $paymentCondition = new PaymentCondition(OperationConditionType::CASH);
+        $paymentCondition = new PaymentCondition(
+            OperationConditionType::CASH,
+            [new CashPayment(PaymentType::CASH, Money::guaranies('480000'))]
+        );
         $invoiceData = new InvoiceData(PresenceIndicator::IN_PERSON);
 
         $item1 = new Item(
