@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Nyxcode\PhpSifenTool\Tests\Unit\Domain\Calculator;
+namespace Nyxcode\PhpSifenTool\Tests\Unit\Infrastructure\Xml\NodeMapper;
 
 use Nyxcode\PhpSifenTool\Domain\Common\Collection\EconomicActivityCollection;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Address;
@@ -23,7 +23,6 @@ use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\SecurityCode;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\TaxAuthorizationNumber;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\UnitOfMeasureCode;
 use Nyxcode\PhpSifenTool\Domain\DE\Builder\InvoiceBuilder;
-use Nyxcode\PhpSifenTool\Domain\DE\Calculator\InvoiceTotalsCalculator;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\CashPayment;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\EconomicActivity;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\ElectronicDocument;
@@ -44,85 +43,72 @@ use Nyxcode\PhpSifenTool\Domain\DE\Enum\PresenceIndicator;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\ReceiverNature;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\TaxpayerType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\VatTreatment;
-use PHPUnit\Framework\TestCase;
+use Nyxcode\PhpSifenTool\Infrastructure\Xml\Mapper\V150\TotalsNodeMapper;
+use Nyxcode\PhpSifenTool\Infrastructure\Xml\Writer\XmlTreeRenderer;
+use Nyxcode\PhpSifenTool\Tests\Unit\Infrastructure\Xml\XmlTestCase;
 
-final class InvoiceTotalsCalculatorTest extends TestCase
+final class TotalsNodeMapperTest extends XmlTestCase
 {
-    public function test_calculate(): void
+    public function test_maps_mixed_rate_totals_in_field_order(): void
     {
-        $invoice = self::buildSampleInvoice();
+        $invoice = self::buildInvoice([
+            self::taxableItem('INT-001', '1100', 10),
+            self::taxableItem('INT-002', '1073', 5),
+        ]);
 
-        $calculator = new InvoiceTotalsCalculator;
-
-        $total = $calculator->calculate($invoice);
+        $xml = $this->render($invoice);
 
         // Item 1: 1100 Gs @ 10% -> base 1000, IVA 100
         // Item 2: 1073 Gs @ 5%  -> base 1022, IVA 51
-        $this->assertSame('0', $total->exemptSubtotal()->amount());
-        $this->assertSame('0', $total->exoneratedSubtotal()->amount());
-        $this->assertSame('1100', $total->taxableSubtotal10()->amount());
-        $this->assertSame('1073', $total->taxableSubtotal5()->amount());
-        $this->assertSame('2173', $total->totalOperation()->amount());
+        // Total: 2173, floored to 2150 -> rounding 23.
+        $this->assertXmlPathValue('0', '/gTotSub/dSubExe', $xml);
+        $this->assertXmlPathValue('0', '/gTotSub/dSubExo', $xml);
+        $this->assertXmlPathValue('1073', '/gTotSub/dSub5', $xml);
+        $this->assertXmlPathValue('1100', '/gTotSub/dSub10', $xml);
+        $this->assertXmlPathValue('2173', '/gTotSub/dTotOpe', $xml);
+        $this->assertXmlPathValue('0', '/gTotSub/dTotDesc', $xml);
+        $this->assertXmlPathValue('0', '/gTotSub/dTotDescGlotem', $xml);
+        $this->assertXmlPathValue('0', '/gTotSub/dTotAntItem', $xml);
+        $this->assertXmlPathValue('0', '/gTotSub/dTotAnt', $xml);
+        $this->assertXmlPathValue('0', '/gTotSub/dPorcDescTotal', $xml);
+        $this->assertXmlPathValue('0', '/gTotSub/dDescTotal', $xml);
+        $this->assertXmlPathValue('0', '/gTotSub/dAnticipo', $xml);
+        $this->assertXmlPathValue('23', '/gTotSub/dRedon', $xml);
+        $this->assertXmlPathValue('2150', '/gTotSub/dTotGralOpe', $xml);
+        $this->assertXmlPathValue('51', '/gTotSub/dIVA5', $xml);
+        $this->assertXmlPathValue('100', '/gTotSub/dIVA10', $xml);
+        $this->assertXmlPathValue('22', '/gTotSub/dLiqTotIVA5', $xml);
+        $this->assertXmlPathValue('21', '/gTotSub/dLiqTotIVA10', $xml);
+        $this->assertXmlPathValue('108', '/gTotSub/dTotIVA', $xml);
+        $this->assertXmlPathValue('1022', '/gTotSub/dBaseGrav5', $xml);
+        $this->assertXmlPathValue('1000', '/gTotSub/dBaseGrav10', $xml);
+        $this->assertXmlPathValue('2022', '/gTotSub/dTBasGraIVA', $xml);
 
-        $this->assertSame('1000', $total->taxableBase10()->amount());
-        $this->assertSame('1022', $total->taxableBase5()->amount());
-        $this->assertSame('2022', $total->totalTaxableBase()->amount());
-        $this->assertSame('100', $total->vat10()->amount());
-        $this->assertSame('51', $total->vat5()->amount());
-
-        // 2173 floored to the nearest 50 is 2150, so the rounding is 23.
-        $this->assertSame('23', $total->rounding()->amount());
-        $this->assertSame('2150', $total->totalGeneral()->amount());
-        $this->assertSame('21', $total->roundingVat10()->amount());
-        $this->assertSame('22', $total->roundingVat5()->amount());
-        $this->assertSame('108', $total->totalVat()->amount());
-
-        $this->assertSame('0', $total->totalDiscount()->amount());
-        $this->assertSame('0', $total->totalGlobalDiscountPerItem()->amount());
-        $this->assertSame('0', $total->totalAdvancePaymentPerItem()->amount());
-        $this->assertSame('0', $total->totalGlobalAdvancePaymentPerItem()->amount());
-        $this->assertSame('0', $total->totalDiscounts()->amount());
-        $this->assertSame('0', $total->totalAdvancePayments()->amount());
+        $this->assertFieldOrder([
+            'dSubExe', 'dSubExo', 'dSub5', 'dSub10', 'dTotOpe', 'dTotDesc',
+            'dTotDescGlotem', 'dTotAntItem', 'dTotAnt', 'dPorcDescTotal',
+            'dDescTotal', 'dAnticipo', 'dRedon', 'dTotGralOpe', 'dIVA5',
+            'dIVA10', 'dLiqTotIVA5', 'dLiqTotIVA10', 'dTotIVA', 'dBaseGrav5',
+            'dBaseGrav10', 'dTBasGraIVA',
+        ], $xml);
     }
 
-    public function test_calculate_sums_discounts_and_advance_payments(): void
+    /**
+     * SEDECO Resolución 347/2014 rounding example: 107.437 -> 37 -> 107.400.
+     */
+    public function test_maps_official_rounding_example(): void
     {
-        $item = new Item(
-            internalCode: 'INT-001',
-            description: 'Product 1',
-            quantity: 1,
-            unitOfMeasureCode: new UnitOfMeasureCode(77),
-            unitPrice: Money::guaranies('1000'),
-            vat: new ItemVat(
-                tratment: VatTreatment::VAT_TAXABLE,
-                rate: new Percentage(10),
-                taxableProportion: new Percentage(100)
-            ),
-            discount: Money::guaranies('50'),
-            globalDiscount: Money::guaranies('20'),
-            advancePayment: Money::guaranies('10'),
-            globalAdvancePayment: Money::guaranies('5'),
-        );
+        $invoice = self::buildInvoice([
+            self::taxableItem('INT-001', '107437', 10),
+        ]);
 
-        $invoice = self::buildSampleInvoice([$item]);
+        $xml = $this->render($invoice);
 
-        $calculator = new InvoiceTotalsCalculator;
-
-        $total = $calculator->calculate($invoice);
-
-        $this->assertSame('50', $total->totalDiscount()->amount());
-        $this->assertSame('20', $total->totalGlobalDiscountPerItem()->amount());
-        $this->assertSame('10', $total->totalAdvancePaymentPerItem()->amount());
-        $this->assertSame('5', $total->totalGlobalAdvancePaymentPerItem()->amount());
-        $this->assertSame('70', $total->totalDiscounts()->amount());
-        $this->assertSame('15', $total->totalAdvancePayments()->amount());
-
-        // Net total per item (EA008): 1000 - 50 - 20 - 10 - 5 = 915.
-        $this->assertSame('915', $total->taxableSubtotal10()->amount());
-        $this->assertSame('915', $total->totalOperation()->amount());
+        $this->assertXmlPathValue('37', '/gTotSub/dRedon', $xml);
+        $this->assertXmlPathValue('107400', '/gTotSub/dTotGralOpe', $xml);
     }
 
-    public function test_calculate_exempt_only_invoice_has_no_iva_fields(): void
+    public function test_does_not_generate_optional_iva_fields_for_exempt_only_invoice(): void
     {
         $item = new Item(
             internalCode: 'INT-001',
@@ -137,26 +123,59 @@ final class InvoiceTotalsCalculatorTest extends TestCase
             ),
         );
 
-        $invoice = self::buildSampleInvoice([$item]);
+        $invoice = self::buildInvoice([$item]);
 
-        $calculator = new InvoiceTotalsCalculator;
+        $xml = $this->render($invoice);
 
-        $total = $calculator->calculate($invoice);
+        $this->assertXmlPathValue('1000', '/gTotSub/dSubExe', $xml);
+        $this->assertNull($this->evaluateXPath($xml, '/gTotSub/dLiqTotIVA5'));
+        $this->assertNull($this->evaluateXPath($xml, '/gTotSub/dLiqTotIVA10'));
+        $this->assertNull($this->evaluateXPath($xml, '/gTotSub/dBaseGrav5'));
+        $this->assertNull($this->evaluateXPath($xml, '/gTotSub/dBaseGrav10'));
+        $this->assertNull($this->evaluateXPath($xml, '/gTotSub/dTBasGraIVA'));
+    }
 
-        $this->assertSame('1000', $total->exemptSubtotal()->amount());
-        $this->assertSame('0', $total->vat5()->amount());
-        $this->assertSame('0', $total->vat10()->amount());
-        $this->assertNull($total->taxableBase5());
-        $this->assertNull($total->taxableBase10());
-        $this->assertNull($total->totalTaxableBase());
-        $this->assertNull($total->roundingVat5());
-        $this->assertNull($total->roundingVat10());
+    /**
+     * @param  string[]  $expectedOrder
+     */
+    private function assertFieldOrder(array $expectedOrder, string $xml): void
+    {
+        $simpleXml = new \SimpleXMLElement($xml);
+        $actualOrder = array_values(array_map(
+            static fn ($child) => $child->getName(),
+            iterator_to_array($simpleXml->children())
+        ));
+
+        $this->assertSame($expectedOrder, $actualOrder);
+    }
+
+    private function render(ElectronicDocument $invoice): string
+    {
+        $tree = (new TotalsNodeMapper)->map($invoice);
+
+        return (new XmlTreeRenderer)->render($tree);
+    }
+
+    private static function taxableItem(string $internalCode, string $unitPrice, int $rate): Item
+    {
+        return new Item(
+            internalCode: $internalCode,
+            description: 'Product',
+            quantity: 1,
+            unitOfMeasureCode: new UnitOfMeasureCode(77),
+            unitPrice: Money::guaranies($unitPrice),
+            vat: new ItemVat(
+                tratment: VatTreatment::VAT_TAXABLE,
+                rate: new Percentage($rate),
+                taxableProportion: new Percentage(100)
+            )
+        );
     }
 
     /**
      * @param  Item[]  $items
      */
-    private static function buildSampleInvoice(array $items = []): ElectronicDocument
+    private static function buildInvoice(array $items): ElectronicDocument
     {
         $operation = new Operation(
             EmissionType::NORMAL,
@@ -216,35 +235,6 @@ final class InvoiceTotalsCalculatorTest extends TestCase
         );
 
         $invoiceData = new InvoiceData(PresenceIndicator::IN_PERSON);
-
-        if ($items === []) {
-            $items = [
-                new Item(
-                    internalCode: 'INT-001',
-                    description: 'Product 1',
-                    quantity: 1,
-                    unitOfMeasureCode: new UnitOfMeasureCode(77),
-                    unitPrice: Money::guaranies('1100'),
-                    vat: new ItemVat(
-                        tratment: VatTreatment::VAT_TAXABLE,
-                        rate: new Percentage(10),
-                        taxableProportion: new Percentage(100)
-                    )
-                ),
-                new Item(
-                    internalCode: 'INT-002',
-                    description: 'Product 2',
-                    quantity: 1,
-                    unitOfMeasureCode: new UnitOfMeasureCode(77),
-                    unitPrice: Money::guaranies('1073'),
-                    vat: new ItemVat(
-                        tratment: VatTreatment::VAT_TAXABLE,
-                        rate: new Percentage(5),
-                        taxableProportion: new Percentage(100)
-                    )
-                ),
-            ];
-        }
 
         $builder = InvoiceBuilder::make(new \DateTimeImmutable)
             ->operation($operation)
