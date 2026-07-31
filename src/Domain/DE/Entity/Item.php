@@ -8,6 +8,7 @@ use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\CDC;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\CountryCode;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\ItemVat;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Money;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\UnitOfMeasureCode;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\RelevantMerchandiseDataCode;
 
 final class Item
@@ -16,8 +17,7 @@ final class Item
         private readonly string $internalCode,
         private readonly string $description,
         private readonly float $quantity,
-        private readonly int $unitOfMeasureCode,
-        private readonly string $unitOfMeasureDescription,
+        private readonly UnitOfMeasureCode $unitOfMeasureCode,
         private readonly Money $unitPrice,
         private readonly ItemVat $vat,
         private readonly ?string $tariffPosition = null,
@@ -49,14 +49,9 @@ final class Item
         return $this->quantity;
     }
 
-    public function unitOfMeasureCode(): int
+    public function unitOfMeasureCode(): UnitOfMeasureCode
     {
         return $this->unitOfMeasureCode;
-    }
-
-    public function unitOfMeasureDescription(): string
-    {
-        return $this->unitOfMeasureDescription;
     }
 
     public function unitPrice(): Money

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Nyxcode\PhpSifenTool\Infrastructure\Xml\Mapper\V150;
 
 use Nyxcode\PhpSifenTool\Domain\Catalog\Contracts\CountryCatalog;
+use Nyxcode\PhpSifenTool\Domain\Catalog\Contracts\UnitOfMeasureCatalog;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\ElectronicDocument;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Item;
 use Nyxcode\PhpSifenTool\Infrastructure\Xml\Support\XmlElement;
@@ -13,6 +14,7 @@ final readonly class ItemNodeMapper
 {
     public function __construct(
         private CountryCatalog $countryCatalog,
+        private UnitOfMeasureCatalog $unitOfMeasureCatalog,
     ) {}
 
     public function mapItems(ElectronicDocument $invoice): array
@@ -74,12 +76,14 @@ final readonly class ItemNodeMapper
             )
         );
 
+        $unitOfMeasure = $this->unitOfMeasureCatalog->resolve($item->unitOfMeasureCode());
+
         $node->addChild(
-            XmlElement::make('cUniMed', (string) $item->unitOfMeasureCode())
+            XmlElement::make('cUniMed', (string) $unitOfMeasure->code())
         );
 
         $node->addChild(
-            XmlElement::make('dDesUniMed', $item->unitOfMeasureDescription())
+            XmlElement::make('dDesUniMed', $unitOfMeasure->representation())
         );
 
         $node->addChild(

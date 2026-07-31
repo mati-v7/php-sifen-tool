@@ -7,6 +7,7 @@ namespace Nyxcode\PhpSifenTool\Tests\Unit\Domain\Calculator;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\ItemVat;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Money;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Percentage;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\UnitOfMeasureCode;
 use Nyxcode\PhpSifenTool\Domain\DE\Calculator\ItemVatCalculator;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Item;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\VatTreatment;
@@ -20,8 +21,7 @@ final class ItemVatCalculatorTest extends TestCase
             internalCode: 'INT-001',
             description: 'Product',
             quantity: 1,
-            unitOfMeasureCode: 77,
-            unitOfMeasureDescription: 'UNI',
+            unitOfMeasureCode: new UnitOfMeasureCode(77),
             unitPrice: Money::guaranies(110000),
             vat: new ItemVat(
                 tratment: VatTreatment::VAT_TAXABLE,
@@ -42,8 +42,7 @@ final class ItemVatCalculatorTest extends TestCase
             internalCode: 'INT-001',
             description: 'Product',
             quantity: 1,
-            unitOfMeasureCode: 77,
-            unitOfMeasureDescription: 'UNI',
+            unitOfMeasureCode: new UnitOfMeasureCode(77),
             unitPrice: Money::guaranies(105000),
             vat: new ItemVat(
                 tratment: VatTreatment::VAT_TAXABLE,
@@ -64,8 +63,7 @@ final class ItemVatCalculatorTest extends TestCase
             internalCode: 'INT-001',
             description: 'Product',
             quantity: 1,
-            unitOfMeasureCode: 77,
-            unitOfMeasureDescription: 'UNI',
+            unitOfMeasureCode: new UnitOfMeasureCode(77),
             unitPrice: Money::guaranies(105000),
             vat: new ItemVat(
                 tratment: VatTreatment::VAT_EXEMPT,
@@ -86,8 +84,7 @@ final class ItemVatCalculatorTest extends TestCase
             internalCode: 'INT-001',
             description: 'Product',
             quantity: 1,
-            unitOfMeasureCode: 77,
-            unitOfMeasureDescription: 'UNI',
+            unitOfMeasureCode: new UnitOfMeasureCode(77),
             unitPrice: Money::guaranies(100000),
             vat: new ItemVat(
                 tratment: VatTreatment::VAT_PARTIALLY_TAXABLE,
@@ -113,8 +110,7 @@ final class ItemVatCalculatorTest extends TestCase
             internalCode: 'INT-001',
             description: 'Product',
             quantity: 1,
-            unitOfMeasureCode: 77,
-            unitOfMeasureDescription: 'UNI',
+            unitOfMeasureCode: new UnitOfMeasureCode(77),
             unitPrice: Money::guaranies(110000),
             vat: new ItemVat(
                 tratment: VatTreatment::VAT_TAXABLE,

@@ -21,6 +21,7 @@ use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\PhoneNumber;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Ruc;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\SecurityCode;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\TaxAuthorizationNumber;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\UnitOfMeasureCode;
 use Nyxcode\PhpSifenTool\Domain\DE\Builder\InvoiceBuilder;
 use Nyxcode\PhpSifenTool\Domain\DE\Calculator\InvoiceTotalsCalculator;
 use Nyxcode\PhpSifenTool\Domain\DE\Calculator\ItemVatCalculator;
@@ -126,8 +127,7 @@ final class InvoiceTotalsCalculatorTest extends TestCase
             internalCode: 'INT-001',
             description: 'Product 1',
             quantity: 2,
-            unitOfMeasureCode: 77,
-            unitOfMeasureDescription: 'UNI',
+            unitOfMeasureCode: new UnitOfMeasureCode(77),
             unitPrice: Money::guaranies('10.0'),
             vat: new ItemVat(
                 tratment: VatTreatment::VAT_TAXABLE,
@@ -140,8 +140,7 @@ final class InvoiceTotalsCalculatorTest extends TestCase
             internalCode: 'INT-002',
             description: 'Product 2',
             quantity: 1,
-            unitOfMeasureCode: 77,
-            unitOfMeasureDescription: 'UNI',
+            unitOfMeasureCode: new UnitOfMeasureCode(77),
             unitPrice: Money::guaranies('20.0'),
             vat: new ItemVat(
                 tratment: VatTreatment::VAT_TAXABLE,

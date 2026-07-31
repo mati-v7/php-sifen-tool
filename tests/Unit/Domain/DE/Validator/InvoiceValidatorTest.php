@@ -28,6 +28,7 @@ use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Ruc;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\SecurityCode;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\TaxAuthorizationNumber;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\TradeName;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\UnitOfMeasureCode;
 use Nyxcode\PhpSifenTool\Domain\DE\Builder\InvoiceBuilder;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\CardPayment;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\CashPayment;
@@ -798,8 +799,7 @@ final class InvoiceValidatorTest extends TestCase
             internalCode: 'INT-001',
             description: 'Product',
             quantity: $quantity,
-            unitOfMeasureCode: 77,
-            unitOfMeasureDescription: 'UNI',
+            unitOfMeasureCode: new UnitOfMeasureCode(77),
             unitPrice: Money::guaranies((string) $unitPrice),
             vat: new ItemVat(
                 tratment: VatTreatment::VAT_TAXABLE,
