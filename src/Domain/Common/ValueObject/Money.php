@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Nyxcode\PhpSifenTool\Domain\Common\ValueObject;
 
+use Brick\Math\BigInteger;
+use Brick\Math\RoundingMode;
 use Money\Currency;
 use Money\Money as BaseMoney;
 
@@ -97,6 +99,21 @@ final class Money
     public function isZero(): bool
     {
         return $this->value->isZero();
+    }
+
+    /**
+     * Floors the amount down to the nearest multiple, per the rounding
+     * rule of Resolución 347/2014 (SEDECO) for multiples of 50 guaraníes.
+     */
+    public function floorToNearest(int $multiple): self
+    {
+        $floored = BigInteger::of($this->value->getAmount())
+            ->dividedBy($multiple, RoundingMode::FLOOR)
+            ->multipliedBy($multiple);
+
+        return new self(
+            new BaseMoney((string) $floored, $this->value->getCurrency())
+        );
     }
 
     public function currency(): string
