@@ -123,8 +123,11 @@ final class InvoiceTotalsCalculatorTest extends TestCase
         $invoiceData = new InvoiceData(PresenceIndicator::IN_PERSON);
 
         $item1 = new Item(
+            internalCode: 'INT-001',
             description: 'Product 1',
             quantity: 2,
+            unitOfMeasureCode: 77,
+            unitOfMeasureDescription: 'UNI',
             unitPrice: Money::guaranies('10.0'),
             vat: new ItemVat(
                 tratment: VatTreatment::VAT_TAXABLE,
@@ -134,8 +137,11 @@ final class InvoiceTotalsCalculatorTest extends TestCase
         );
 
         $item2 = new Item(
+            internalCode: 'INT-002',
             description: 'Product 2',
             quantity: 1,
+            unitOfMeasureCode: 77,
+            unitOfMeasureDescription: 'UNI',
             unitPrice: Money::guaranies('20.0'),
             vat: new ItemVat(
                 tratment: VatTreatment::VAT_TAXABLE,

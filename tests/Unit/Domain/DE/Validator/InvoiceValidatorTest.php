@@ -54,6 +54,7 @@ use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\PaymentType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\PresenceIndicator;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\ReceiverNature;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\RelevantMerchandiseDataCode;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\TaxpayerType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\TaxRegimeType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\VatTreatment;
@@ -597,6 +598,103 @@ final class InvoiceValidatorTest extends TestCase
         );
     }
 
+    public function test_expect_dncp_general_code_required_when_specific_code_is_informed(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver())
+            ->paymentCondition($this->paymentCondition())
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item(dncpSpecificCode: '001'))
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+    }
+
+    public function test_accepts_valid_dncp_codes(): void
+    {
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver())
+            ->paymentCondition($this->paymentCondition())
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item(dncpGeneralCode: '00000001', dncpSpecificCode: '001'))
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+
+        $this->assertSame('001', $invoice->items()[0]->dncpSpecificCode());
+    }
+
+    public function test_expect_breakage_percentage_not_allowed_without_relevant_merchandise_data(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver())
+            ->paymentCondition($this->paymentCondition())
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item(breakageOrShrinkagePercentage: 1.5))
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+    }
+
+    public function test_expect_breakage_percentage_required_when_relevant_merchandise_data_is_informed(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver())
+            ->paymentCondition($this->paymentCondition())
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item(relevantMerchandiseData: RelevantMerchandiseDataCode::BREAKAGE_TOLERANCE))
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+    }
+
+    public function test_accepts_valid_relevant_merchandise_data(): void
+    {
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver())
+            ->paymentCondition($this->paymentCondition())
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item(
+                relevantMerchandiseData: RelevantMerchandiseDataCode::SHRINKAGE_TOLERANCE,
+                breakageOrShrinkageQuantity: 2.0,
+                breakageOrShrinkagePercentage: 1.5,
+            ))
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+
+        $this->assertSame(
+            RelevantMerchandiseDataCode::SHRINKAGE_TOLERANCE,
+            $invoice->items()[0]->relevantMerchandiseData()
+        );
+    }
+
     private function publicProcurement(\DateTimeImmutable $codeIssuedAt): PublicProcurement
     {
         return new PublicProcurement(
@@ -687,17 +785,32 @@ final class InvoiceValidatorTest extends TestCase
         return new InvoiceData(PresenceIndicator::IN_PERSON, null, null, $publicProcurement);
     }
 
-    private function item(int $quantity = 1, float $unitPrice = 10): Item
-    {
+    private function item(
+        int $quantity = 1,
+        float $unitPrice = 10,
+        ?string $dncpGeneralCode = null,
+        ?string $dncpSpecificCode = null,
+        ?RelevantMerchandiseDataCode $relevantMerchandiseData = null,
+        ?float $breakageOrShrinkageQuantity = null,
+        ?float $breakageOrShrinkagePercentage = null,
+    ): Item {
         return new Item(
+            internalCode: 'INT-001',
             description: 'Product',
             quantity: $quantity,
+            unitOfMeasureCode: 77,
+            unitOfMeasureDescription: 'UNI',
             unitPrice: Money::guaranies((string) $unitPrice),
             vat: new ItemVat(
                 tratment: VatTreatment::VAT_TAXABLE,
                 rate: new Percentage(10),
                 taxableProportion: new Percentage(100)
-            )
+            ),
+            dncpGeneralCode: $dncpGeneralCode,
+            dncpSpecificCode: $dncpSpecificCode,
+            relevantMerchandiseData: $relevantMerchandiseData,
+            breakageOrShrinkageQuantity: $breakageOrShrinkageQuantity,
+            breakageOrShrinkagePercentage: $breakageOrShrinkagePercentage,
         );
     }
 }

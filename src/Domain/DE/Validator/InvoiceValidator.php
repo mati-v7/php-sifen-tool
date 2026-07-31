@@ -34,6 +34,25 @@ final class InvoiceValidator
                     'Item price cannot be negative.'
                 );
             }
+
+            if ($item->dncpSpecificCode() !== null && $item->dncpGeneralCode() === null) {
+                throw new ValidationException(
+                    'DNCP general code (dDncpG) is required when the DNCP specific code (dDncpE) is informed.'
+                );
+            }
+
+            if ($item->relevantMerchandiseData() === null
+                && ($item->breakageOrShrinkageQuantity() !== null || $item->breakageOrShrinkagePercentage() !== null)) {
+                throw new ValidationException(
+                    'Breakage/shrinkage quantity or percentage (dCanQuiMer/dPorQuiMer) can only be informed when the relevant merchandise data code (cRelMerc) is informed.'
+                );
+            }
+
+            if ($item->relevantMerchandiseData() !== null && $item->breakageOrShrinkagePercentage() === null) {
+                throw new ValidationException(
+                    'Breakage/shrinkage percentage (dPorQuiMer) is required when the relevant merchandise data code (cRelMerc) is informed.'
+                );
+            }
         }
 
         $publicProcurement = $invoice->invoiceData()->publicProcurement();
