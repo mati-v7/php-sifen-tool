@@ -33,4 +33,10 @@ final readonly class ItemVat
     {
         return $this->tratment === VatTreatment::VAT_EXEMPT;
     }
+
+    public function isUntaxed(): bool
+    {
+        return $this->tratment === VatTreatment::VAT_EXEMPT
+            || $this->tratment === VatTreatment::VAT_EXONERATED;
+    }
 }

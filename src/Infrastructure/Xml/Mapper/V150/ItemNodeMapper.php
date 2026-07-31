@@ -7,6 +7,7 @@ namespace Nyxcode\PhpSifenTool\Infrastructure\Xml\Mapper\V150;
 use Nyxcode\PhpSifenTool\Domain\Catalog\Contracts\CountryCatalog;
 use Nyxcode\PhpSifenTool\Domain\Catalog\Contracts\UnitOfMeasureCatalog;
 use Nyxcode\PhpSifenTool\Domain\DE\Calculator\ItemPricingCalculator;
+use Nyxcode\PhpSifenTool\Domain\DE\Calculator\ItemVatCalculator;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\ElectronicDocument;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Item;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\ElectronicDocumentType;
@@ -18,6 +19,7 @@ final readonly class ItemNodeMapper
         private CountryCatalog $countryCatalog,
         private UnitOfMeasureCatalog $unitOfMeasureCatalog,
         private ItemPricingCalculator $pricingCalculator = new ItemPricingCalculator,
+        private ItemVatCalculator $vatCalculator = new ItemVatCalculator,
     ) {}
 
     public function mapItems(ElectronicDocument $invoice): array
@@ -147,18 +149,42 @@ final readonly class ItemNodeMapper
 
         $node->addChild($this->mapValorItem($item, $isSelfBilledInvoice));
 
+        $node->addChild($this->mapCamIVA($item));
+
+        return $node;
+    }
+
+    private function mapCamIVA(Item $item): XmlElement
+    {
+        $vat = $item->vat();
+
         $iva = XmlElement::make('gCamIVA');
 
         $iva->addChild(
-            XmlElement::make(
-                'dTasaIVA',
-                (string) $item->vat()->rate()->value()
-            )
+            XmlElement::make('iAfecIVA', (string) $vat->tratment()->value)
         );
 
-        $node->addChild($iva);
+        $iva->addChild(
+            XmlElement::make('dDesAfecIVA', $vat->tratment()->description())
+        );
 
-        return $node;
+        $iva->addChild(
+            XmlElement::make('dPropIVA', (string) $vat->taxableProportion()->value())
+        );
+
+        $iva->addChild(
+            XmlElement::make('dTasaIVA', (string) $vat->rate()->value())
+        );
+
+        $iva->addChild(
+            XmlElement::make('dBasGravIVA', $this->vatCalculator->taxableBase($item)->amount())
+        );
+
+        $iva->addChild(
+            XmlElement::make('dLiqIVAItem', $this->vatCalculator->vatAmount($item)->amount())
+        );
+
+        return $iva;
     }
 
     private function mapValorItem(Item $item, bool $isSelfBilledInvoice): XmlElement

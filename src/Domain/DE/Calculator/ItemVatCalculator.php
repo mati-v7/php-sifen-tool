@@ -15,7 +15,7 @@ final class ItemVatCalculator
     {
         $vat = $item->vat();
 
-        if ($vat->isExempt()) {
+        if ($vat->isUntaxed()) {
             return Money::fromAmount('0', 'PYG');
         }
 
