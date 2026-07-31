@@ -4,12 +4,19 @@ declare(strict_types=1);
 
 namespace Nyxcode\PhpSifenTool\Infrastructure\Xml\Mapper\V150;
 
+use Nyxcode\PhpSifenTool\Domain\Catalog\Contracts\CountryCatalog;
+use Nyxcode\PhpSifenTool\Domain\Catalog\Contracts\UnitOfMeasureCatalog;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\ElectronicDocument;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Item;
 use Nyxcode\PhpSifenTool\Infrastructure\Xml\Support\XmlElement;
 
-final class ItemNodeMapper
+final readonly class ItemNodeMapper
 {
+    public function __construct(
+        private CountryCatalog $countryCatalog,
+        private UnitOfMeasureCatalog $unitOfMeasureCatalog,
+    ) {}
+
     public function mapItems(ElectronicDocument $invoice): array
     {
         return array_map(
@@ -23,10 +30,60 @@ final class ItemNodeMapper
         $node = XmlElement::make('gCamItem');
 
         $node->addChild(
+            XmlElement::make('dCodInt', $item->internalCode())
+        );
+
+        if ($item->tariffPosition() !== null) {
+            $node->addChild(
+                XmlElement::make('dParAranc', $item->tariffPosition())
+            );
+        }
+
+        if ($item->ncm() !== null) {
+            $node->addChild(
+                XmlElement::make('dNCM', $item->ncm())
+            );
+        }
+
+        if ($item->dncpGeneralCode() !== null) {
+            $node->addChild(
+                XmlElement::make('dDncpG', $item->dncpGeneralCode())
+            );
+        }
+
+        if ($item->dncpSpecificCode() !== null) {
+            $node->addChild(
+                XmlElement::make('dDncpE', $item->dncpSpecificCode())
+            );
+        }
+
+        if ($item->gtin() !== null) {
+            $node->addChild(
+                XmlElement::make('dGtin', $item->gtin())
+            );
+        }
+
+        if ($item->gtinPackage() !== null) {
+            $node->addChild(
+                XmlElement::make('dGtinPq', $item->gtinPackage())
+            );
+        }
+
+        $node->addChild(
             XmlElement::make(
                 'dDesProSer',
                 $item->description()
             )
+        );
+
+        $unitOfMeasure = $this->unitOfMeasureCatalog->resolve($item->unitOfMeasureCode());
+
+        $node->addChild(
+            XmlElement::make('cUniMed', (string) $unitOfMeasure->code())
+        );
+
+        $node->addChild(
+            XmlElement::make('dDesUniMed', $unitOfMeasure->representation())
         );
 
         $node->addChild(
@@ -35,6 +92,52 @@ final class ItemNodeMapper
                 (string) $item->quantity()
             )
         );
+
+        if ($item->originCountry() !== null) {
+            $country = $this->countryCatalog->resolve($item->originCountry());
+
+            $node->addChild(
+                XmlElement::make('cPaisOrig', $country->code())
+            );
+
+            $node->addChild(
+                XmlElement::make('dDesPaisOrig', $country->name())
+            );
+        }
+
+        if ($item->additionalInfo() !== null) {
+            $node->addChild(
+                XmlElement::make('dInfItem', $item->additionalInfo())
+            );
+        }
+
+        if ($item->relevantMerchandiseData() !== null) {
+            $node->addChild(
+                XmlElement::make('cRelMerc', (string) $item->relevantMerchandiseData()->value)
+            );
+
+            $node->addChild(
+                XmlElement::make('dDesRelMerc', $item->relevantMerchandiseData()->description())
+            );
+        }
+
+        if ($item->breakageOrShrinkageQuantity() !== null) {
+            $node->addChild(
+                XmlElement::make('dCanQuiMer', (string) $item->breakageOrShrinkageQuantity())
+            );
+        }
+
+        if ($item->breakageOrShrinkagePercentage() !== null) {
+            $node->addChild(
+                XmlElement::make('dPorQuiMer', (string) $item->breakageOrShrinkagePercentage())
+            );
+        }
+
+        if ($item->advancePaymentCDC() !== null) {
+            $node->addChild(
+                XmlElement::make('dCDCAnticipo', $item->advancePaymentCDC()->value())
+            );
+        }
 
         $node->addChild(
             XmlElement::make(

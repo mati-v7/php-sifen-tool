@@ -6,6 +6,8 @@ namespace Nyxcode\PhpSifenTool\Infrastructure\Xml\Mapper\V150;
 
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\ElectronicDocument;
 use Nyxcode\PhpSifenTool\Domain\DE\Service\CDCGenerator;
+use Nyxcode\PhpSifenTool\Infrastructure\Catalog\Country\JsonCountryCatalog;
+use Nyxcode\PhpSifenTool\Infrastructure\Catalog\UnitOfMeasure\JsonUnitOfMeasureCatalog;
 use Nyxcode\PhpSifenTool\Infrastructure\Xml\Contracts\XmlNodeMapperInterface;
 use Nyxcode\PhpSifenTool\Infrastructure\Xml\Namespace\SifenNamespaces;
 use Nyxcode\PhpSifenTool\Infrastructure\Xml\Support\XmlElement;
@@ -72,8 +74,13 @@ final class InvoiceNodeMapper implements XmlNodeMapperInterface
                 ->map($document)
         );
 
+        $catalogDirectory = dirname(__DIR__, 4).'/Resources/catalog';
+
         $de->addChildren(
-            (new ItemNodeMapper)
+            (new ItemNodeMapper(
+                new JsonCountryCatalog($catalogDirectory),
+                new JsonUnitOfMeasureCatalog($catalogDirectory),
+            ))
                 ->mapItems($document)
         );
 

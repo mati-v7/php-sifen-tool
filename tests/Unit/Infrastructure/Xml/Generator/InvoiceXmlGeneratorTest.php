@@ -23,6 +23,7 @@ use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Ruc;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\SecurityCode;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\TaxAuthorizationNumber;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\TradeName;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\UnitOfMeasureCode;
 use Nyxcode\PhpSifenTool\Domain\DE\Builder\InvoiceBuilder;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\CashPayment;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\EconomicActivity;
@@ -42,6 +43,7 @@ use Nyxcode\PhpSifenTool\Domain\DE\Enum\OperationType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\PaymentType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\PresenceIndicator;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\ReceiverNature;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\RelevantMerchandiseDataCode;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\TaxpayerType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\TaxRegimeType;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\VatTreatment;
@@ -82,8 +84,17 @@ final class InvoiceXmlGeneratorTest extends TestCase
         $this->assertStringContainsString('<cMoneTiPag>PYG</cMoneTiPag>', $xmlString);
         $this->assertStringContainsString('<dDMoneTiPag>Guarani</dDMoneTiPag>', $xmlString);
         $this->assertStringContainsString('<gCamItem>', $xmlString);
+        $this->assertStringContainsString('<dCodInt>INT-001</dCodInt>', $xmlString);
         $this->assertStringContainsString('<dDesProSer>Product 1</dDesProSer>', $xmlString);
+        $this->assertStringContainsString('<cUniMed>77</cUniMed>', $xmlString);
+        $this->assertStringContainsString('<dDesUniMed>UNI</dDesUniMed>', $xmlString);
         $this->assertStringContainsString('<dCantProSer>2</dCantProSer>', $xmlString);
+        $this->assertStringContainsString('<cPaisOrig>PRY</cPaisOrig>', $xmlString);
+        $this->assertStringContainsString('<dDesPaisOrig>Paraguay</dDesPaisOrig>', $xmlString);
+        $this->assertStringContainsString('<cRelMerc>1</cRelMerc>', $xmlString);
+        $this->assertStringContainsString('<dDesRelMerc>Tolerancia de quiebra</dDesRelMerc>', $xmlString);
+        $this->assertStringContainsString('<dCanQuiMer>0.5</dCanQuiMer>', $xmlString);
+        $this->assertStringContainsString('<dPorQuiMer>1.5</dPorQuiMer>', $xmlString);
         $this->assertStringContainsString('<dPUniProSer>110000</dPUniProSer>', $xmlString);
         $this->assertStringContainsString('<dTotOpeItem>220000</dTotOpeItem>', $xmlString);
         $this->assertStringContainsString('<dDesProSer>Product 2</dDesProSer>', $xmlString);
@@ -155,19 +166,27 @@ final class InvoiceXmlGeneratorTest extends TestCase
         $invoiceData = new InvoiceData(PresenceIndicator::IN_PERSON);
 
         $item1 = new Item(
+            internalCode: 'INT-001',
             description: 'Product 1',
             quantity: 2,
+            unitOfMeasureCode: new UnitOfMeasureCode(77),
             unitPrice: Money::guaranies('110000.0'),
             vat: new ItemVat(
                 tratment: VatTreatment::VAT_TAXABLE,
                 rate: new Percentage(10),
                 taxableProportion: new Percentage(100)
-            )
+            ),
+            originCountry: new CountryCode('PRY'),
+            relevantMerchandiseData: RelevantMerchandiseDataCode::BREAKAGE_TOLERANCE,
+            breakageOrShrinkageQuantity: 0.5,
+            breakageOrShrinkagePercentage: 1.5,
         );
 
         $item2 = new Item(
+            internalCode: 'INT-002',
             description: 'Product 2',
             quantity: 1,
+            unitOfMeasureCode: new UnitOfMeasureCode(77),
             unitPrice: Money::guaranies('150000.0'),
             vat: new ItemVat(
                 tratment: VatTreatment::VAT_TAXABLE,
@@ -177,8 +196,10 @@ final class InvoiceXmlGeneratorTest extends TestCase
         );
 
         $item3 = new Item(
+            internalCode: 'INT-003',
             description: 'Product 3',
             quantity: 1,
+            unitOfMeasureCode: new UnitOfMeasureCode(77),
             unitPrice: Money::guaranies('110000.0'),
             vat: new ItemVat(
                 tratment: VatTreatment::VAT_EXEMPT,

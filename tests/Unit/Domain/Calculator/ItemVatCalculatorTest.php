@@ -7,6 +7,7 @@ namespace Nyxcode\PhpSifenTool\Tests\Unit\Domain\Calculator;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\ItemVat;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Money;
 use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\Percentage;
+use Nyxcode\PhpSifenTool\Domain\Common\ValueObject\UnitOfMeasureCode;
 use Nyxcode\PhpSifenTool\Domain\DE\Calculator\ItemVatCalculator;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Item;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\VatTreatment;
@@ -17,8 +18,10 @@ final class ItemVatCalculatorTest extends TestCase
     public function test_calculates_taxable_base_for_10_percent_vat(): void
     {
         $item = new Item(
+            internalCode: 'INT-001',
             description: 'Product',
             quantity: 1,
+            unitOfMeasureCode: new UnitOfMeasureCode(77),
             unitPrice: Money::guaranies(110000),
             vat: new ItemVat(
                 tratment: VatTreatment::VAT_TAXABLE,
@@ -36,8 +39,10 @@ final class ItemVatCalculatorTest extends TestCase
     public function test_calculates_taxable_base_for_5_percent_vat(): void
     {
         $item = new Item(
+            internalCode: 'INT-001',
             description: 'Product',
             quantity: 1,
+            unitOfMeasureCode: new UnitOfMeasureCode(77),
             unitPrice: Money::guaranies(105000),
             vat: new ItemVat(
                 tratment: VatTreatment::VAT_TAXABLE,
@@ -55,8 +60,10 @@ final class ItemVatCalculatorTest extends TestCase
     public function test_returns_zero_for_exempt_item(): void
     {
         $item = new Item(
+            internalCode: 'INT-001',
             description: 'Product',
             quantity: 1,
+            unitOfMeasureCode: new UnitOfMeasureCode(77),
             unitPrice: Money::guaranies(105000),
             vat: new ItemVat(
                 tratment: VatTreatment::VAT_EXEMPT,
@@ -74,8 +81,10 @@ final class ItemVatCalculatorTest extends TestCase
     public function test_calculates_partial_taxable_proportion(): void
     {
         $item = new Item(
+            internalCode: 'INT-001',
             description: 'Product',
             quantity: 1,
+            unitOfMeasureCode: new UnitOfMeasureCode(77),
             unitPrice: Money::guaranies(100000),
             vat: new ItemVat(
                 tratment: VatTreatment::VAT_PARTIALLY_TAXABLE,
@@ -98,8 +107,10 @@ final class ItemVatCalculatorTest extends TestCase
     public function test_calculates_vat_amount(): void
     {
         $item = new Item(
+            internalCode: 'INT-001',
             description: 'Product',
             quantity: 1,
+            unitOfMeasureCode: new UnitOfMeasureCode(77),
             unitPrice: Money::guaranies(110000),
             vat: new ItemVat(
                 tratment: VatTreatment::VAT_TAXABLE,

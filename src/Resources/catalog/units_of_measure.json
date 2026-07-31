@@ -1,0 +1,172 @@
+[
+    {
+        "code": 87,
+        "representation": "m",
+        "description": "Metros"
+    },
+    {
+        "code": 2366,
+        "representation": "CPM",
+        "description": "Costo por Mil"
+    },
+    {
+        "code": 2329,
+        "representation": "UI",
+        "description": "Unidad Internacional"
+    },
+    {
+        "code": 110,
+        "representation": "M3",
+        "description": "Metros cúbicos"
+    },
+    {
+        "code": 77,
+        "representation": "UNI",
+        "description": "Unidad"
+    },
+    {
+        "code": 86,
+        "representation": "g",
+        "description": "Gramos"
+    },
+    {
+        "code": 89,
+        "representation": "LT",
+        "description": "Litros"
+    },
+    {
+        "code": 90,
+        "representation": "MG",
+        "description": "Miligramos"
+    },
+    {
+        "code": 91,
+        "representation": "CM",
+        "description": "Centimetros"
+    },
+    {
+        "code": 92,
+        "representation": "CM2",
+        "description": "Centimetros cuadrados"
+    },
+    {
+        "code": 93,
+        "representation": "CM3",
+        "description": "Centimetros cubicos"
+    },
+    {
+        "code": 94,
+        "representation": "PUL",
+        "description": "Pulgadas"
+    },
+    {
+        "code": 96,
+        "representation": "MM2",
+        "description": "Milímetros cuadrados"
+    },
+    {
+        "code": 79,
+        "representation": "kg/m²",
+        "description": "Kilogramos s/ metro cuadrado"
+    },
+    {
+        "code": 97,
+        "representation": "AA",
+        "description": "Año"
+    },
+    {
+        "code": 98,
+        "representation": "ME",
+        "description": "Mes"
+    },
+    {
+        "code": 99,
+        "representation": "TN",
+        "description": "Tonelada"
+    },
+    {
+        "code": 100,
+        "representation": "Hs",
+        "description": "Hora"
+    },
+    {
+        "code": 101,
+        "representation": "Mi",
+        "description": "Minuto"
+    },
+    {
+        "code": 104,
+        "representation": "DET",
+        "description": "Determinación"
+    },
+    {
+        "code": 103,
+        "representation": "Ya",
+        "description": "Yardas"
+    },
+    {
+        "code": 108,
+        "representation": "MT",
+        "description": "Metros"
+    },
+    {
+        "code": 109,
+        "representation": "M2",
+        "description": "Metros cuadrados"
+    },
+    {
+        "code": 95,
+        "representation": "MM",
+        "description": "Milímetros"
+    },
+    {
+        "code": 666,
+        "representation": "Se",
+        "description": "Segundo"
+    },
+    {
+        "code": 102,
+        "representation": "Di",
+        "description": "Día"
+    },
+    {
+        "code": 83,
+        "representation": "kg",
+        "description": "Kilogramos"
+    },
+    {
+        "code": 88,
+        "representation": "ML",
+        "description": "Mililitros"
+    },
+    {
+        "code": 625,
+        "representation": "Km",
+        "description": "Kilómetros"
+    },
+    {
+        "code": 660,
+        "representation": "ml",
+        "description": "Metro lineal"
+    },
+    {
+        "code": 885,
+        "representation": "GL",
+        "description": "Unidad Medida Global"
+    },
+    {
+        "code": 891,
+        "representation": "pm",
+        "description": "Por Milaje"
+    },
+    {
+        "code": 869,
+        "representation": "ha",
+        "description": "Hectáreas"
+    },
+    {
+        "code": 569,
+        "representation": "ración",
+        "description": "Ración"
+    }
+]
