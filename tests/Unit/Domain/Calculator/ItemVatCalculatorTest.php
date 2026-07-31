@@ -78,6 +78,28 @@ final class ItemVatCalculatorTest extends TestCase
         $this->assertEquals(0, $base->amount());
     }
 
+    public function test_returns_zero_for_exonerated_item(): void
+    {
+        $item = new Item(
+            internalCode: 'INT-001',
+            description: 'Product',
+            quantity: 1,
+            unitOfMeasureCode: new UnitOfMeasureCode(77),
+            unitPrice: Money::guaranies(105000),
+            vat: new ItemVat(
+                tratment: VatTreatment::VAT_EXONERATED,
+                rate: new Percentage(0),
+                taxableProportion: new Percentage(100)
+            )
+        );
+
+        $calculator = new ItemVatCalculator;
+        $base = $calculator->taxableBase($item);
+
+        $this->assertEquals(0, $base->amount());
+        $this->assertEquals(0, $calculator->vatAmount($item)->amount());
+    }
+
     public function test_calculates_partial_taxable_proportion(): void
     {
         $item = new Item(

@@ -210,6 +210,121 @@ final class InvoiceXmlGeneratorTest extends TestCase
         $this->assertStringContainsString('<dTotOpeGs>1168080000</dTotOpeGs>', $xmlString);
     }
 
+    public function test_generate_includes_vat_group_fields(): void
+    {
+        $operation = new Operation(
+            EmissionType::NORMAL,
+            SecurityCode::generate(),
+            null,
+            null
+        );
+
+        $taxAuthorization = new TaxAuthorization(
+            ElectronicDocumentType::ELECTRONIC_INVOICE,
+            new TaxAuthorizationNumber('12345678'),
+            new EstablishmentCode('001'),
+            new ExpeditionPoint('001'),
+            new DocumentNumber('1234567'),
+            new \DateTimeImmutable,
+            null
+        );
+
+        $issuer = new Issuer(
+            ruc: new Ruc('1234567', 6),
+            taxpayerType: TaxpayerType::LEGAL_ENTITY,
+            name: new BusinessName('ACME Corp'),
+            address: new Address(
+                street: 'Main street',
+                houseNumber: 123,
+                complement1: null,
+                complement2: null,
+                city: new CityCode(1),
+            ),
+            phoneNumber: new PhoneNumber('(+595 21) 000 000'),
+            emailAddress: new EmailAddress('info@email.com'),
+            activities: new EconomicActivityCollection(
+                new EconomicActivity('0000', 'ECONOMIC ACTIVITY')
+            ),
+            taxRegimeType: TaxRegimeType::SMALL_PRODUCER_REGIME,
+            branchName: new BranchName('ACME Main store'),
+            tradeName: new TradeName('ACME store')
+        );
+
+        $receiver = new Receiver(
+            nature: ReceiverNature::NON_TAXPAYER,
+            operation: OperationType::B2C,
+            countryCode: new CountryCode('PRY'),
+            document: new IdentityDocument(IdentityDocumentType::NATIONAL_ID, '987654321'),
+            legalName: 'John Doe',
+            fantasyName: null,
+            address: null,
+            phone: null,
+            cellphone: null,
+            email: null,
+            customerCode: null
+        );
+
+        $paymentCondition = new PaymentCondition(
+            OperationConditionType::CASH,
+            [new CashPayment(PaymentType::CASH, Money::guaranies('210000'))]
+        );
+
+        $partiallyTaxableItem = new Item(
+            internalCode: 'INT-001',
+            description: 'Partially taxable product',
+            quantity: 1,
+            unitOfMeasureCode: new UnitOfMeasureCode(77),
+            unitPrice: Money::guaranies('100000'),
+            vat: new ItemVat(
+                tratment: VatTreatment::VAT_PARTIALLY_TAXABLE,
+                rate: new Percentage(10),
+                taxableProportion: new Percentage(30)
+            ),
+        );
+
+        $exoneratedItem = new Item(
+            internalCode: 'INT-002',
+            description: 'Exonerated product',
+            quantity: 1,
+            unitOfMeasureCode: new UnitOfMeasureCode(77),
+            unitPrice: Money::guaranies('110000'),
+            vat: new ItemVat(
+                tratment: VatTreatment::VAT_EXONERATED,
+                rate: new Percentage(0),
+                taxableProportion: new Percentage(100)
+            ),
+        );
+
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($operation)
+            ->taxAuthorization($taxAuthorization)
+            ->issuer($issuer)
+            ->receiver($receiver)
+            ->invoiceData(new InvoiceData(PresenceIndicator::IN_PERSON))
+            ->paymentCondition($paymentCondition)
+            ->addItem($partiallyTaxableItem)
+            ->addItem($exoneratedItem)
+            ->build();
+
+        $xmlString = (new InvoiceXmlGenerator)->generate($invoice);
+
+        $this->assertStringContainsString('<gCamIVA>', $xmlString);
+        $this->assertStringContainsString('<iAfecIVA>4</iAfecIVA>', $xmlString);
+        $this->assertStringContainsString('<dDesAfecIVA>Gravado parcial (Grav-Exento)</dDesAfecIVA>', $xmlString);
+        $this->assertStringContainsString('<dPropIVA>30</dPropIVA>', $xmlString);
+        $this->assertStringContainsString('<dTasaIVA>10</dTasaIVA>', $xmlString);
+        // (100000 * (30/100)) / 1.1 = 27272.72..., rounds half up to 27273
+        $this->assertStringContainsString('<dBasGravIVA>27273</dBasGravIVA>', $xmlString);
+        // 27273 * (10/100) = 2727.3, rounds half up to 2727
+        $this->assertStringContainsString('<dLiqIVAItem>2727</dLiqIVAItem>', $xmlString);
+
+        $this->assertStringContainsString('<iAfecIVA>2</iAfecIVA>', $xmlString);
+        $this->assertStringContainsString('<dDesAfecIVA>Exonerado (Art. 83- Ley 125/91)</dDesAfecIVA>', $xmlString);
+        $this->assertStringContainsString('<dTasaIVA>0</dTasaIVA>', $xmlString);
+        $this->assertStringContainsString('<dBasGravIVA>0</dBasGravIVA>', $xmlString);
+        $this->assertStringContainsString('<dLiqIVAItem>0</dLiqIVAItem>', $xmlString);
+    }
+
     public function test_generate_defaults_item_discount_and_advance_payment_to_zero(): void
     {
         $operation = new Operation(
