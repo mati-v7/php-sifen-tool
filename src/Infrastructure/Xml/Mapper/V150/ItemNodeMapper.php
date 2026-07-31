@@ -6,8 +6,10 @@ namespace Nyxcode\PhpSifenTool\Infrastructure\Xml\Mapper\V150;
 
 use Nyxcode\PhpSifenTool\Domain\Catalog\Contracts\CountryCatalog;
 use Nyxcode\PhpSifenTool\Domain\Catalog\Contracts\UnitOfMeasureCatalog;
+use Nyxcode\PhpSifenTool\Domain\DE\Calculator\ItemPricingCalculator;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\ElectronicDocument;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\Item;
+use Nyxcode\PhpSifenTool\Domain\DE\Enum\ElectronicDocumentType;
 use Nyxcode\PhpSifenTool\Infrastructure\Xml\Support\XmlElement;
 
 final readonly class ItemNodeMapper
@@ -15,17 +17,21 @@ final readonly class ItemNodeMapper
     public function __construct(
         private CountryCatalog $countryCatalog,
         private UnitOfMeasureCatalog $unitOfMeasureCatalog,
+        private ItemPricingCalculator $pricingCalculator = new ItemPricingCalculator,
     ) {}
 
     public function mapItems(ElectronicDocument $invoice): array
     {
+        $isSelfBilledInvoice = $invoice->taxAuthorization()->documentType()
+            === ElectronicDocumentType::ELECTRONIC_SELF_BILLED_INVOICE;
+
         return array_map(
-            fn (Item $item) => $this->map($item),
+            fn (Item $item) => $this->map($item, $isSelfBilledInvoice),
             $invoice->items()
         );
     }
 
-    private function map(Item $item): XmlElement
+    private function map(Item $item, bool $isSelfBilledInvoice): XmlElement
     {
         $node = XmlElement::make('gCamItem');
 
@@ -139,19 +145,7 @@ final readonly class ItemNodeMapper
             );
         }
 
-        $node->addChild(
-            XmlElement::make(
-                'dPUniProSer',
-                $item->unitPrice()->amount()
-            )
-        );
-
-        $node->addChild(
-            XmlElement::make(
-                'dTotOpeItem',
-                $item->total()->amount()
-            )
-        );
+        $node->addChild($this->mapValorItem($item, $isSelfBilledInvoice));
 
         $iva = XmlElement::make('gCamIVA');
 
@@ -165,5 +159,91 @@ final readonly class ItemNodeMapper
         $node->addChild($iva);
 
         return $node;
+    }
+
+    private function mapValorItem(Item $item, bool $isSelfBilledInvoice): XmlElement
+    {
+        $valorItem = XmlElement::make('gValorItem');
+
+        $valorItem->addChild(
+            XmlElement::make('dPUniProSer', $item->unitPrice()->amount())
+        );
+
+        if ($item->exchangeRate() !== null) {
+            $valorItem->addChild(
+                XmlElement::make('dTiCamIt', (string) $item->exchangeRate())
+            );
+        }
+
+        $valorItem->addChild(
+            XmlElement::make(
+                'dTotBruOpeItem',
+                $this->pricingCalculator->grossTotal($item)->amount()
+            )
+        );
+
+        $valorItem->addChild($this->mapValorRestaItem($item, $isSelfBilledInvoice));
+
+        return $valorItem;
+    }
+
+    private function mapValorRestaItem(Item $item, bool $isSelfBilledInvoice): XmlElement
+    {
+        $valorRestaItem = XmlElement::make('gValorRestaItem');
+
+        $valorRestaItem->addChild(
+            XmlElement::make(
+                'dDescItem',
+                $this->pricingCalculator->discount($item)->amount()
+            )
+        );
+
+        $discountPercentage = $this->pricingCalculator->discountPercentage($item);
+
+        if ($discountPercentage !== null) {
+            $valorRestaItem->addChild(
+                XmlElement::make('dPorcDesIt', $discountPercentage)
+            );
+        }
+
+        if ($item->globalDiscount() !== null) {
+            $valorRestaItem->addChild(
+                XmlElement::make(
+                    'dDescGloItem',
+                    $this->pricingCalculator->globalDiscount($item)->amount()
+                )
+            );
+        }
+
+        $valorRestaItem->addChild(
+            XmlElement::make(
+                'dAntPreUniIt',
+                $this->pricingCalculator->advancePayment($item)->amount()
+            )
+        );
+
+        $valorRestaItem->addChild(
+            XmlElement::make(
+                'dAntGloPreUniIt',
+                $this->pricingCalculator->globalAdvancePayment($item)->amount()
+            )
+        );
+
+        $valorRestaItem->addChild(
+            XmlElement::make(
+                'dTotOpeItem',
+                $this->pricingCalculator->netTotal($item, $isSelfBilledInvoice)->amount()
+            )
+        );
+
+        $totalInGuaranies = $this->pricingCalculator->netTotalInGuaranies($item, $isSelfBilledInvoice);
+
+        if ($totalInGuaranies !== null) {
+            $valorRestaItem->addChild(
+                XmlElement::make('dTotOpeGs', $totalInGuaranies->amount())
+            );
+        }
+
+        return $valorRestaItem;
     }
 }

@@ -53,6 +53,13 @@ final class Money
         );
     }
 
+    public function subtract(self $money): self
+    {
+        return new self(
+            $this->value->subtract($money->value)
+        );
+    }
+
     public function multiply(float|int|string $multiplier): self
     {
         return new self(
@@ -85,6 +92,11 @@ final class Money
     public function isNegative(): bool
     {
         return $this->value->isNegative();
+    }
+
+    public function isZero(): bool
+    {
+        return $this->value->isZero();
     }
 
     public function currency(): string

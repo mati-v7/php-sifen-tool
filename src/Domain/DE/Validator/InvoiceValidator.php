@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Nyxcode\PhpSifenTool\Domain\DE\Validator;
 
 use Nyxcode\PhpSifenTool\Domain\Common\Exception\ValidationException;
+use Nyxcode\PhpSifenTool\Domain\DE\Calculator\ItemPricingCalculator;
 use Nyxcode\PhpSifenTool\Domain\DE\Entity\ElectronicDocument;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\CardBrand;
 use Nyxcode\PhpSifenTool\Domain\DE\Enum\CreditConditionType;
@@ -14,6 +15,10 @@ use Nyxcode\PhpSifenTool\Domain\DE\Enum\PaymentType;
 
 final class InvoiceValidator
 {
+    public function __construct(
+        private ItemPricingCalculator $pricingCalculator = new ItemPricingCalculator,
+    ) {}
+
     public function validate(ElectronicDocument $invoice): void
     {
         if (count($invoice->items()) === 0) {
@@ -51,6 +56,41 @@ final class InvoiceValidator
             if ($item->relevantMerchandiseData() !== null && $item->breakageOrShrinkagePercentage() === null) {
                 throw new ValidationException(
                     'Breakage/shrinkage percentage (dPorQuiMer) is required when the relevant merchandise data code (cRelMerc) is informed.'
+                );
+            }
+
+            foreach ([
+                'dDescItem' => $item->discount(),
+                'dDescGloItem' => $item->globalDiscount(),
+                'dAntPreUniIt' => $item->advancePayment(),
+                'dAntGloPreUniIt' => $item->globalAdvancePayment(),
+            ] as $field => $money) {
+                if ($money === null) {
+                    continue;
+                }
+
+                if ($money->currency() !== $item->unitPrice()->currency()) {
+                    throw new ValidationException(
+                        "The item {$field} currency must match the unit price (dPUniProSer) currency."
+                    );
+                }
+
+                if ($money->isNegative()) {
+                    throw new ValidationException(
+                        "The item {$field} cannot be negative."
+                    );
+                }
+            }
+
+            if ($item->exchangeRate() !== null && $item->exchangeRate() <= 0) {
+                throw new ValidationException(
+                    'The item exchange rate (dTiCamIt) must be greater than zero.'
+                );
+            }
+
+            if ($this->pricingCalculator->netUnitPrice($item)->isNegative()) {
+                throw new ValidationException(
+                    'The sum of item discounts and advance payments (dDescItem + dDescGloItem + dAntPreUniIt + dAntGloPreUniIt) cannot exceed the unit price (dPUniProSer).'
                 );
             }
         }

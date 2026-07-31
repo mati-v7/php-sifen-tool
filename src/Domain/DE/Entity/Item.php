@@ -32,6 +32,11 @@ final class Item
         private readonly ?float $breakageOrShrinkageQuantity = null,
         private readonly ?float $breakageOrShrinkagePercentage = null,
         private readonly ?CDC $advancePaymentCDC = null,
+        private readonly ?Money $discount = null,
+        private readonly ?Money $globalDiscount = null,
+        private readonly ?Money $advancePayment = null,
+        private readonly ?Money $globalAdvancePayment = null,
+        private readonly ?float $exchangeRate = null,
     ) {}
 
     public function internalCode(): string
@@ -122,6 +127,31 @@ final class Item
     public function advancePaymentCDC(): ?CDC
     {
         return $this->advancePaymentCDC;
+    }
+
+    public function discount(): ?Money
+    {
+        return $this->discount;
+    }
+
+    public function globalDiscount(): ?Money
+    {
+        return $this->globalDiscount;
+    }
+
+    public function advancePayment(): ?Money
+    {
+        return $this->advancePayment;
+    }
+
+    public function globalAdvancePayment(): ?Money
+    {
+        return $this->globalAdvancePayment;
+    }
+
+    public function exchangeRate(): ?float
+    {
+        return $this->exchangeRate;
     }
 
     public function total(): Money
