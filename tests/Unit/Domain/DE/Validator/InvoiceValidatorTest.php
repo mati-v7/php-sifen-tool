@@ -696,6 +696,107 @@ final class InvoiceValidatorTest extends TestCase
         );
     }
 
+    public function test_expect_item_discount_cannot_be_negative(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver())
+            ->paymentCondition($this->paymentCondition())
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item(unitPrice: 100000, discount: Money::guaranies('-100')))
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+    }
+
+    public function test_expect_item_discount_currency_must_match_unit_price_currency(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver())
+            ->paymentCondition($this->paymentCondition())
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item(unitPrice: 100000, discount: Money::fromAmount('100', 'USD')))
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+    }
+
+    public function test_expect_item_exchange_rate_must_be_greater_than_zero(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver())
+            ->paymentCondition($this->paymentCondition())
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item(unitPrice: 100000, exchangeRate: 0.0))
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+    }
+
+    public function test_expect_item_discounts_cannot_exceed_unit_price(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver())
+            ->paymentCondition($this->paymentCondition())
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item(
+                unitPrice: 100000,
+                discount: Money::guaranies('60000'),
+                globalDiscount: Money::guaranies('50000'),
+            ))
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+    }
+
+    public function test_accepts_valid_item_discounts_advance_payments_and_exchange_rate(): void
+    {
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($this->operation())
+            ->taxAuthorization($this->taxAuth())
+            ->issuer($this->issuer())
+            ->receiver($this->receiver())
+            ->paymentCondition($this->paymentCondition())
+            ->invoiceData($this->invoiceData())
+            ->addItem($this->item(
+                unitPrice: 100000,
+                discount: Money::guaranies('10000'),
+                globalDiscount: Money::guaranies('5000'),
+                advancePayment: Money::guaranies('2000'),
+                globalAdvancePayment: Money::guaranies('1000'),
+                exchangeRate: 7300.0,
+            ))
+            ->build();
+
+        $validator = new InvoiceValidator;
+        $validator->validate($invoice);
+
+        $this->assertSame(7300.0, $invoice->items()[0]->exchangeRate());
+    }
+
     private function publicProcurement(\DateTimeImmutable $codeIssuedAt): PublicProcurement
     {
         return new PublicProcurement(
@@ -794,6 +895,11 @@ final class InvoiceValidatorTest extends TestCase
         ?RelevantMerchandiseDataCode $relevantMerchandiseData = null,
         ?float $breakageOrShrinkageQuantity = null,
         ?float $breakageOrShrinkagePercentage = null,
+        ?Money $discount = null,
+        ?Money $globalDiscount = null,
+        ?Money $advancePayment = null,
+        ?Money $globalAdvancePayment = null,
+        ?float $exchangeRate = null,
     ): Item {
         return new Item(
             internalCode: 'INT-001',
@@ -811,6 +917,11 @@ final class InvoiceValidatorTest extends TestCase
             relevantMerchandiseData: $relevantMerchandiseData,
             breakageOrShrinkageQuantity: $breakageOrShrinkageQuantity,
             breakageOrShrinkagePercentage: $breakageOrShrinkagePercentage,
+            discount: $discount,
+            globalDiscount: $globalDiscount,
+            advancePayment: $advancePayment,
+            globalAdvancePayment: $globalAdvancePayment,
+            exchangeRate: $exchangeRate,
         );
     }
 }

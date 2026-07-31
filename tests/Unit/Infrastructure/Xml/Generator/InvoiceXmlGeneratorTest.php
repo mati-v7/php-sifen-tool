@@ -105,6 +105,204 @@ final class InvoiceXmlGeneratorTest extends TestCase
         $this->assertStringContainsString('<dTotGralOpe>480000</dTotGralOpe>', $xmlString);
     }
 
+    public function test_generate_includes_item_pricing_group_fields(): void
+    {
+        $operation = new Operation(
+            EmissionType::NORMAL,
+            SecurityCode::generate(),
+            null,
+            null
+        );
+
+        $taxAuthorization = new TaxAuthorization(
+            ElectronicDocumentType::ELECTRONIC_INVOICE,
+            new TaxAuthorizationNumber('12345678'),
+            new EstablishmentCode('001'),
+            new ExpeditionPoint('001'),
+            new DocumentNumber('1234567'),
+            new \DateTimeImmutable,
+            null
+        );
+
+        $issuer = new Issuer(
+            ruc: new Ruc('1234567', 6),
+            taxpayerType: TaxpayerType::LEGAL_ENTITY,
+            name: new BusinessName('ACME Corp'),
+            address: new Address(
+                street: 'Main street',
+                houseNumber: 123,
+                complement1: null,
+                complement2: null,
+                city: new CityCode(1),
+            ),
+            phoneNumber: new PhoneNumber('(+595 21) 000 000'),
+            emailAddress: new EmailAddress('info@email.com'),
+            activities: new EconomicActivityCollection(
+                new EconomicActivity('0000', 'ECONOMIC ACTIVITY')
+            ),
+            taxRegimeType: TaxRegimeType::SMALL_PRODUCER_REGIME,
+            branchName: new BranchName('ACME Main store'),
+            tradeName: new TradeName('ACME store')
+        );
+
+        $receiver = new Receiver(
+            nature: ReceiverNature::NON_TAXPAYER,
+            operation: OperationType::B2C,
+            countryCode: new CountryCode('PRY'),
+            document: new IdentityDocument(IdentityDocumentType::NATIONAL_ID, '987654321'),
+            legalName: 'John Doe',
+            fantasyName: null,
+            address: null,
+            phone: null,
+            cellphone: null,
+            email: null,
+            customerCode: null
+        );
+
+        $paymentCondition = new PaymentCondition(
+            OperationConditionType::CASH,
+            [new CashPayment(PaymentType::CASH, Money::guaranies('160000'))]
+        );
+
+        $item = new Item(
+            internalCode: 'INT-001',
+            description: 'Product with discounts',
+            quantity: 1,
+            unitOfMeasureCode: new UnitOfMeasureCode(77),
+            unitPrice: Money::guaranies('200000'),
+            vat: new ItemVat(
+                tratment: VatTreatment::VAT_TAXABLE,
+                rate: new Percentage(10),
+                taxableProportion: new Percentage(100)
+            ),
+            discount: Money::guaranies('20000'),
+            globalDiscount: Money::guaranies('10000'),
+            advancePayment: Money::guaranies('5000'),
+            globalAdvancePayment: Money::guaranies('5000'),
+            exchangeRate: 7300.5,
+        );
+
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($operation)
+            ->taxAuthorization($taxAuthorization)
+            ->issuer($issuer)
+            ->receiver($receiver)
+            ->invoiceData(new InvoiceData(PresenceIndicator::IN_PERSON))
+            ->paymentCondition($paymentCondition)
+            ->addItem($item)
+            ->build();
+
+        $xmlString = (new InvoiceXmlGenerator)->generate($invoice);
+
+        $this->assertStringContainsString('<gValorItem>', $xmlString);
+        $this->assertStringContainsString('<dPUniProSer>200000</dPUniProSer>', $xmlString);
+        $this->assertStringContainsString('<dTiCamIt>7300.5</dTiCamIt>', $xmlString);
+        $this->assertStringContainsString('<dTotBruOpeItem>200000</dTotBruOpeItem>', $xmlString);
+        $this->assertStringContainsString('<gValorRestaItem>', $xmlString);
+        $this->assertStringContainsString('<dDescItem>20000</dDescItem>', $xmlString);
+        $this->assertStringContainsString('<dPorcDesIt>10.00000000</dPorcDesIt>', $xmlString);
+        $this->assertStringContainsString('<dDescGloItem>10000</dDescGloItem>', $xmlString);
+        $this->assertStringContainsString('<dAntPreUniIt>5000</dAntPreUniIt>', $xmlString);
+        $this->assertStringContainsString('<dAntGloPreUniIt>5000</dAntGloPreUniIt>', $xmlString);
+        // (200000 - 20000 - 10000 - 5000 - 5000) * 1 = 160000
+        $this->assertStringContainsString('<dTotOpeItem>160000</dTotOpeItem>', $xmlString);
+        // 160000 * 7300.5 = 1168080000
+        $this->assertStringContainsString('<dTotOpeGs>1168080000</dTotOpeGs>', $xmlString);
+    }
+
+    public function test_generate_defaults_item_discount_and_advance_payment_to_zero(): void
+    {
+        $operation = new Operation(
+            EmissionType::NORMAL,
+            SecurityCode::generate(),
+            null,
+            null
+        );
+
+        $taxAuthorization = new TaxAuthorization(
+            ElectronicDocumentType::ELECTRONIC_INVOICE,
+            new TaxAuthorizationNumber('12345678'),
+            new EstablishmentCode('001'),
+            new ExpeditionPoint('001'),
+            new DocumentNumber('1234567'),
+            new \DateTimeImmutable,
+            null
+        );
+
+        $issuer = new Issuer(
+            ruc: new Ruc('1234567', 6),
+            taxpayerType: TaxpayerType::LEGAL_ENTITY,
+            name: new BusinessName('ACME Corp'),
+            address: new Address(
+                street: 'Main street',
+                houseNumber: 123,
+                complement1: null,
+                complement2: null,
+                city: new CityCode(1),
+            ),
+            phoneNumber: new PhoneNumber('(+595 21) 000 000'),
+            emailAddress: new EmailAddress('info@email.com'),
+            activities: new EconomicActivityCollection(
+                new EconomicActivity('0000', 'ECONOMIC ACTIVITY')
+            ),
+            taxRegimeType: TaxRegimeType::SMALL_PRODUCER_REGIME,
+            branchName: new BranchName('ACME Main store'),
+            tradeName: new TradeName('ACME store')
+        );
+
+        $receiver = new Receiver(
+            nature: ReceiverNature::NON_TAXPAYER,
+            operation: OperationType::B2C,
+            countryCode: new CountryCode('PRY'),
+            document: new IdentityDocument(IdentityDocumentType::NATIONAL_ID, '987654321'),
+            legalName: 'John Doe',
+            fantasyName: null,
+            address: null,
+            phone: null,
+            cellphone: null,
+            email: null,
+            customerCode: null
+        );
+
+        $paymentCondition = new PaymentCondition(
+            OperationConditionType::CASH,
+            [new CashPayment(PaymentType::CASH, Money::guaranies('100000'))]
+        );
+
+        $item = new Item(
+            internalCode: 'INT-001',
+            description: 'Product without discounts',
+            quantity: 1,
+            unitOfMeasureCode: new UnitOfMeasureCode(77),
+            unitPrice: Money::guaranies('100000'),
+            vat: new ItemVat(
+                tratment: VatTreatment::VAT_TAXABLE,
+                rate: new Percentage(10),
+                taxableProportion: new Percentage(100)
+            ),
+        );
+
+        $invoice = InvoiceBuilder::make(new \DateTimeImmutable)
+            ->operation($operation)
+            ->taxAuthorization($taxAuthorization)
+            ->issuer($issuer)
+            ->receiver($receiver)
+            ->invoiceData(new InvoiceData(PresenceIndicator::IN_PERSON))
+            ->paymentCondition($paymentCondition)
+            ->addItem($item)
+            ->build();
+
+        $xmlString = (new InvoiceXmlGenerator)->generate($invoice);
+
+        $this->assertStringContainsString('<dDescItem>0</dDescItem>', $xmlString);
+        $this->assertStringContainsString('<dAntPreUniIt>0</dAntPreUniIt>', $xmlString);
+        $this->assertStringContainsString('<dAntGloPreUniIt>0</dAntGloPreUniIt>', $xmlString);
+        $this->assertStringNotContainsString('<dPorcDesIt>', $xmlString);
+        $this->assertStringNotContainsString('<dDescGloItem>', $xmlString);
+        $this->assertStringNotContainsString('<dTiCamIt>', $xmlString);
+        $this->assertStringNotContainsString('<dTotOpeGs>', $xmlString);
+    }
+
     public static function buildSampleInvoice(): array
     {
         $operation = new Operation(
